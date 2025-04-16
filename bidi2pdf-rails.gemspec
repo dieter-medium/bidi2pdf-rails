@@ -1,7 +1,7 @@
 require_relative "lib/bidi2pdf_rails/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "bidi2pdf_rails"
+  spec.name        = "bidi2pdf-rails"
   spec.version     = Bidi2pdfRails::VERSION
   spec.authors = [ "Dieter S." ]
   spec.email = [ "101627195+dieter-medium@users.noreply.github.com" ]

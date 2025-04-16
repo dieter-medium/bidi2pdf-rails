@@ -1,28 +1,75 @@
-# Bidi2pdf::Rails
-Short description and motivation.
+[![Build Status](https://github.com/dieter-medium/bidi2pdf-rails/actions/workflows/ruby.yml/badge.svg)](https://github.com/dieter-medium/bidi2pdf-rails/blob/main/.github/workflows/ruby.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6425d9893aa3a9ca243e/maintainability)](https://codeclimate.com/github/dieter-medium/bidi2pdf-rails/maintainability)
+[![Gem Version](https://badge.fury.io/rb/bidi2pdf-rails.svg)](https://badge.fury.io/rb/bidi2pdf-rails)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6425d9893aa3a9ca243e/test_coverage)](https://codeclimate.com/github/dieter-medium/bidi2pdf-rails/test_coverage)
+[![Open Source Helpers](https://www.codetriage.com/dieter-medium/bidi2pdf-rails/badges/users.svg)](https://www.codetriage.com/dieter-medium/bidi2pdf-rails)
 
-## Usage
-How to use my plugin.
 
-## Installation
-Add this line to your application's Gemfile:
+# 📄 Bidi2pdf::Rails
+
+**Bidi2pdf::Rails** is the official Rails integration for [Bidi2pdf](https://github.com/dieter-medium/bidi2pdf) – a modern, browser-based solution for converting HTML to high-quality PDFs.  
+It leverages headless browsing and offers a simple, flexible interface for PDF generation directly from your Rails application.
+
+> **⚠️ Note:** This project is currently **under development** and **not yet recommended for production use**.
+
+---
+
+## 🚀 Why Bidi2pdf::Rails?
+
+- Utilizes modern browser technologies for accurate rendering (similar to `grover` or `wicked_pdf`)
+- Easy to integrate into existing Rails projects
+- Configurable options: URL, output path, rendering settings
+
+---
+
+## 🔧 Installation
+
+Add the following lines to your `Gemfile`:
 
 ```ruby
 gem "bidi2pdf-rails"
+# As long as the gem is not published, use:
+gem "bidi2pdf-rails", github: "dieter-medium/bidi2pdf", branch: "main"
+gem "bidi2pdf", github: "dieter-medium/bidi2pdf", branch: "main"
 ```
 
-And then execute:
+Then install the dependencies:
+
 ```bash
-$ bundle
+bundle
 ```
 
-Or install it yourself as:
+Generate the initializer:
+
 ```bash
-$ gem install bidi2pdf-rails
+bin/rails generate bidi2pdf_rails:initializer
 ```
 
-## Contributing
-Contribution directions go here.
+Alternatively, install it manually:
 
-## License
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+```bash
+gem install bidi2pdf-rails
+```
+
+---
+
+## 🧪 Example & Getting Started
+
+You can find a full example inside the [`spec/dummy`](spec/dummy) directory of this repository.  
+This demonstrates how to use `Bidi2pdf::Rails` in a realistic mini Rails application setup.
+
+---
+
+## 🙌 Contributing
+
+Want to contribute?  
+Pull requests, bug reports, and ideas are warmly welcome!
+
+*Contribution guidelines will be added soon.*
+
+---
+
+## 📄 License
+
+This gem is open-source and available under the terms of the [MIT License](https://opensource.org/licenses/MIT).  
+Free to use – with responsibility.

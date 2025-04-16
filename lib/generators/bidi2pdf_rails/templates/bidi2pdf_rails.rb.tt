@@ -18,33 +18,33 @@ Bidi2pdfRails.configure do |config|
   config.headless = overrides.headless.nil? ? <%= @headless ? "true" : "false" %> : overrides.headless
   # config.chromedriver_port = 0
   # config.chrome_session_args = [
-  #  '--disable-gpu',
-  #  '--no-sandbox'
-  #]
+  #   "--disable-gpu",
+  #   "--no-sandbox"
+  # ]
 
-  <% if @proxy %>
+<% if @proxy %>
   config.proxy_addr = "<%= @proxy_addr %>"
   config.proxy_port = <%= @proxy_port %>
   config.proxy_user = nil
   config.proxy_pass = nil
-  <% else %>
+<% else %>
   # config.proxy_addr = nil
   # config.proxy_port = nil
   # config.proxy_user = nil
   # config.proxy_pass = nil
-  <% end %>
+<% end %>
 
-  <% if @configure_viewport %>
+<% if @configure_viewport %>
   # Viewport settings
   config.viewport_width = <%= @viewport_width || 1920 %>
   config.viewport_height = <%= @viewport_height || 1080 %>
-  <% else %>
+<% else %>
   # Viewport settings
   # config.viewport_width = 1920
   # config.viewport_height = 1080
-  <% end %>
+<% end %>
 
-  <% if @configure_pdf %>
+<% if @configure_pdf %>
   # PDF settings
   config.pdf_orientation = "<%= @pdf_orientation || "portrait" %>"
   <% if @pdf_margins %>
@@ -60,7 +60,7 @@ Bidi2pdfRails.configure do |config|
   <% end %>
   config.pdf_print_background = <%= @pdf_print_background ? "true" : "false" %>
   config.pdf_scale = <%= @pdf_scale || 1.0 %>
-  <% else %>
+<% else %>
   # PDF settings
   # config.pdf_orientation = "portrait"
   # config.pdf_margin_top = 10
@@ -69,20 +69,20 @@ Bidi2pdfRails.configure do |config|
   # config.pdf_margin_right = 10
   # config.pdf_print_background = true
   # config.pdf_scale = 1.0
-  <% end %>
+<% end %>
 
   # config.cookies = [
   #   { name: "session", value: "abc123", domain: "example.com" }
-  #]
+  # ]
 
-  #config.headers = {
-  #  "X-API-KEY" => "topsecret"
-  #}
+  # config.headers = {
+  #   "X-API-KEY" => "topsecret"
+  # }
 
   # config.auth = {
   #   username: "admin",
-  #  password: "secret"
-  #}
+  #   password: "secret"
+  # }
 
   # chromedriver install dir
   # config.install_dir = Rails.root.join("tmp", "bidi2pdf").to_s
