@@ -5,16 +5,16 @@
 [![Open Source Helpers](https://www.codetriage.com/dieter-medium/bidi2pdf-rails/badges/users.svg)](https://www.codetriage.com/dieter-medium/bidi2pdf-rails)
 
 
-# 📄 Bidi2pdf::Rails
+# 📄 Bidi2pdfRails
 
-**Bidi2pdf::Rails** is the official Rails integration for [Bidi2pdf](https://github.com/dieter-medium/bidi2pdf) – a modern, browser-based solution for converting HTML to high-quality PDFs.  
+**Bidi2pdfRails** is the official Rails integration for [Bidi2pdf](https://github.com/dieter-medium/bidi2pdf) – a modern, browser-based solution for converting HTML to high-quality PDFs.  
 It leverages headless browsing and offers a simple, flexible interface for PDF generation directly from your Rails application.
 
 > **⚠️ Note:** This project is currently **under development** and **not yet recommended for production use**.
 
 ---
 
-## 🚀 Why Bidi2pdf::Rails?
+## 🚀 Why Bidi2pdfRails?
 
 - Utilizes modern browser technologies for accurate rendering (similar to `grover` or `wicked_pdf`)
 - Easy to integrate into existing Rails projects
@@ -56,7 +56,7 @@ gem install bidi2pdf-rails
 ## 🧪 Example & Getting Started
 
 You can find a full example inside the [`spec/dummy`](spec/dummy) directory of this repository.  
-This demonstrates how to use `Bidi2pdf::Rails` in a realistic mini Rails application setup.
+This demonstrates how to use `Bidi2pdfRails` in a realistic mini Rails application setup.
 
 ---
 
