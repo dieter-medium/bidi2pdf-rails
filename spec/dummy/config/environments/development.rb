@@ -51,6 +51,7 @@ Rails.application.configure do
 
   # Custom Bidi2PDF settings, check config/initializers/bidi2pdf_rails.rb for hints
   config.x.bidi2pdf_rails.headless = false
+  config.x.bidi2pdf_rails.verbosity = :high
   # config.x.bidi2pdf_rails.log_browser_console = true
   # config.x.bidi2pdf_rails.default_timeout = 60
 end
