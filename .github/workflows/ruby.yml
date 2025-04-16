@@ -1,0 +1,110 @@
+name: Ruby CI
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      dockerImageTag:
+        description: 'Docker image tag'
+        required: false
+        type: string
+  
+  push:
+    branches: [ main, master ]
+    tags:
+      - 'v**'
+  pull_request:
+    branches: [ main, master ]
+
+env:
+  SHOW_CONTAINER_LOGS: true
+  DISABLE_CHROME_SANDBOX: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Ruby Environment
+        uses: ./.github/actions/setup-ruby
+      - name: Lint with RuboCop
+        run: |
+          bundle install --jobs 4 --retry 3
+          bundle exec rubocop
+
+  gem-build:
+    needs:
+      - lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Ruby Environment
+        uses: ./.github/actions/setup-ruby
+      - name: Build gem
+        run: |
+          bundle exec rake build
+      - name: Upload gem
+        uses: actions/upload-artifact@v4
+        with:
+          name: bidi2pdf-gem
+          path: pkg/
+
+  unit-test:
+    needs: lint
+    uses: ./.github/workflows/run-rspec-tests.yml
+    with:
+      test_tag: unit
+      artifact_name: unit-coverage
+
+  integration-test:
+    needs: lint
+    uses: ./.github/workflows/run-rspec-tests.yml
+    with:
+      test_tag: integration
+      artifact_name: integration-coverage
+
+  acceptance-test:
+    needs: lint
+    uses: ./.github/workflows/run-rspec-tests.yml
+    with:
+      test_tag: acceptance
+      artifact_name: acceptance-coverage
+      upload_pdf: true
+  
+  coverage-report:
+    if: false  # This disables the job
+    needs:
+      - unit-test
+      - integration-test
+      - acceptance-test
+    runs-on: ubuntu-latest
+    env:
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Ruby Environment
+        uses: ./.github/actions/setup-ruby
+      - name: Download all coverage artifacts
+        uses: actions/download-artifact@v4
+        with:
+          # only path means download all artifacts to this dir
+          path: coverage-artifacts
+      - name: Combine coverage reports
+        run: |
+          mkdir -p coverage
+          ls  -ltraR coverage-artifacts          
+          cp coverage-artifacts/unit-coverage/.resultset.json coverage/unit-resultset.json
+          cp coverage-artifacts/integration-coverage/.resultset.json coverage/integration-resultset.json
+          cp coverage-artifacts/acceptance-coverage/.resultset.json coverage/acceptance-resultset.json
+          bundle exec rake coverage:merge_reports
+      - name: Upload coverage to Code Climate
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: paambaati/codeclimate-action@v3.2.0
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+
