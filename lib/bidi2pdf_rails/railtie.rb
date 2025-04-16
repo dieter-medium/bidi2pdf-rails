@@ -39,8 +39,12 @@ module Bidi2pdfRails
 
         Bidi2pdf.default_timeout = 30
 
+        # without a thread, the app will be blocked in dev mode
         thread = Thread.new {
           Rails.application.executor.wrap do
+            # subscriptions in other threads will not be inherited
+            Bidi2pdfRails::LogSubscriber.attach_to "bidi2pdf", inherit_all: true
+
             browser = ChromedriverManagerSingleton.session.browser
             context = browser.create_user_context
             window = context.create_browser_window
@@ -49,8 +53,6 @@ module Bidi2pdfRails
             tab.render_html_content html
 
             tab.wait_until_network_idle
-
-            # sleep 60
 
             tab.wait_until_page_loaded
 

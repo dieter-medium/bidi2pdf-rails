@@ -3,7 +3,10 @@
 Bidi2pdfRails.configure do |config|
   overrides = Rails.application.config.x.bidi2pdf_rails
 
+  config.notification_service = ActiveSupport::Notifications
+
   config.logger = Rails.logger
+  config.verbosity = overrides.verbosity.nil? ? :none : overrides.verbosity
   config.default_timeout = 10
 
   # Logging options
