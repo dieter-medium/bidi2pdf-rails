@@ -29,7 +29,7 @@ Add the following lines to your `Gemfile`:
 ```ruby
 gem "bidi2pdf-rails"
 # As long as the gem is not published, use:
-gem "bidi2pdf-rails", github: "dieter-medium/bidi2pdf", branch: "main"
+gem "bidi2pdf-rails", github: "dieter-medium/bidi2pdf-rails", branch: "main"
 gem "bidi2pdf", github: "dieter-medium/bidi2pdf", branch: "main"
 ```
 
