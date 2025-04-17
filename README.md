@@ -85,6 +85,29 @@ end
 
 ```
 
+### CORS Configuration for Assets
+
+When generating PDFs via `render_to_string`, this gem renders HTML from data URLs (e.g., `data:text/html,...`), which
+are treated as unique origins with different security contexts than your application.
+
+Chrome's security model will block access to your application's assets unless proper CORS headers are configured to
+allow cross-origin requests.
+
+Use the rack-cors gem to enable asset access:
+
+```ruby
+# In Gemfile
+gem 'rack-cors'
+
+# In config/initializers/cors.rb
+Rails.application.config.middleware.insert_before 0, Rack::Cors do
+  allow do
+    origins '*' # Consider restricting this in production
+    resource '/assets/*', headers: :any, methods: [:get, :options]
+  end
+end
+```
+
 ---
 
 ## 🙌 Contributing
