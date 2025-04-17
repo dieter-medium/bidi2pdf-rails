@@ -35,7 +35,7 @@ module Bidi2pdfRails
           ActionController::Base.asset_host = request.base_url
         end
 
-        html = render_to_string(options.merge(formats: [ :html ]))
+        html = render_to_string(options.merge(formats: [:html]))
 
         Bidi2pdf.default_timeout = 30
 

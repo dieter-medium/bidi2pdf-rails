@@ -53,6 +53,9 @@ Layout/ArrayAlignment:
 Layout/LineLength:
   Enabled: false
 
+Layout/SpaceInsideArrayLiteralBrackets:
+  EnforcedStyle: no_space
+
 RSpec/MultipleMemoizedHelpers:
   Max: 10
 

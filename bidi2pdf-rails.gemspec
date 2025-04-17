@@ -3,8 +3,8 @@ require_relative "lib/bidi2pdf_rails/version"
 Gem::Specification.new do |spec|
   spec.name        = "bidi2pdf-rails"
   spec.version     = Bidi2pdfRails::VERSION
-  spec.authors = [ "Dieter S." ]
-  spec.email = [ "101627195+dieter-medium@users.noreply.github.com" ]
+  spec.authors = ["Dieter S."]
+  spec.email = ["101627195+dieter-medium@users.noreply.github.com"]
 
   spec.summary = "A Ruby gem that generates PDF"
   # rubocop:enable Layout/LineLength
@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
 
   spec.test_files = Dir["spec/**/*"]
 
-  spec.require_paths = [ "lib" ]
+  spec.require_paths = ["lib"]
 
   spec.add_dependency "rails", ">= 7.2.2.1", "< 8.0.3.0"
   spec.add_dependency "bidi2pdf"
