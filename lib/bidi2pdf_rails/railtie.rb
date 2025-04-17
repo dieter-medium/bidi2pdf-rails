@@ -43,7 +43,7 @@ module Bidi2pdfRails
         thread = Thread.new {
           Rails.application.executor.wrap do
             # subscriptions in other threads will not be inherited
-            Bidi2pdfRails::LogSubscriber.attach_to "bidi2pdf", inherit_all: true
+            # Bidi2pdfRails::LogSubscriber.attach_to "bidi2pdf", inherit_all: true
 
             browser = ChromedriverManagerSingleton.session.browser
             context = browser.create_user_context

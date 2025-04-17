@@ -10,57 +10,27 @@ Bidi2pdfRails.configure do |config|
   config.default_timeout = 10
 
   # Logging options
-  config.log_network_events = <%= @log_network_events ? "true" : "false" %>
-  config.log_browser_console = <%= @log_browser_console ? "true" : "false" %>
+  config.log_network_events = false
+  config.log_browser_console = false
 
   # Chrome & BiDi
   # config.remote_browser_url = nil
-  config.headless = overrides.headless.nil? ? <%= @headless ? "true" : "false" %> : overrides.headless
+  config.headless = overrides.headless.nil? ? false : overrides.headless
   # config.chromedriver_port = 0
   # config.chrome_session_args = [
   #   "--disable-gpu",
   #   "--no-sandbox"
   # ]
 
-<% if @proxy %>
-  config.proxy_addr = "<%= @proxy_addr %>"
-  config.proxy_port = <%= @proxy_port %>
-  config.proxy_user = nil
-  config.proxy_pass = nil
-<% else %>
   # config.proxy_addr = nil
   # config.proxy_port = nil
   # config.proxy_user = nil
   # config.proxy_pass = nil
-<% end %>
 
-<% if @configure_viewport %>
-  # Viewport settings
-  config.viewport_width = <%= @viewport_width || 1920 %>
-  config.viewport_height = <%= @viewport_height || 1080 %>
-<% else %>
   # Viewport settings
   # config.viewport_width = 1920
   # config.viewport_height = 1080
-<% end %>
 
-<% if @configure_pdf %>
-  # PDF settings
-  config.pdf_orientation = "<%= @pdf_orientation || "portrait" %>"
-  <% if @pdf_margins %>
-  config.pdf_margin_top = <%= @pdf_margin_top || 10 %>
-  config.pdf_margin_bottom = <%= @pdf_margin_bottom || 10 %>
-  config.pdf_margin_left = <%= @pdf_margin_left || 10 %>
-  config.pdf_margin_right = <%= @pdf_margin_right || 10 %>
-  <% else %>
-  # config.pdf_margin_top = 10
-  # config.pdf_margin_bottom = 10
-  # config.pdf_margin_left = 10
-  # config.pdf_margin_right = 10
-  <% end %>
-  config.pdf_print_background = <%= @pdf_print_background ? "true" : "false" %>
-  config.pdf_scale = <%= @pdf_scale || 1.0 %>
-<% else %>
   # PDF settings
   # config.pdf_orientation = "portrait"
   # config.pdf_margin_top = 10
@@ -69,7 +39,6 @@ Bidi2pdfRails.configure do |config|
   # config.pdf_margin_right = 10
   # config.pdf_print_background = true
   # config.pdf_scale = 1.0
-<% end %>
 
   # config.cookies = [
   #   { name: "session", value: "abc123", domain: "example.com" }
@@ -91,8 +60,7 @@ end
 Rails.application.config.after_initialize do
   Bidi2pdfRails::MainLogSubscriber.attach_to "bidi2pdf", inherit_all: true # needed for imported methods
   Bidi2pdfRails::BrowserConsoleLogSubscriber.attach_to "bidi2pdf"
+  Bidi2pdfRails::NetworkLogSubscriber.attach_to "bidi2pdf"
 
   Bidi2pdfRails::MainLogSubscriber.silence /network_event_.*\.bidi2pdf/
-
-  Bidi2pdfRails::NetworkLogSubscriber.attach_to "bidi2pdf"
 end

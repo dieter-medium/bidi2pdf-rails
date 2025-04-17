@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require "bidi2pdf"
-require "bidi2pdf_rails/version"
-require "bidi2pdf_rails/railtie"
-require "bidi2pdf_rails/chromedriver_manager_singleton"
-require "bidi2pdf_rails/log_subscriber"
+require_relative "bidi2pdf_rails/version"
+require_relative "bidi2pdf_rails/railtie"
+require_relative "bidi2pdf_rails/chromedriver_manager_singleton"
+require_relative "bidi2pdf_rails/main_log_subscriber"
+require_relative "bidi2pdf_rails/browser_console_log_subscriber"
+require_relative "bidi2pdf_rails/network_log_subscriber"
 
 module Bidi2pdfRails
   class << self
