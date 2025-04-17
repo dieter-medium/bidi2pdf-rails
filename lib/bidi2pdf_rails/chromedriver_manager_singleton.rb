@@ -16,7 +16,7 @@ module Bidi2pdfRails
 
           Bidi2pdfRails.logger.info "Initializing Bidi2pdf #{msg}"
 
-          if Bidi2pdfRails.remote_browser_url
+          if Bidi2pdfRails.use_remote_browser?
             @session = Bidi::Session.new(
               session_url: Bidi2pdfRails.remote_browser_url,
               headless: Bidi2pdfRails.headless,

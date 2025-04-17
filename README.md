@@ -4,11 +4,12 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6425d9893aa3a9ca243e/test_coverage)](https://codeclimate.com/github/dieter-medium/bidi2pdf-rails/test_coverage)
 [![Open Source Helpers](https://www.codetriage.com/dieter-medium/bidi2pdf-rails/badges/users.svg)](https://www.codetriage.com/dieter-medium/bidi2pdf-rails)
 
-
 # 📄 Bidi2pdfRails
 
-**Bidi2pdfRails** is the official Rails integration for [Bidi2pdf](https://github.com/dieter-medium/bidi2pdf) – a modern, browser-based solution for converting HTML to high-quality PDFs.  
-It leverages headless browsing and offers a simple, flexible interface for PDF generation directly from your Rails application.
+**Bidi2pdfRails** is the official Rails integration for [Bidi2pdf](https://github.com/dieter-medium/bidi2pdf) – a
+modern, browser-based solution for converting HTML to high-quality PDFs.  
+It leverages headless browsing and offers a simple, flexible interface for PDF generation directly from your Rails
+application.
 
 > **⚠️ Note:** This project is currently **under development** and **not yet recommended for production use**.
 
@@ -31,6 +32,9 @@ gem "bidi2pdf-rails"
 # As long as the gem is not published, use:
 gem "bidi2pdf-rails", github: "dieter-medium/bidi2pdf-rails", branch: "main"
 gem "bidi2pdf", github: "dieter-medium/bidi2pdf", branch: "main"
+
+# if you want a small performance boost, you can use the following:
+# gem "websocket-native"
 ```
 
 Then install the dependencies:
@@ -57,6 +61,29 @@ gem install bidi2pdf-rails
 
 You can find a full example inside the [`spec/dummy`](spec/dummy) directory of this repository.  
 This demonstrates how to use `Bidi2pdfRails` in a realistic mini Rails application setup.
+
+### Basic Usage
+
+```ruby
+# Render html via controller action `render_to_string`
+# Any controller action:
+def show
+  render pdf: "invoice",
+         template: "invoices/show",
+         layout: "pdf",
+         locals: { invoice: @invoice },
+         print_options: { landscape: true },
+         wait_for_network_idle: true,
+         asset_host: "https://assets.example.com"
+end
+
+# Render pdf via direct url call
+def show
+  # See: PdfRenderer for all options
+  render pdf: 'remote-report', url: "http://example.com", wait_for_page_loaded: false, print_options: { page: { format: :A4 } }
+end
+
+```
 
 ---
 

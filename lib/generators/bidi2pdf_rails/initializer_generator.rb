@@ -19,12 +19,6 @@ module Bidi2pdfRails
         @proxy_port = ask("Proxy port (e.g., 8080):", :yellow)
       end
 
-      @configure_viewport = yes?("Configure custom viewport? (y/n)", :green)
-      if @configure_viewport
-        @viewport_width = ask("Viewport width (e.g., 1920):", :yellow)
-        @viewport_height = ask("Viewport height (e.g., 1080):", :yellow)
-      end
-
       @configure_pdf = yes?("Configure custom PDF settings? (y/n)", :green)
       if @configure_pdf
         @pdf_orientation = ask("PDF orientation (portrait/landscape):", :yellow)
@@ -35,8 +29,15 @@ module Bidi2pdfRails
           @pdf_margin_left = ask("PDF margin left (mm):", :yellow)
           @pdf_margin_right = ask("PDF margin right (mm):", :yellow)
         end
+        @pdf_page = yes?("Configure PDF page size? (y/n)", :green)
+        if @pdf_page
+          @pdf_page_width = ask("PDF page width (mm):", :yellow)
+          @pdf_page_height = ask("PDF page height (mm):", :yellow)
+        end
+
         @pdf_print_background = yes?("Print background graphics? (y/n)", :green)
         @pdf_scale = ask("PDF scale (e.g., 1.0):", :yellow)
+        @shrink_to_fit = ask("Shrink to fit? (y/n)", :green)
       end
     end
 

@@ -18,6 +18,10 @@ module Bidi2pdfRails
 
     include Bidi2pdf::Notifications::LoggingSubscriberActions
 
+    def handle_printing(event)
+      logger.info "Page rendered and printed: #{event.duration.round(1)}ms"
+    end
+
     def logger
       Bidi2pdf::VerboseLogger.new(super.tagged("bidi2pdf_rails"), Bidi2pdfRails.verbosity)
     end

@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "services/html_renderer"
+require_relative "services/pdf_renderer"
+require_relative "services/pdf_browser_session"
+require_relative "services/url_to_pdf_converter"
+require_relative "services/html_to_pdf_converter"
+
 module Bidi2pdfRails
   class Railtie < ::Rails::Railtie
     initializer "bidi2pdf_rails.add_mime_type" do
@@ -9,7 +15,8 @@ module Bidi2pdfRails
     initializer "bidi2pdf_rails.initialize_chromedriver_manager", after: :load_config_initializers do
       Bidi2pdfRails.apply_bidi2pdf_config
 
-      Rails.application.config.after_initialize do
+      # defer the initialization of the ChromedriverManager to the ActionController::Base class load event
+      ActiveSupport.on_load(:action_controller_base) do
         ChromedriverManagerSingleton.initialize_manager
       end
     end
@@ -23,56 +30,14 @@ module Bidi2pdfRails
 
     initializer "bidi2pdf_rails.add_pdf_renderer" do
       ActionController::Renderers.add :pdf do |filename, options|
-        pdf_data = ""
         options = options.dup
 
-        original_asset_host = ActionController::Base.asset_host
+        pdf_content = Services::PdfRenderer.new(filename, options, self).render_pdf
 
-        if options[:asset_host]
-          ActionController::Base.asset_host = options[:asset_host]
-        elsif !Rails.application.config.action_controller.asset_host
-          # Use request base URL as fallback if no asset host configured
-          ActionController::Base.asset_host = request.base_url
-        end
-
-        html = render_to_string(options.merge(formats: [:html]))
-
-        Bidi2pdf.default_timeout = 30
-
-        # without a thread, the app will be blocked in dev mode
-        thread = Thread.new {
-          Rails.application.executor.wrap do
-            # subscriptions in other threads will not be inherited
-            # Bidi2pdfRails::LogSubscriber.attach_to "bidi2pdf", inherit_all: true
-
-            browser = ChromedriverManagerSingleton.session.browser
-            context = browser.create_user_context
-            window = context.create_browser_window
-            tab = window.create_browser_tab
-
-            tab.render_html_content html
-
-            tab.wait_until_network_idle
-
-            tab.wait_until_page_loaded
-
-            pdf_data = tab.print
-          ensure
-            tab&.close
-            window&.close
-            context&.close
-          end
-        }
-
-        thread.join
-
-        send_data Base64.decode64(pdf_data),
+        send_data pdf_content,
                   type: Mime[:pdf],
                   filename: "#{filename}.pdf",
                   disposition: options.fetch(:disposition, "inline")
-      ensure
-
-        ActionController::Base.asset_host = original_asset_host
       end
     end
   end

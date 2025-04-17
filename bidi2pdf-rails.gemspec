@@ -1,8 +1,8 @@
 require_relative "lib/bidi2pdf_rails/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "bidi2pdf-rails"
-  spec.version     = Bidi2pdfRails::VERSION
+  spec.name = "bidi2pdf-rails"
+  spec.version = Bidi2pdfRails::VERSION
   spec.authors = ["Dieter S."]
   spec.email = ["101627195+dieter-medium@users.noreply.github.com"]
 
@@ -43,4 +43,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-rails", "~> 7.0"
   spec.add_development_dependency "simplecov", "~> 0.22"
   spec.add_development_dependency "puma"
+  spec.add_development_dependency "websocket-native", "~> 1.0"
 end

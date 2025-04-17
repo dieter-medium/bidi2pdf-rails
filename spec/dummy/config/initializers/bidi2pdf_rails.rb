@@ -9,10 +9,6 @@ Bidi2pdfRails.configure do |config|
   config.verbosity = overrides.verbosity.nil? ? :none : overrides.verbosity
   config.default_timeout = 10
 
-  # Logging options
-  config.log_network_events = false
-  config.log_browser_console = false
-
   # Chrome & BiDi
   # config.remote_browser_url = nil
   config.headless = overrides.headless.nil? ? false : overrides.headless
@@ -32,12 +28,12 @@ Bidi2pdfRails.configure do |config|
   # config.viewport_height = 1080
 
   # PDF settings
-  # config.pdf_orientation = "portrait"
-  # config.pdf_margin_top = 10
-  # config.pdf_margin_bottom = 10
-  # config.pdf_margin_left = 10
-  # config.pdf_margin_right = 10
-  # config.pdf_print_background = true
+  config.pdf_orientation = "portrait"
+  config.pdf_margin_top = 2.5
+  config.pdf_margin_bottom = 2.5
+  config.pdf_margin_left = 3
+  config.pdf_margin_right = 2
+  config.pdf_print_background = true
   # config.pdf_scale = 1.0
 
   # config.cookies = [
@@ -55,10 +51,16 @@ Bidi2pdfRails.configure do |config|
 
   # chromedriver install dir
   # config.install_dir = Rails.root.join("tmp", "bidi2pdf").to_s
+
+  # wait for the page to load settings
+  config.wait_for_network_idle = true
+  config.wait_for_page_loaded = true
+  # config.wait_for_page_check_script = nil
 end
 
 Rails.application.config.after_initialize do
   Bidi2pdfRails::MainLogSubscriber.attach_to "bidi2pdf", inherit_all: true # needed for imported methods
+  Bidi2pdfRails::MainLogSubscriber.attach_to "bidi2pdf_rails", inherit_all: true # needed for imported methods
   Bidi2pdfRails::BrowserConsoleLogSubscriber.attach_to "bidi2pdf"
   Bidi2pdfRails::NetworkLogSubscriber.attach_to "bidi2pdf"
 
