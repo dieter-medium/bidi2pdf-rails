@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description = <<~DESC
     Bidi2pdf Rails is a powerful PDF generation tool.
   DESC
-  spec.homepage = "https://github.com/dieter-medium/bidi2pdf"
+  spec.homepage = "https://github.com/dieter-medium/bidi2pdf-rails"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.3.0"
 
