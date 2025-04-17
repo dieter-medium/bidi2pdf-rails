@@ -200,6 +200,7 @@
     <orderEntry type="library" scope="PROVIDED" name="websocket-client-simple (v0.9.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket-driver (v0.7.7, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket-extensions (v0.1.5, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="websocket-native (v1.0.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="zeitwerk (v2.7.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
   </component>
   <component name="RailsGeneratorsCache">
@@ -338,9 +339,6 @@
     <entry key="config">
       <value>file://$MODULE_DIR$/config</value>
     </entry>
-    <entry key="config/cable">
-      <value>file://$MODULE_DIR$/config/cable.yml</value>
-    </entry>
     <entry key="config/database">
       <value>file://$MODULE_DIR$/config/database.yml</value>
     </entry>
@@ -361,9 +359,6 @@
     </entry>
     <entry key="config/routes.rb">
       <value>file://$MODULE_DIR$/config/routes.rb</value>
-    </entry>
-    <entry key="config/secrets">
-      <value>file://$MODULE_DIR$/config</value>
     </entry>
     <entry key="db">
       <value>file://$MODULE_DIR$/db</value>
@@ -398,6 +393,9 @@
     <entry key="public/stylesheets">
       <value>file://$MODULE_DIR$/public/stylesheets</value>
     </entry>
+    <entry key="test/mailers/previews">
+      <value>file://$MODULE_DIR$/test/mailers/previews</value>
+    </entry>
     <entry key="tmp">
       <value>file://$MODULE_DIR$/tmp</value>
     </entry>
@@ -407,5 +405,45 @@
     <entry key="vendor/assets">
       <value>file://$MODULE_DIR$/vendor/assets</value>
     </entry>
+  </component>
+  <component name="RakeTasksCache-v2">
+    <option name="myRootTask">
+      <RakeTaskImpl id="rake">
+        <subtasks>
+          <RakeTaskImpl description="Build bidi2pdf-rails-0.0.1.pre.alpha.gem into the pkg directory" fullCommand="build" id="build" />
+          <RakeTaskImpl id="build">
+            <subtasks>
+              <RakeTaskImpl description="Generate SHA512 checksum of bidi2pdf-rails-0.0.1.pre.alpha.gem into the checksums directory" fullCommand="build:checksum" id="checksum" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Remove any temporary products" fullCommand="clean" id="clean" />
+          <RakeTaskImpl description="Remove any generated files" fullCommand="clobber" id="clobber" />
+          <RakeTaskImpl description="Build and install bidi2pdf-rails-0.0.1.pre.alpha.gem into system gems" fullCommand="install" id="install" />
+          <RakeTaskImpl id="install">
+            <subtasks>
+              <RakeTaskImpl description="Build and install bidi2pdf-rails-0.0.1.pre.alpha.gem into system gems without network access" fullCommand="install:local" id="local" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Create tag v0.0.1.pre.alpha and build and push bidi2pdf-rails-0.0.1.pre.alpha.gem to https://rubygems.org" fullCommand="release[remote]" id="release[remote]" />
+          <RakeTaskImpl description="Run RuboCop" fullCommand="rubocop" id="rubocop" />
+          <RakeTaskImpl id="rubocop">
+            <subtasks>
+              <RakeTaskImpl description="Autocorrect RuboCop offenses (only when it's safe)" fullCommand="rubocop:autocorrect" id="autocorrect" />
+              <RakeTaskImpl description="Autocorrect RuboCop offenses (safe and unsafe)" fullCommand="rubocop:autocorrect_all" id="autocorrect_all" />
+              <RakeTaskImpl description="" fullCommand="rubocop:auto_correct" id="auto_correct" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Run RSpec code examples" fullCommand="spec" id="spec" />
+          <RakeTaskImpl description="" fullCommand="release" id="release" />
+          <RakeTaskImpl id="release">
+            <subtasks>
+              <RakeTaskImpl description="" fullCommand="release:guard_clean" id="guard_clean" />
+              <RakeTaskImpl description="" fullCommand="release:rubygem_push" id="rubygem_push" />
+              <RakeTaskImpl description="" fullCommand="release:source_control_push" id="source_control_push" />
+            </subtasks>
+          </RakeTaskImpl>
+        </subtasks>
+      </RakeTaskImpl>
+    </option>
   </component>
 </module>
