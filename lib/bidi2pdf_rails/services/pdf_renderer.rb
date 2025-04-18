@@ -26,6 +26,7 @@ module Bidi2pdfRails
         wait_for_network_idle
         wait_for_page_loaded
         wait_for_page_check_script
+        html
       ].freeze
 
       PRINT_URL_OPTIONS = %i[
@@ -65,7 +66,7 @@ module Bidi2pdfRails
                                   wait_for_page_check_script: wait_for_page_check_script
             ).generate
           else
-            html = HtmlRenderer.new(@controller, @html_options).render
+            html = @html_options.fetch(:html, HtmlRenderer.new(@controller, @html_options).render)
 
             HtmlToPdfConverter.new(html,
                                    print_options: print_options,
