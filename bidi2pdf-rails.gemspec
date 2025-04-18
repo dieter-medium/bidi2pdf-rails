@@ -6,11 +6,15 @@ Gem::Specification.new do |spec|
   spec.authors = ["Dieter S."]
   spec.email = ["101627195+dieter-medium@users.noreply.github.com"]
 
-  spec.summary = "A Ruby gem that generates PDF"
-  # rubocop:enable Layout/LineLength
+  spec.summary = "Rails integration for PDF generation using Chrome/Chromium headless browser"
   spec.description = <<~DESC
-    Bidi2pdf Rails is a powerful PDF generation tool.
+    Bidi2pdf Rails provides a seamless integration between Rails and the Bidi2pdf gem for 
+    generating high-quality PDFs using Chrome/Chromium's headless browser. It supports 
+    rendering PDFs from controller actions, remote URLs, or HTML strings with configurable 
+    options for orientation, margins, page size, and more. The gem handles browser lifecycle 
+    management and provides a clean API for PDF generation with proper asset handling.
   DESC
+
   spec.homepage = "https://github.com/dieter-medium/bidi2pdf-rails"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.3.0"
