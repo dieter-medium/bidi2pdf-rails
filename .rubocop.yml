@@ -50,6 +50,9 @@ Layout/BeginEndAlignment:
 Layout/ArrayAlignment:
   Enabled: false
 
+Layout/ElseAlignment:
+  Enabled: false
+
 Layout/LineLength:
   Enabled: false
 

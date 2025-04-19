@@ -1,8 +1,16 @@
 Description:
-    Explain the generator
+    Generates a configuration file for Bidi2pdfRails in config/initializers/bidi2pdf_rails.rb
+    and adds development environment settings.
 
 Example:
-    bin/rails generate initializer Thing
+    bin/rails generate bidi2pdf_rails:initializer
 
-    This will create:
-        what/will/it/create
+    # With options
+    bin/rails generate bidi2pdf_rails:initializer --quiet    # Skip interactive prompts
+    bin/rails generate bidi2pdf_rails:initializer --force    # Overwrite existing config
+
+This will create:
+    config/initializers/bidi2pdf_rails.rb
+
+And add settings to:
+    config/environments/development.rb

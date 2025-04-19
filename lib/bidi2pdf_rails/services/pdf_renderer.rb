@@ -46,15 +46,15 @@ module Bidi2pdfRails
 
       def render_pdf
         ActiveSupport::Notifications.instrument("handle_printing.bidi2pdf_rails") do
-          print_options = Bidi2pdfRails.print_options(@pdf_options[:print_options] || {})
-          wait_for_network_idle = @pdf_options.fetch(:wait_for_network_idle, Bidi2pdfRails.wait_for_network_idle)
-          wait_for_page_loaded = @pdf_options.fetch(:wait_for_page_loaded, Bidi2pdfRails.wait_for_page_loaded)
-          wait_for_page_check_script = @pdf_options.fetch(:wait_for_page_check_script, Bidi2pdfRails.wait_for_page_check_script)
+          print_options = Bidi2pdfRails.config.pdf_settings_for_bidi_cmd(@pdf_options[:print_options] || {})
+          wait_for_network_idle = @pdf_options.fetch(:wait_for_network_idle, Bidi2pdfRails.config.general_options.wait_for_network_idle_value)
+          wait_for_page_loaded = @pdf_options.fetch(:wait_for_page_loaded, Bidi2pdfRails.config.general_options.wait_for_page_loaded_value)
+          wait_for_page_check_script = @pdf_options.fetch(:wait_for_page_check_script, Bidi2pdfRails.config.general_options.wait_for_page_check_script_value)
 
           if @print_url_options[:url]
-            headers = @print_url_options[:headers] || Bidi2pdfRails.headers
-            cookies = @print_url_options[:cookies] || Bidi2pdfRails.cookies
-            auth = @print_url_options[:auth] || Bidi2pdfRails.auth
+            headers = @print_url_options[:headers] || Bidi2pdfRails.config.render_remote_settings.headers_value
+            cookies = @print_url_options[:cookies] || Bidi2pdfRails.config.render_remote_settings.cookies_value
+            auth = @print_url_options[:auth] || { username: Bidi2pdfRails.config.render_remote_settings.basic_auth_user_value, password: Bidi2pdfRails.config.render_remote_settings.basic_auth_pass_value }
 
             UrlToPdfConverter.new(@print_url_options[:url],
                                   headers: headers,

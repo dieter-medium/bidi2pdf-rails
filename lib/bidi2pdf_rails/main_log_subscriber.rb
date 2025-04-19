@@ -23,7 +23,7 @@ module Bidi2pdfRails
     end
 
     def logger
-      Bidi2pdf::VerboseLogger.new(super.tagged("bidi2pdf_rails"), Bidi2pdfRails.verbosity)
+      Bidi2pdf::VerboseLogger.new(super.tagged("bidi2pdf_rails"), Bidi2pdfRails.config.general_options.verbosity_value)
     end
 
     def silenced?(event)

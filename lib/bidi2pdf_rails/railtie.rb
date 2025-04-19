@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rails/railtie"
+
 require_relative "services/html_renderer"
 require_relative "services/pdf_renderer"
 require_relative "services/pdf_browser_session"

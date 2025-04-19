@@ -10,7 +10,7 @@ module Bidi2pdfRails
       return if payload[:method] == "network.responseStarted" || payload[:method] == "network.beforeRequestSent"
 
       logger.tagged("bidi2pdf_rails", "network") do |tagged_logger|
-        verbose_logger = Bidi2pdf::VerboseLogger.new(tagged_logger, Bidi2pdfRails.verbosity)
+        verbose_logger = Bidi2pdf::VerboseLogger.new(tagged_logger, Bidi2pdfRails.config.general_options.verbosity_value)
         formatter = Bidi2pdf::Bidi::NetworkEventFormatters::NetworkEventConsoleFormatter.new(logger: verbose_logger)
 
         formatter.log [payload[:event]]

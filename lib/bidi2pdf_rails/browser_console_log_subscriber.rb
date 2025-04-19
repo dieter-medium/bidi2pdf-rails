@@ -9,7 +9,7 @@ module Bidi2pdfRails
       timestamp = Bidi2pdf::Bidi::BrowserConsoleLogger.format_timestamp(payload[:timestamp])
 
       logger.tagged("bidi2pdf_rails", "browser_console", timestamp) do |tagged_logger|
-        verbose_logger = Bidi2pdf::VerboseLogger.new(tagged_logger, Bidi2pdfRails.verbosity)
+        verbose_logger = Bidi2pdf::VerboseLogger.new(tagged_logger, Bidi2pdfRails.config.general_options.verbosity_value)
         Bidi2pdf::Bidi::BrowserConsoleLogger.new(verbose_logger)
                                             .builder
                                             .with_level(payload[:level])

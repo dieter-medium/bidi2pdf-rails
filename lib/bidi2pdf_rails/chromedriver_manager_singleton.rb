@@ -12,21 +12,21 @@ module Bidi2pdfRails
         @mutex.synchronize do
           return if @manager && @session
 
-          msg = Bidi2pdfRails.remote_browser_url ? "Remote session" : "ChromeDriver manager"
+          msg = Bidi2pdfRails.use_remote_browser? ? "Remote session" : "ChromeDriver manager"
 
           Bidi2pdfRails.logger.info "Initializing Bidi2pdf #{msg}"
 
           if Bidi2pdfRails.use_remote_browser?
             @session = Bidi::Session.new(
-              session_url: Bidi2pdfRails.remote_browser_url,
-              headless: Bidi2pdfRails.headless,
-              chrome_args: Bidi2pdfRails.chrome_session_args
+              session_url: Bidi2pdfRails.config.render_remote_settings.browser_url_value,
+              headless: Bidi2pdfRails.config.general_options.headless_value,
+              chrome_args: Bidi2pdfRails.config.general_options.chrome_session_args_value
             )
           else
             @manager = Bidi2pdf::ChromedriverManager.new(
-              port: Bidi2pdfRails.chromedriver_port,
-              headless: Bidi2pdfRails.headless,
-              chrome_args: Bidi2pdfRails.chrome_session_args
+              port: Bidi2pdfRails.config.chromedriver_settings.port_value,
+              headless: Bidi2pdfRails.config.general_options.headless_value,
+              chrome_args: Bidi2pdfRails.config.general_options.chrome_session_args_value
             )
             @manager.start
             @session = @manager.session
@@ -42,7 +42,7 @@ module Bidi2pdfRails
 
         @mutex ||= Mutex.new
         @mutex.synchronize do
-          msg = Bidi2pdfRails.remote_browser_url ? "Remote session" : "ChromeDriver manager"
+          msg = Bidi2pdfRails.use_remote_browser? ? "Remote session" : "ChromeDriver manager"
           Bidi2pdfRails.logger.info "Shutting down Bidi2pdf #{msg}"
           @session&.close
           @manager&.stop

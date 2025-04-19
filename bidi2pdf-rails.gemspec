@@ -8,10 +8,10 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Rails integration for PDF generation using Chrome/Chromium headless browser"
   spec.description = <<~DESC
-    Bidi2pdf Rails provides a seamless integration between Rails and the Bidi2pdf gem for 
-    generating high-quality PDFs using Chrome/Chromium's headless browser. It supports 
-    rendering PDFs from controller actions, remote URLs, or HTML strings with configurable 
-    options for orientation, margins, page size, and more. The gem handles browser lifecycle 
+    Bidi2pdf Rails provides a seamless integration between Rails and the Bidi2pdf gem for#{' '}
+    generating high-quality PDFs using Chrome/Chromium's headless browser. It supports#{' '}
+    rendering PDFs from controller actions, remote URLs, or HTML strings with configurable#{' '}
+    options for orientation, margins, page size, and more. The gem handles browser lifecycle#{' '}
     management and provides a clean API for PDF generation with proper asset handling.
   DESC
 
