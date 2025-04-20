@@ -53,6 +53,9 @@ Layout/ArrayAlignment:
 Layout/ElseAlignment:
   Enabled: false
 
+Layout/EndAlignment:
+  Enabled: false
+
 Layout/LineLength:
   Enabled: false
 

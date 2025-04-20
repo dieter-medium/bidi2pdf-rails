@@ -52,9 +52,9 @@ module Bidi2pdfRails
           wait_for_page_check_script = @pdf_options.fetch(:wait_for_page_check_script, Bidi2pdfRails.config.general_options.wait_for_page_check_script_value)
 
           if @print_url_options[:url]
-            headers = @print_url_options[:headers] || Bidi2pdfRails.config.render_remote_settings.headers_value
-            cookies = @print_url_options[:cookies] || Bidi2pdfRails.config.render_remote_settings.cookies_value
-            auth = @print_url_options[:auth] || { username: Bidi2pdfRails.config.render_remote_settings.basic_auth_user_value, password: Bidi2pdfRails.config.render_remote_settings.basic_auth_pass_value }
+            headers = @print_url_options[:headers] || Bidi2pdfRails.config.render_remote_settings.headers_value(@controller)
+            cookies = @print_url_options[:cookies] || Bidi2pdfRails.config.render_remote_settings.cookies_value(@controller)
+            auth = @print_url_options[:auth] || { username: Bidi2pdfRails.config.render_remote_settings.basic_auth_user_value(@controller), password: Bidi2pdfRails.config.render_remote_settings.basic_auth_pass_value(@controller) }
 
             UrlToPdfConverter.new(@print_url_options[:url],
                                   headers: headers,
@@ -66,7 +66,7 @@ module Bidi2pdfRails
                                   wait_for_page_check_script: wait_for_page_check_script
             ).generate
           else
-            html = @html_options.fetch(:html, HtmlRenderer.new(@controller, @html_options).render)
+            html = @html_options.fetch(:inline, HtmlRenderer.new(@controller, @html_options).render)
 
             HtmlToPdfConverter.new(html,
                                    print_options: print_options,

@@ -23,9 +23,9 @@ module Bidi2pdfRails
             define_singleton_method(name) { instance_variable_get("@#{name}") }
             define_singleton_method("#{name}=") { |v| instance_variable_set("@#{name}", v) }
 
-            define_singleton_method("#{name}_value") do
+            define_singleton_method("#{name}_value") do |*args|
               value = send("#{name}")
-              value.respond_to?(:call) ? value.call : value
+              value.respond_to?(:call) ? value.call(*args) : value
             end
           end
         end
@@ -34,7 +34,7 @@ module Bidi2pdfRails
       def reset_to_defaults!
         @__options.each do |opt|
           default = opt[:default]
-          value = default.respond_to?(:call) ? default.call : default
+          value = default
           send("#{opt[:name]}=", value)
         end
       end
