@@ -21,5 +21,3 @@ namespace :coverage do
     puts "Coverage report generated in coverage/ directory"
   end
 end
-
-

@@ -102,6 +102,7 @@
         </excluded>
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="PROVIDED" name="Ascii85 (v2.0.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actioncable (v7.2.2.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actionmailbox (v7.2.2.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actionmailer (v7.2.2.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
@@ -113,6 +114,8 @@
     <orderEntry type="library" scope="PROVIDED" name="activerecord (v7.2.2.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="activestorage (v7.2.2.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="activesupport (v7.2.2.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="afm (v0.2.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ammeter (v1.1.7, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ast (v2.4.3, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="benchmark (v0.4.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bigdecimal (v3.1.9, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
@@ -128,8 +131,9 @@
     <orderEntry type="library" scope="PROVIDED" name="drb (v2.2.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubi (v1.13.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="event_emitter (v0.2.6, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="ffi (v1.17.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ffi (v1.17.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v1.2.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="hashery (v2.1.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="i18n (v1.14.7, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="io-console (v0.8.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="irb (v1.15.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
@@ -148,8 +152,9 @@
     <orderEntry type="library" scope="PROVIDED" name="net-smtp (v0.5.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="nio4r (v2.7.4, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="nokogiri (v1.18.7, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="parallel (v1.26.3, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="parallel (v1.27.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="parser (v3.3.8.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="pdf-reader (v2.14.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pp (v0.6.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="prism (v1.4.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="propshaft (v1.1.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
@@ -181,8 +186,9 @@
     <orderEntry type="library" scope="PROVIDED" name="rubocop-rails (v2.31.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-rails-omakase (v1.1.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-rake (v0.7.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="rubocop-rspec (v3.5.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rubocop-rspec (v3.6.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ruby-progressbar (v1.13.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ruby-rc4 (v0.1.5, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubyzip (v2.4.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="securerandom (v0.4.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="simplecov (v0.22.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
@@ -192,9 +198,11 @@
     <orderEntry type="library" scope="PROVIDED" name="sys-proctable (v1.3.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v1.3.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="timeout (v0.4.3, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ttfunk (v1.8.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tzinfo (v2.0.6, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="unicode-display_width (v3.1.4, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="unicode-emoji (v4.0.4, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="unicode_utils (v1.4.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="useragent (v0.16.11, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket (v1.2.11, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket-client-simple (v0.9.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
@@ -410,21 +418,21 @@
     <option name="myRootTask">
       <RakeTaskImpl id="rake">
         <subtasks>
-          <RakeTaskImpl description="Build bidi2pdf-rails-0.0.1.pre.alpha.gem into the pkg directory" fullCommand="build" id="build" />
+          <RakeTaskImpl description="Build bidi2pdf-rails-0.0.1.alpha.1.gem into the pkg directory" fullCommand="build" id="build" />
           <RakeTaskImpl id="build">
             <subtasks>
-              <RakeTaskImpl description="Generate SHA512 checksum of bidi2pdf-rails-0.0.1.pre.alpha.gem into the checksums directory" fullCommand="build:checksum" id="checksum" />
+              <RakeTaskImpl description="Generate SHA512 checksum of bidi2pdf-rails-0.0.1.alpha.1.gem into the checksums directory" fullCommand="build:checksum" id="checksum" />
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl description="Remove any temporary products" fullCommand="clean" id="clean" />
           <RakeTaskImpl description="Remove any generated files" fullCommand="clobber" id="clobber" />
-          <RakeTaskImpl description="Build and install bidi2pdf-rails-0.0.1.pre.alpha.gem into system gems" fullCommand="install" id="install" />
+          <RakeTaskImpl description="Build and install bidi2pdf-rails-0.0.1.alpha.1.gem into system gems" fullCommand="install" id="install" />
           <RakeTaskImpl id="install">
             <subtasks>
-              <RakeTaskImpl description="Build and install bidi2pdf-rails-0.0.1.pre.alpha.gem into system gems without network access" fullCommand="install:local" id="local" />
+              <RakeTaskImpl description="Build and install bidi2pdf-rails-0.0.1.alpha.1.gem into system gems without network access" fullCommand="install:local" id="local" />
             </subtasks>
           </RakeTaskImpl>
-          <RakeTaskImpl description="Create tag v0.0.1.pre.alpha and build and push bidi2pdf-rails-0.0.1.pre.alpha.gem to https://rubygems.org" fullCommand="release[remote]" id="release[remote]" />
+          <RakeTaskImpl description="Create tag v0.0.1.alpha.1 and build and push bidi2pdf-rails-0.0.1.alpha.1.gem to https://rubygems.org" fullCommand="release[remote]" id="release[remote]" />
           <RakeTaskImpl description="Run RuboCop" fullCommand="rubocop" id="rubocop" />
           <RakeTaskImpl id="rubocop">
             <subtasks>
