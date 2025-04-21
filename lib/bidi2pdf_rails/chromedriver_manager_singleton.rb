@@ -5,8 +5,8 @@ module Bidi2pdfRails
     class << self
       attr_reader :manager, :session
 
-      def initialize_manager
-        return unless running_as_server?
+      def initialize_manager(force: false)
+        return unless running_as_server? || force
 
         @mutex ||= Mutex.new
         @mutex.synchronize do
