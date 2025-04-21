@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhance configuration and logging for Bidi2pdfRails by @dieter-medium
 - Ensure custom HTML can be used in PDF rendering by @dieter-medium
 
-[unreleased](https://github.com/dieter-medium/bidi2pdf-rails/compare/v0.1.0..HEAD)
-[0.1.0](https://github.com/dieter-medium/bidi2pdf-rails/compare/v0.0.1.alpha.1..v0.1.0)
+### 🔄 Released
+
+- [unreleased](https://github.com/dieter-medium/bidi2pdf-rails/compare/v0.1.0..HEAD)
+- [0.1.0](https://github.com/dieter-medium/bidi2pdf-rails/compare/v0.0.1.alpha.1..v0.1.0)
 
