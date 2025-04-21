@@ -1,108 +1,125 @@
 [![Build Status](https://github.com/dieter-medium/bidi2pdf-rails/actions/workflows/ruby.yml/badge.svg)](https://github.com/dieter-medium/bidi2pdf-rails/blob/main/.github/workflows/ruby.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/6425d9893aa3a9ca243e/maintainability)](https://codeclimate.com/github/dieter-medium/bidi2pdf-rails/maintainability)
-[![Gem Version](https://badge.fury.io/rb/bidi2pdf-rails.svg)](https://badge.fury.io/rb/bidi2pdf-rails)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6425d9893aa3a9ca243e/test_coverage)](https://codeclimate.com/github/dieter-medium/bidi2pdf-rails/test_coverage)
+[![Gem Version](https://badge.fury.io/rb/bidi2pdf-rails.svg)](https://badge.fury.io/rb/bidi2pdf-rails)
 [![Open Source Helpers](https://www.codetriage.com/dieter-medium/bidi2pdf-rails/badges/users.svg)](https://www.codetriage.com/dieter-medium/bidi2pdf-rails)
 
 # 📄 Bidi2pdfRails
 
-**Bidi2pdfRails** is the official Rails integration for [Bidi2pdf](https://github.com/dieter-medium/bidi2pdf) – a
-modern, browser-based solution for converting HTML to high-quality PDFs.  
-It leverages headless browsing and offers a simple, flexible interface for PDF generation directly from your Rails
-application.
+**Bidi2pdfRails** is the official Rails integration for [Bidi2pdf](https://github.com/dieter-medium/bidi2pdf) — a
+modern, headless-browser-based PDF rendering engine.  
+Generate high-fidelity PDFs directly from your Rails views or external URLs with minimal setup.
 
-> **⚠️ Note:** This project is currently **under development** and **not yet recommended for production use**.
+> ⚠️ **Project status:** _Under active development_. Not yet recommended for production use.
 
 ---
 
-## 🚀 Why Bidi2pdfRails?
+## ✨ Features
 
-- Utilizes modern browser technologies for accurate rendering (similar to `grover` or `wicked_pdf`)
-- Easy to integrate into existing Rails projects
-- Configurable options: URL, output path, rendering settings
+- 🔍 Accurate PDF rendering using a real browser engine
+- 💾 Supports both HTML string rendering and remote URL conversion
+- 🔐 Built-in support for authentication (Basic Auth, cookies, headers)
+- 🧰 Full test suite with examples for Rails controller integration
+- 🧠 Sensible defaults, yet fully configurable
 
 ---
 
 ## 🔧 Installation
 
-Add the following lines to your `Gemfile`:
+Add to your Gemfile:
 
 ```ruby
-gem "bidi2pdf-rails"
-# As long as the gem is not published, use:
+# Until released, use the GitHub repo
 gem "bidi2pdf-rails", github: "dieter-medium/bidi2pdf-rails", branch: "main"
 gem "bidi2pdf", github: "dieter-medium/bidi2pdf", branch: "main"
 
-# if you want a small performance boost, you can use the following:
+# Optional for performance:
 # gem "websocket-native"
 ```
 
-Then install the dependencies:
+Install it:
 
 ```bash
-bundle
+bundle install
 ```
 
-Generate the initializer:
+Generate the config initializer:
 
 ```bash
 bin/rails generate bidi2pdf_rails:initializer
 ```
 
-Alternatively, install it manually:
-
-```bash
-gem install bidi2pdf-rails
-```
-
 ---
 
-## 🧪 Example & Getting Started
+## 📦 Usage Examples
 
-You can find a full example inside the [`spec/dummy`](spec/dummy) directory of this repository.  
-This demonstrates how to use `Bidi2pdfRails` in a realistic mini Rails application setup.
-
-### Basic Usage
+### 📄 Rendering a Rails View as PDF
 
 ```ruby
-# Render html via controller action `render_to_string`
-# Any controller action:
+# app/controllers/invoices_controller.rb
+
 def show
   render pdf: "invoice",
          template: "invoices/show",
          layout: "pdf",
          locals: { invoice: @invoice },
          print_options: { landscape: true },
-         wait_for_network_idle: true,
-         asset_host: "https://assets.example.com"
+         wait_for_network_idle: true
 end
-
-# Render pdf via direct url call
-def show
-  # See: PdfRenderer for all options
-  render pdf: 'remote-report', url: "http://example.com", wait_for_page_loaded: false, print_options: { page: { format: :A4 } }
-end
-
 ```
 
-### CORS Configuration for Assets
-
-When generating PDFs via `render_to_string`, this gem renders HTML from data URLs (e.g., `data:text/html,...`), which
-are treated as unique origins with different security contexts than your application.
-
-Chrome's security model will block access to your application's assets unless proper CORS headers are configured to
-allow cross-origin requests.
-
-Use the rack-cors gem to enable asset access:
+### 🌐 Rendering a Remote URL to PDF
 
 ```ruby
-# In Gemfile
+
+def convert
+  render pdf: "external-report",
+         url: "https://example.com/dashboard",
+         wait_for_page_loaded: false,
+         print_options: { page: { format: :A4 } }
+end
+```
+
+---
+
+## 🛡️ Authentication Support
+
+Need to convert pages that require authentication? No problem. Use:
+
+- `auth: { username:, password: }`
+- `cookies: { session_key: value }`
+- `headers: { "Authorization" => "Bearer ..." }`
+
+Example:
+
+```ruby
+render pdf: "secure",
+       url: secure_report_url,
+       auth: { username: "admin", password: "secret" }
+```
+
+Or use global config in `bidi2pdf_rails.rb` initializer:
+
+```ruby
+config.render_remote_settings.basic_auth_user = ->(_) { "admin" }
+config.render_remote_settings.basic_auth_pass = ->(_) { Rails.application.credentials.dig(:pdf, :auth_pass) }
+```
+
+---
+
+## 📂 Asset Access via CORS
+
+When rendering HTML with `render_to_string`, Chromium needs access to your assets (CSS, images, fonts).  
+Enable CORS for `/assets` using `rack-cors`:
+
+```ruby
+# Gemfile
 gem 'rack-cors'
 
-# In config/initializers/cors.rb
+# config/initializers/cors.rb
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*' # Consider restricting this in production
+    origins '*'
     resource '/assets/*', headers: :any, methods: [:get, :options]
   end
 end
@@ -110,16 +127,39 @@ end
 
 ---
 
+## 🧪 Acceptance Examples
+
+This repo includes **real integration tests** that serve as usage documentation:
+
+- [Download PDF with `.pdf` format](spec/acceptance/user_can_download_report_pdf_spec.rb)
+- [Render protected remote URLs using Basic Auth, cookies, and headers](spec/acceptance/user_can_generate_pdf_from_protected_remote_url_spec.rb)
+
+---
+
+## 🧠 Configuration
+
+Bidi2pdfRails is highly configurable.
+
+See full config options in:
+
+```bash
+bin/rails generate bidi2pdf_rails:initializer
+```
+
+Or explore `Bidi2pdfRails::Configuration` in the source.
+
+---
+
 ## 🙌 Contributing
 
-Want to contribute?  
-Pull requests, bug reports, and ideas are warmly welcome!
+Pull requests, issues, and ideas are all welcome 🙏  
+Want to contribute? Just fork, branch, and PR like a boss.
 
-*Contribution guidelines will be added soon.*
+> Contribution guide coming soon!
 
 ---
 
 ## 📄 License
 
-This gem is open-source and available under the terms of the [MIT License](https://opensource.org/licenses/MIT).  
-Free to use – with responsibility.
+This gem is released under the [MIT License](https://opensource.org/licenses/MIT).  
+Use freely — and responsibly.
