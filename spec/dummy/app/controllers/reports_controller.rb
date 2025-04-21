@@ -24,4 +24,22 @@ class ReportsController < ApplicationController
     HTML
     render pdf: 'inline-html', inline: html, wait_for_page_loaded: false, print_options: { page: { format: :A4 } }
   end
+
+  def convert_remote_url_basic_auth
+    render pdf: 'convert-remote-url-basic-auth',
+           url: basic_auth_endpoint_url(only_path: false),
+           wait_for_page_loaded: false
+  end
+
+  def convert_remote_url_cookie
+    render pdf: 'convert-remote-url-cookie',
+           url: cookie_endpoint_url(only_path: false),
+           wait_for_page_loaded: false
+  end
+
+  def convert_remote_url_header
+    render pdf: 'convert-remote-url-cookie',
+           url: api_endpoint_url(only_path: false),
+           wait_for_page_loaded: false
+  end
 end

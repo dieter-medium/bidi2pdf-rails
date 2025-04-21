@@ -5,25 +5,17 @@ require "net/http"
 require "rack/handler/puma"
 require "socket"
 
-RSpec.feature "As a devoloper, I want to generate PDF's with bidi2pdf-rails", type: :request do
+RSpec.feature "As a devoloper, I want to generate PDF's with bidi2pdf-rails", :pdf, type: :request do
   # This feature demonstrates how to use bidi2pdf-rails to generate PDFs
   # from Rails views, remote URLs, and inline HTML. These specs double as
   # living documentation for gem users.
 
   before(:all) do
-    @port = find_available_port
-    @server_thread = Thread.new do
-      Rack::Handler::Puma.run Rails.application, Port: @port, Silent: true
-    end
-
-    wait_until_server_is_ready(@port)
-
     # Prepare the PDF rendering engine (chromium, etc.)
     Bidi2pdfRails::ChromedriverManagerSingleton.initialize_manager force: true
   end
 
   after(:all) do
-    @server_thread&.exit
     Bidi2pdfRails::ChromedriverManagerSingleton.shutdown
   end
 
@@ -135,34 +127,6 @@ RSpec.feature "As a devoloper, I want to generate PDF's with bidi2pdf-rails", ty
 
       and_ "the PDF contains the expected content" do
         expect(@response.body).to contains_pdf_text("PDF Rendering Sample")
-      end
-    end
-  end
-
-  private
-
-  def get_pdf_response(path)
-    uri = URI("http://localhost:#{@port}#{path}")
-    Net::HTTP.get_response(uri)
-  end
-
-  def find_available_port
-    server = TCPServer.new('127.0.0.1', 0)
-    port = server.addr[1]
-    server.close
-    port
-  end
-
-  def wait_until_server_is_ready(port)
-    retries = 0
-    loop do
-      begin
-        Net::HTTP.get(URI("http://localhost:#{port}"))
-        break
-      rescue Errno::ECONNREFUSED
-        sleep 0.1
-        retries += 1
-        retry if retries < 500
       end
     end
   end

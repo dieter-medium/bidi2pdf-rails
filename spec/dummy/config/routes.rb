@@ -3,6 +3,13 @@ Rails.application.routes.draw do
 
   get "convert-remote-url" => "reports#convert_remote_url", as: :print_remote
   get "inline-html" => "reports#inline_html", as: :print_inline
+  get "convert-remote-url-basic-auth" => "reports#convert_remote_url_basic_auth", as: :print_remote_basic_auth
+  get "convert-remote-url-cookie" => "reports#convert_remote_url_cookie", as: :print_remote_url_cookie
+  get "convert-remote-url-header" => "reports#convert_remote_url_header", as: :print_remote_url_header
+
+  get 'basic-auth', to: 'secure#basic_auth_endpoint', as: :basic_auth_endpoint
+  get 'header-auth', to: 'secure#api_endpoint', as: :api_endpoint
+  get 'cookie-auth', to: 'secure#cookie_endpoint', as: :cookie_endpoint
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

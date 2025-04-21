@@ -1,0 +1,10 @@
+# app/views/secure/show.html.erb
+<h1>Protected Resource</h1>
+<p>This page is secured with: <strong><%= @auth_method %></strong></p>
+<p><%= @auth_description %></p>
+
+<div class="auth-details">
+  <%= @auth_details %>
+</div>
+
+<p>When authenticated, you can access this content.</p>
