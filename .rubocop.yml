@@ -94,6 +94,11 @@ RSpec/DescribeClass:
   Exclude:
     - 'spec/acceptance/**/*_spec.rb'
 
+RSpec/MultipleExpectations:
+  Enabled: true
+  Exclude:
+    - 'spec/acceptance/**/*_spec.rb'
+
 plugins:
   - rubocop-rake
   - rubocop-rspec

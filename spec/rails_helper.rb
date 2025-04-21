@@ -57,4 +57,11 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.alias_example_group_to :feature, feature: true
+  config.alias_example_group_to :when_, feature: true
+  config.alias_example_group_to :given, feature: true
+  config.alias_example_group_to :scenario, feature: true
+  config.alias_example_to :then_, feature: true
+  config.alias_example_to :and_, feature: true
 end

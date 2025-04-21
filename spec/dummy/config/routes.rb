@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   get "reports/:id" => "reports#show", as: :report
 
-  get "print-remote" => "reports#print_remote", as: :print_remote
+  get "convert-remote-url" => "reports#convert_remote_url", as: :print_remote
+  get "inline-html" => "reports#inline_html", as: :print_inline
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
