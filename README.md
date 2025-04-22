@@ -133,6 +133,8 @@ This repo includes **real integration tests** that serve as usage documentation:
 
 - [Download PDF with `.pdf` format](spec/acceptance/user_can_download_report_pdf_spec.rb)
 - [Render protected remote URLs using Basic Auth, cookies, and headers](spec/acceptance/user_can_generate_pdf_from_protected_remote_url_spec.rb)
+- [Inject custom CSS into a Webpage before printing](spec/acceptance/user_can_inject_css_into_webpage_spec.rb)
+- [Inject custom JS into a Webpage before printing](spec/acceptance/user_can_inject_js_into_webpage_spec.rb)
 
 ---
 

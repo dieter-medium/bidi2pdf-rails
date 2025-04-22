@@ -52,6 +52,8 @@ module Bidi2pdfRails
           wait_for_page_check_script = @pdf_options.fetch(:wait_for_page_check_script, Bidi2pdfRails.config.general_options.wait_for_page_check_script_value)
           custom_css = @pdf_options.fetch(:custom_css, Bidi2pdfRails.config.pdf_settings.custom_css_value(@controller))
           custom_css_url = @pdf_options.fetch(:custom_css_url, Bidi2pdfRails.config.pdf_settings.custom_css_url_value(@controller))
+          custom_js = @pdf_options.fetch(:custom_js, Bidi2pdfRails.config.pdf_settings.custom_js_value(@controller))
+          custom_js_url = @pdf_options.fetch(:custom_js_url, Bidi2pdfRails.config.pdf_settings.custom_js_url_value(@controller))
 
           if @print_url_options[:url]
             headers = @print_url_options[:headers] || Bidi2pdfRails.config.render_remote_settings.headers_value(@controller)
@@ -67,7 +69,9 @@ module Bidi2pdfRails
                                   wait_for_page_loaded: wait_for_page_loaded,
                                   wait_for_page_check_script: wait_for_page_check_script,
                                   custom_css: custom_css,
-                                  custom_css_url: custom_css_url
+                                  custom_css_url: custom_css_url,
+                                  custom_js: custom_js,
+                                  custom_js_url: custom_js_url,
             ).generate
           else
             html = @html_options.fetch(:inline, HtmlRenderer.new(@controller, @html_options).render)
@@ -78,7 +82,9 @@ module Bidi2pdfRails
                                    wait_for_page_loaded: wait_for_page_loaded,
                                    wait_for_page_check_script: wait_for_page_check_script,
                                    custom_css: custom_css,
-                                   custom_css_url: custom_css_url
+                                   custom_css_url: custom_css_url,
+                                   custom_js: custom_js,
+                                   custom_js_url: custom_js_url,
             ).generate
           end
         end
