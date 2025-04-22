@@ -4,7 +4,6 @@ module Bidi2pdfRails
   module Services
     module PdfBrowserSession
       def run_browser_session
-        pdf_data = nil
 
         thread = Thread.new do
           Rails.application.executor.wrap do
@@ -15,7 +14,7 @@ module Bidi2pdfRails
 
             begin
               prepare_tab(tab)
-              pdf_data = tab.print(print_options: @print_options)
+              tab.print(print_options: @print_options)
             ensure
               tab&.close
               window&.close
@@ -24,7 +23,8 @@ module Bidi2pdfRails
           end
         end
 
-        thread.join
+        pdf_data = thread.value
+
         Base64.decode64(pdf_data)
       end
 
