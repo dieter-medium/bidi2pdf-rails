@@ -66,7 +66,11 @@ module Bidi2pdfRails
           { name: :page_height, desc: "PDF page height (cm, not needed when format is specified)", default: Bidi2pdf::PAPER_FORMATS_CM[:a4][:height], ask: true, color: :yellow },
           { name: :print_background, desc: "Print background graphics?", default: true, ask: true, color: :green },
           { name: :scale, desc: "PDF scale (e.g., 1.0)", default: 1.0, ask: true, color: :yellow },
-          { name: :shrink_to_fit, desc: "Shrink to fit?", default: false, ask: true, color: :green }
+          { name: :shrink_to_fit, desc: "Shrink to fit?", default: false, ask: true, color: :green },
+          { name: :custom_js, desc: "Raw JavaScript code to inject before PDF generation (without <script> tags)", default: nil, ask: false, color: :yellow },
+          { name: :custom_css, desc: "Raw CSS styles to inject before PDF generation (without <style> tags)", default: nil, ask: false, color: :yellow },
+          { name: :custom_js_url, desc: "URL to JavaScript file to load before PDF generation", default: nil, ask: false, color: :yellow },
+          { name: :custom_css_url, desc: "URL to CSS file to load before PDF generation", default: nil, ask: false, color: :yellow }
         ]
       },
 

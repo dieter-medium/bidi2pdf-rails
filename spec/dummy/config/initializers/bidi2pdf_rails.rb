@@ -54,6 +54,10 @@ Bidi2pdfRails.configure do |config|
   # config.pdf_settings.print_background = true # Print background graphics?
   # config.pdf_settings.scale = 1.0 # PDF scale (e.g., 1.0)
   # config.pdf_settings.shrink_to_fit = false # Shrink to fit?
+  # config.pdf_settings.custom_js = nil # Raw JavaScript code to inject before PDF generation (without <script> tags)
+  # config.pdf_settings.custom_css = nil # Raw CSS styles to inject before PDF generation (without <style> tags)
+  # config.pdf_settings.custom_js_url = nil # URL to JavaScript file to load before PDF generation (takes precedence over custom_js)
+  # config.pdf_settings.custom_css_url = nil # URL to CSS file to load before PDF generation (takes precedence over custom_css)
 
   #
   # Remote URL Settings

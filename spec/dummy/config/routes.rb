@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   get "convert-remote-url-cookie" => "reports#convert_remote_url_cookie", as: :print_remote_url_cookie
   get "convert-remote-url-header" => "reports#convert_remote_url_header", as: :print_remote_url_header
   get "convert-remote-url-error/:code" => "reports#convert_remote_url_error", as: :print_error
+  get "inject/:kind" => "reports#inject",
+      constraints: { kind: /(raw-css|raw-js|url-css|url-js)/ },
+      as: :inject_css
 
   get 'basic-auth', to: 'secure#basic_auth_endpoint', as: :basic_auth_endpoint
   get 'header-auth', to: 'secure#api_endpoint', as: :api_endpoint

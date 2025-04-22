@@ -25,6 +25,10 @@ class ReportsController < ApplicationController
     render pdf: 'inline-html', inline: html, wait_for_page_loaded: false, print_options: { page: { format: :A4 } }
   end
 
+  def inject
+    render pdf: "inject-#{params[:kind]}", layout: 'simple', template: 'reports/simple', wait_for_page_loaded: false, print_options: { page: { format: :A4 } }
+  end
+
   def convert_remote_url_basic_auth
     render pdf: 'convert-remote-url-basic-auth',
            url: basic_auth_endpoint_url(only_path: false),

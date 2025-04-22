@@ -4,7 +4,6 @@ module Bidi2pdfRails
   module Services
     module PdfBrowserSession
       def run_browser_session
-
         thread = Thread.new do
           Rails.application.executor.wrap do
             browser = ChromedriverManagerSingleton.session.browser

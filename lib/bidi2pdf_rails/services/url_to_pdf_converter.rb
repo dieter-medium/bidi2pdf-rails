@@ -4,8 +4,9 @@ module Bidi2pdfRails
   module Services
     class UrlToPdfConverter
       include PdfBrowserSession
+      include PdfInjection
 
-      def initialize(url, headers: {}, cookies: {}, auth: {}, print_options: {}, wait_for_network_idle: true, wait_for_page_loaded: true, wait_for_page_check_script: nil)
+      def initialize(url, headers: {}, cookies: {}, auth: {}, print_options: {}, wait_for_network_idle: true, wait_for_page_loaded: true, wait_for_page_check_script: nil, custom_css: nil, custom_css_url: nil)
         @url = url
         @headers = headers || {}
         @cookies = cookies || {}
@@ -14,6 +15,8 @@ module Bidi2pdfRails
         @wait_for_network_idle = wait_for_network_idle
         @wait_for_page_loaded = wait_for_page_loaded
         @wait_for_page_check_script = wait_for_page_check_script
+        @custom_css = custom_css
+        @custom_css_url = custom_css_url
       end
 
       def generate
@@ -28,6 +31,9 @@ module Bidi2pdfRails
         add_cookies(tab)
 
         tab.navigate_to(@url)
+
+        inject_custom_css(tab, @custom_css, @custom_css_url)
+
         wait_for_tab(tab)
       end
 
