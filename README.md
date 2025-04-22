@@ -10,8 +10,6 @@
 modern, headless-browser-based PDF rendering engine.  
 Generate high-fidelity PDFs directly from your Rails views or external URLs with minimal setup.
 
-> ⚠️ **Project status:** _Under active development_. Not yet recommended for production use.
-
 ---
 
 ## ✨ Features
@@ -29,9 +27,9 @@ Generate high-fidelity PDFs directly from your Rails views or external URLs with
 Add to your Gemfile:
 
 ```ruby
-# Until released, use the GitHub repo
-gem "bidi2pdf-rails", github: "dieter-medium/bidi2pdf-rails", branch: "main"
-gem "bidi2pdf", github: "dieter-medium/bidi2pdf", branch: "main"
+gem "bidi2pdf-rails"
+# for development only
+# gem "bidi2pdf-rails", github: "dieter-medium/bidi2pdf-rails", branch: "main"
 
 # Optional for performance:
 # gem "websocket-native"
@@ -133,8 +131,8 @@ This repo includes **real integration tests** that serve as usage documentation:
 
 - [Download PDF with `.pdf` format](spec/acceptance/user_can_download_report_pdf_spec.rb)
 - [Render protected remote URLs using Basic Auth, cookies, and headers](spec/acceptance/user_can_generate_pdf_from_protected_remote_url_spec.rb)
-- [Inject custom CSS into a Webpage before printing](spec/acceptance/user_can_inject_css_into_webpage_spec.rb)
-- [Inject custom JS into a Webpage before printing](spec/acceptance/user_can_inject_js_into_webpage_spec.rb)
+- [Inject custom CSS into a Webpage before printing](spec/acceptance/user_can_inject_css_before_pdf_printing_spec.rb)
+- [Inject custom JS into a Webpage before printing](spec/acceptance/user_can_inject_js_before_pdf_printing_spec.rb)
 
 ---
 
@@ -148,7 +146,7 @@ See full config options in:
 bin/rails generate bidi2pdf_rails:initializer
 ```
 
-Or explore `Bidi2pdfRails::Configuration` in the source.
+Or explore [Bidi2pdfRails::Config::CONFIG_OPTIONS](lib/bidi2pdf_rails/config.rb) in the source.
 
 ---
 
