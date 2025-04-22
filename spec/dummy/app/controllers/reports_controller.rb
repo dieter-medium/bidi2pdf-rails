@@ -42,4 +42,10 @@ class ReportsController < ApplicationController
            url: api_endpoint_url(only_path: false),
            wait_for_page_loaded: false
   end
+
+  def convert_remote_url_error
+    render pdf: 'convert-remote-url-cookie',
+           url: "https://httpstat.us/#{params[:code]}",
+           wait_for_page_loaded: false
+  end
 end
