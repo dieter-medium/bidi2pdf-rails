@@ -28,80 +28,6 @@
     </content>
     <orderEntry type="jdk" jdkName="RVM: ruby-3.3.4 [bidi2pdf-rails]" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="bidi2pdf (v0.1.6) [path][gem]" type="rubylib">
-        <properties>
-          <option name="additionalInfo">
-            <AdditionalInfo>
-              <option name="authors" value="N/A" />
-              <option name="email" value="N/A" />
-              <option name="homepage" value="N/A" />
-              <option name="summary" value="N/A" />
-            </AdditionalInfo>
-          </option>
-          <option name="fromPath" value="true" />
-          <option name="git" value="true" />
-          <option name="name" value="bidi2pdf" />
-          <option name="requirePaths">
-            <list>
-              <option value="lib" />
-            </list>
-          </option>
-          <option name="url" value="file://$MODULE_DIR$/../bidi2pdf" />
-          <option name="version" value="0.1.6" />
-        </properties>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../bidi2pdf/bin" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/exe" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/lib" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/pkg" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/sig" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tmp" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.git" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/spec" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.idea" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tasks" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/docker" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/output" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.bundle" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.github" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/coverage" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../bidi2pdf/bin" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/exe" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/lib" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/pkg" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/sig" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tmp" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.git" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/spec" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.idea" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tasks" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/docker" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/output" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.bundle" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.github" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/coverage" />
-        </SOURCES>
-        <excluded>
-          <root url="file://$MODULE_DIR$/../bidi2pdf/bin" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/exe" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/pkg" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tmp" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.git" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/spec" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.idea" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tasks" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/docker" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/output" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.bundle" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.github" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/coverage" />
-        </excluded>
-      </library>
-    </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Ascii85 (v2.0.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actioncable (v7.2.2.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actionmailbox (v7.2.2.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
@@ -118,6 +44,7 @@
     <orderEntry type="library" scope="PROVIDED" name="ammeter (v1.1.7, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ast (v2.4.3, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="benchmark (v0.4.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bidi2pdf (v0.1.8, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bigdecimal (v3.1.9, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="builder (v3.3.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bundler (v2.5.11, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
@@ -180,7 +107,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rspec-mocks (v3.13.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-rails (v7.1.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-support (v3.13.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="rubocop (v1.75.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rubocop (v1.75.3, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-ast (v1.44.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-performance (v1.25.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-rails (v2.31.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
@@ -418,21 +345,32 @@
     <option name="myRootTask">
       <RakeTaskImpl id="rake">
         <subtasks>
-          <RakeTaskImpl description="Build bidi2pdf-rails-0.0.1.alpha.1.gem into the pkg directory" fullCommand="build" id="build" />
+          <RakeTaskImpl description="Build bidi2pdf-rails-0.1.1.gem into the pkg directory" fullCommand="build" id="build" />
           <RakeTaskImpl id="build">
             <subtasks>
-              <RakeTaskImpl description="Generate SHA512 checksum of bidi2pdf-rails-0.0.1.alpha.1.gem into the checksums directory" fullCommand="build:checksum" id="checksum" />
+              <RakeTaskImpl description="Generate SHA512 checksum of bidi2pdf-rails-0.1.1.gem into the checksums directory" fullCommand="build:checksum" id="checksum" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl id="changelog">
+            <subtasks>
+              <RakeTaskImpl description="Generate unreleased section in CHANGELOG.md (requires git-cliff)" fullCommand="changelog:update_unreleased" id="update_unreleased" />
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl description="Remove any temporary products" fullCommand="clean" id="clean" />
           <RakeTaskImpl description="Remove any generated files" fullCommand="clobber" id="clobber" />
-          <RakeTaskImpl description="Build and install bidi2pdf-rails-0.0.1.alpha.1.gem into system gems" fullCommand="install" id="install" />
-          <RakeTaskImpl id="install">
+          <RakeTaskImpl id="coverage">
             <subtasks>
-              <RakeTaskImpl description="Build and install bidi2pdf-rails-0.0.1.alpha.1.gem into system gems without network access" fullCommand="install:local" id="local" />
+              <RakeTaskImpl description="Run tests with coverage" fullCommand="coverage:coverage" id="coverage" />
+              <RakeTaskImpl description="Merge simplecov coverage reports" fullCommand="coverage:merge_reports" id="merge_reports" />
             </subtasks>
           </RakeTaskImpl>
-          <RakeTaskImpl description="Create tag v0.0.1.alpha.1 and build and push bidi2pdf-rails-0.0.1.alpha.1.gem to https://rubygems.org" fullCommand="release[remote]" id="release[remote]" />
+          <RakeTaskImpl description="Build and install bidi2pdf-rails-0.1.1.gem into system gems" fullCommand="install" id="install" />
+          <RakeTaskImpl id="install">
+            <subtasks>
+              <RakeTaskImpl description="Build and install bidi2pdf-rails-0.1.1.gem into system gems without network access" fullCommand="install:local" id="local" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Create tag v0.1.1 and build and push bidi2pdf-rails-0.1.1.gem to https://rubygems.org" fullCommand="release[remote]" id="release[remote]" />
           <RakeTaskImpl description="Run RuboCop" fullCommand="rubocop" id="rubocop" />
           <RakeTaskImpl id="rubocop">
             <subtasks>
