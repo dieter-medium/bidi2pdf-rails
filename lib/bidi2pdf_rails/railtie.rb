@@ -6,6 +6,7 @@ require_relative "services/html_renderer"
 require_relative "services/pdf_renderer"
 require_relative "services/pdf_browser_session"
 require_relative "services/pdf_injection"
+require_relative "services/callbacks"
 require_relative "services/url_to_pdf_converter"
 require_relative "services/html_to_pdf_converter"
 

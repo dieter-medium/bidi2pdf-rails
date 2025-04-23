@@ -13,7 +13,10 @@ module Bidi2pdfRails
 
             begin
               prepare_tab(tab)
-              tab.print(print_options: @print_options)
+              base64_data = tab.print(print_options: @print_options)
+              binary_pdf_content = Base64.decode64(base64_data)
+
+              notify_after_print(tab, binary_pdf_content)
             ensure
               tab&.close
               window&.close
@@ -22,9 +25,7 @@ module Bidi2pdfRails
           end
         end
 
-        pdf_data = thread.value
-
-        Base64.decode64(pdf_data)
+        thread.value
       end
 
       private

@@ -12,12 +12,21 @@ module RenderSettingHelpers
     Bidi2pdfRails.config.pdf_settings.public_send("#{key}=", value)
   end
 
+  def with_lifecycle_settings(key, value)
+    overridden_lifecycle_settings[key] = Bidi2pdfRails.config.lifecycle_settings.public_send(key)
+    Bidi2pdfRails.config.lifecycle_settings.public_send("#{key}=", value)
+  end
+
   def overridden_render_settings
     @__overridden_render_settings ||= {}
   end
 
   def overridden_pdf_settings
     @__overridden_pdf_settings ||= {}
+  end
+
+  def overridden_lifecycle_settings
+    @__overridden_lifecycle_settings ||= {}
   end
 
   def reset_render_settings
@@ -35,6 +44,14 @@ module RenderSettingHelpers
 
     @__overridden_pdf_settings = {}
   end
+
+  def reset_lifecycle_settings
+    overridden_lifecycle_settings.each do |key, original_value|
+      Bidi2pdfRails.config.lifecycle_settings.public_send("#{key}=", original_value)
+    end
+
+    @__overridden_lifecycle_settings = {}
+  end
 end
 
 RSpec.configure do |config|
@@ -43,5 +60,6 @@ RSpec.configure do |config|
   config.after(:each, type: :request) do
     reset_render_settings if respond_to?(:reset_render_settings)
     reset_pdf_settings if respond_to?(:reset_pdf_settings)
+    reset_lifecycle_settings if respond_to?(:reset_lifecycle_settings)
   end
 end

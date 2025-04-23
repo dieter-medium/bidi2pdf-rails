@@ -38,6 +38,7 @@ RSpec.feature "As a user, I want to inject js into a website before printing a P
     #           <p>8</p>
     #        `);
     #     JS
+    #   end
     #
     # 2. Inline within controller action:
     #   js = <<~JS

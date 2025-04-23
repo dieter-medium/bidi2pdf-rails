@@ -5,8 +5,9 @@ module Bidi2pdfRails
     class UrlToPdfConverter
       include PdfBrowserSession
       include PdfInjection
+      include Callbacks
 
-      def initialize(url, headers: {}, cookies: {}, auth: {}, print_options: {}, wait_for_network_idle: true, wait_for_page_loaded: true, wait_for_page_check_script: nil, custom_css: nil, custom_css_url: nil, custom_js: nil, custom_js_url: nil)
+      def initialize(url, headers: {}, cookies: {}, auth: {}, print_options: {}, wait_for_network_idle: true, wait_for_page_loaded: true, wait_for_page_check_script: nil, custom_css: nil, custom_css_url: nil, custom_js: nil, custom_js_url: nil, callbacks: nil)
         @url = url
         @headers = headers || {}
         @cookies = cookies || {}
@@ -19,6 +20,7 @@ module Bidi2pdfRails
         @custom_css_url = custom_css_url
         @custom_js = custom_js
         @custom_js_url = custom_js_url
+        @callbacks = callbacks || {}
       end
 
       def generate
@@ -27,17 +29,27 @@ module Bidi2pdfRails
 
       private
 
+      def notify_after_print(tab, binary_pdf_content)
+        after_print(@url, tab, binary_pdf_content)
+      end
+
       def prepare_tab(tab)
         add_headers(tab)
         add_basic_auth(tab)
         add_cookies(tab)
 
+        before_navigate(@url, tab)
+
         tab.navigate_to(@url)
+
+        after_navigate(@url, tab)
 
         inject_custom_css(tab, @custom_css, @custom_css_url)
         inject_custom_js(tab, @custom_js, @custom_js_url)
 
         wait_for_tab(tab)
+
+        after_wait_for_tab(@url, tab)
       end
 
       def add_cookies(tab)

@@ -68,6 +68,15 @@ Bidi2pdfRails.configure do |config|
   # config.render_remote_settings.basic_auth_pass = -> { Rails.application.credentials.dig('bidi2pdf_rails', 'basic_auth_pass') } # Basic auth password
   # config.render_remote_settings.headers = {"X-API-INFO" => "my info"} # Headers to be send when allong an url
   # config.render_remote_settings.cookies = {"session_id" => "my session"} # Cookies to be send when alling an url
+
+  #
+  # Lifecycle Settings
+  #
+
+  # config.lifecycle_settings.before_navigate = ->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Navigating to #{url_or_content}" } # Hook to be called before navigating to a URL
+  # config.lifecycle_settings.after_navigate = ->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Navigated to #{url_or_content}" } # Hook to be called after navigating to a URL
+  # config.lifecycle_settings.after_wait_for_tab = ->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Waited for #{url_or_content}" } # Hook to be called after waiting for a tab  (when waiting is enabled)
+  # config.lifecycle_settings.after_print = ->(url_or_content, browser_tab, binary_pdf_content, filename, controller) { Rails.logger.info "Printed #{url_or_content}"; binary_pdf_content } # Hook to be called after printing, needs to return the pdf-binary-content. Here you can store the content into a file, sign it, or add meta data.
 end
 
 Rails.application.config.after_initialize do

@@ -72,6 +72,7 @@ module Bidi2pdfRails
                                   custom_css_url: custom_css_url,
                                   custom_js: custom_js,
                                   custom_js_url: custom_js_url,
+                                  callbacks: callbacks
             ).generate
           else
             html = @html_options.fetch(:inline, HtmlRenderer.new(@controller, @html_options).render)
@@ -85,8 +86,28 @@ module Bidi2pdfRails
                                    custom_css_url: custom_css_url,
                                    custom_js: custom_js,
                                    custom_js_url: custom_js_url,
+                                   callbacks: callbacks
             ).generate
           end
+        end
+      end
+
+      def callbacks
+        {
+          before_navigate: wraped_callback(:before_navigate),
+          after_navigate: wraped_callback(:after_navigate),
+          after_wait_for_tab: wraped_callback(:after_wait_for_tab),
+          after_print: wraped_callback(:after_print)
+        }
+      end
+
+      def wraped_callback(name)
+        callbacks = @pdf_options.fetch(:callbacks, {})
+        callback = callbacks.fetch(name, Bidi2pdfRails.config.lifecycle_settings.send(name))
+
+        return callback unless callback.is_a?(Proc)
+        ->(*args) do
+          callback.call(*args, @filename, @controller)
         end
       end
     end
