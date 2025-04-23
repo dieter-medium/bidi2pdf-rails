@@ -1,5 +1,8 @@
 # spec/support/request_server_bootstrap.rb
 
+require "socket"
+require "net/http"
+require "rack/handler/puma"
 module RequestServerBootstrap
   def find_available_port
     server = TCPServer.new('127.0.0.1', 0)
