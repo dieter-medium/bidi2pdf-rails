@@ -70,7 +70,8 @@ module Bidi2pdfRails
           { name: :custom_js, desc: "Raw JavaScript code to inject before PDF generation (without <script> tags)", default: nil, ask: false, color: :yellow },
           { name: :custom_css, desc: "Raw CSS styles to inject before PDF generation (without <style> tags)", default: nil, ask: false, color: :yellow },
           { name: :custom_js_url, desc: "URL to JavaScript file to load before PDF generation", default: nil, ask: false, color: :yellow },
-          { name: :custom_css_url, desc: "URL to CSS file to load before PDF generation", default: nil, ask: false, color: :yellow }
+          { name: :custom_css_url, desc: "URL to CSS file to load before PDF generation", default: nil, ask: false, color: :yellow },
+          { name: :asset_host, desc: "Asset hosts (e.g. http://rails-app:3001)", default: nil, ask: true, color: :yellow }
         ]
       },
 

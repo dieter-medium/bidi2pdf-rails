@@ -75,6 +75,7 @@ module Bidi2pdfRails
                                   callbacks: callbacks
             ).generate
           else
+            @html_options[:asset_host] ||= Bidi2pdfRails.config.pdf_settings.asset_host_value(@controller)
             html = @html_options.fetch(:inline, HtmlRenderer.new(@controller, @html_options).render)
 
             HtmlToPdfConverter.new(html,
