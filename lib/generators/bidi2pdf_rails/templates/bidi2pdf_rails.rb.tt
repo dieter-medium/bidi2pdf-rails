@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Bidi2pdfRails.configure do |config|
-  overrides = Rails.application.config.x.bidi2pdf_rails
 <%
     Bidi2pdfRails::Config::CONFIG_OPTIONS.each_pair do |top_level_option_name, top_level_option|
       name = top_level_option[:name]
@@ -21,6 +20,11 @@ Bidi2pdfRails.configure do |config|
 <% end -%>
   <% end -%>
 <% end %>
+
+  # Values can be used from the environment or from the config file.
+  # with the following pattern:
+  # overrides = Rails.application.config.x.bidi2pdf_rails
+  # config.general_options.verbosity = overrides.verbosity if overrides.verbosity
 end
 
 Rails.application.config.after_initialize do
