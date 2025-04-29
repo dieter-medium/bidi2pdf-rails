@@ -9,4 +9,5 @@ gem "rubocop-rails-omakase", require: false
 gem "bidi2pdf", github: "dieter-medium/bidi2pdf", branch: "main"
 gem "ammeter", "~> 1.1.5", require: false
 gem "propshaft"
+gem "importmap-rails"
 gem "rack-cors"

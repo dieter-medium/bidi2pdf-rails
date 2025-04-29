@@ -19,7 +19,7 @@ module Bidi2pdfRails
 
         yield
       ensure
-        Thread.current.bidi2pdf_rails_current_asset_host = nil
+        AssetHostManager.reset_asset_host
       end
     end
   end

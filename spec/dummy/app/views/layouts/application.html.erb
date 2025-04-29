@@ -24,11 +24,13 @@
 
       window.PagedConfig = {
           auto: false,
-          after: (flow) => {  },
+          after: (flow) => {
+          },
       };
 
       function initPaged() {
           console.log("Paged library is ready");
+
           // Initialize your Paged handlers here
 
           class PageJsReadyHandler extends Paged.Handler {
@@ -48,7 +50,7 @@
       }
   </script>
 
-  <%= javascript_include_tag "javascripts/paged.polyfill-4.3.js",  nonce: true, async: true, onload: "initPaged()" %>
+  <%= javascript_include_tag "javascripts/paged.polyfill-4.3.js", nonce: true, async: true, onload: "initPaged()" %>
 
   <!-- No Favicon -->
   <link rel="icon" href="data:,">
@@ -58,6 +60,7 @@
     rel="stylesheet"
     crossorigin="anonymous"
     />
+  <%= javascript_importmap_tags importmap: Bidi2pdfRails::Services::AssetHostManager.pdf_aware_import_map %>
 
 </head>
 
