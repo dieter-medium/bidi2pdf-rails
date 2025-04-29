@@ -17,7 +17,12 @@ Bidi2pdfRails.configure do |config|
   # config.general_options.wait_for_page_check_script = nil # Wait for page check script
   # config.general_options.notification_service = -> { ActiveSupport::Notifications } # Notification service
   # config.general_options.default_timeout = 10 # Default timeout for various Bidi commands
-  # config.general_options.chrome_session_args = ["--disable-gpu", "--disable-popup-blocking", "--disable-hang-monitor"] # Chrome session arguments
+
+  if ENV["DISABLE_CHROME_SANDBOX"]
+    chrome_args = Bidi2pdf::Bidi::Session::DEFAULT_CHROME_ARGS.dup
+    chrome_args << "--no-sandbox"
+    config.general_options.chrome_session_args = chrome_args # Chrome session arguments
+  end
 
   #
   # Chromedriver Settings (when chromedriver run within your app)
