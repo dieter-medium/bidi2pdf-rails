@@ -85,7 +85,6 @@ RSpec.describe Bidi2pdfRails::Configurable::BaseNestedConfig do
                           numeric_value: 42,
                           boolean_flag: true,
                           lambda_value: Proc,
-                          boolean_flag: true,
                           hash_value: { key: "value" }
                         )
     end

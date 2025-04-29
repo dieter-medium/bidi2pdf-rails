@@ -18,7 +18,7 @@ Bidi2pdfRails.configure do |config|
   # config.general_options.notification_service = -> { ActiveSupport::Notifications } # Notification service
   # config.general_options.default_timeout = 10 # Default timeout for various Bidi commands
 
-  if ENV["DISABLE_CHROME_SANDBOX"]
+  if !ENV["DISABLE_CHROME_SANDBOX"]
     chrome_args = Bidi2pdf::Bidi::Session::DEFAULT_CHROME_ARGS.dup
     chrome_args << "--no-sandbox"
     config.general_options.chrome_session_args = chrome_args # Chrome session arguments
@@ -79,7 +79,7 @@ Bidi2pdfRails.configure do |config|
   #
 
   # config.lifecycle_settings.before_navigate = ->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Navigating to #{url_or_content}" } # Hook to be called before navigating to a URL
-  # config.lifecycle_settings.after_navigate = ->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Navigated to #{url_or_content}" } # Hook to be called after navigating to a URL
+  config.lifecycle_settings.after_navigate = ->(url_or_content, _browser_tab, _filename, _controller) { Rails.logger.info "Navigated to #{url_or_content}" } # Hook to be called after navigating to a URL
   # config.lifecycle_settings.after_wait_for_tab = ->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Waited for #{url_or_content}" } # Hook to be called after waiting for a tab  (when waiting is enabled)
   # config.lifecycle_settings.after_print = ->(url_or_content, browser_tab, binary_pdf_content, filename, controller) { Rails.logger.info "Printed #{url_or_content}"; binary_pdf_content } # Hook to be called after printing, needs to return the pdf-binary-content. Here you can store the content into a file, sign it, or add meta data.
 end

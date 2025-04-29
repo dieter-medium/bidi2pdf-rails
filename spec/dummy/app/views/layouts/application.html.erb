@@ -20,6 +20,8 @@
   <%= stylesheet_link_tag "stylesheets/pdf", nonce: true %>
 
   <script>
+      console.error("The webpage was loaded with pdf layout.");
+
       window.loaded = false; // make it global
 
       window.PagedConfig = {
