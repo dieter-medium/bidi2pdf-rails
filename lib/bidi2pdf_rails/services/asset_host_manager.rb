@@ -35,6 +35,8 @@ module Bidi2pdfRails
                                                                fallback_host_from_request
                                                              end
 
+          Bidi2pdfRails.logger.info "Setting asset host to #{host_from_options || fallback_host_from_request} chosen #{Thread.current.bidi2pdf_rails_current_asset_host}"
+
           if defined?(Importmap::Map)
             Thread.current.bidi2pdf_rails_current_importmap = Importmap::Map.new
 
