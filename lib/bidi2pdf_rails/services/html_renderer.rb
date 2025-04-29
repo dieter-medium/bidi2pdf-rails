@@ -2,7 +2,6 @@
 
 module Bidi2pdfRails
   module Services
-    # app/services/html_renderer.rb
     class HtmlRenderer
       def initialize(controller, options)
         @controller = controller
@@ -16,17 +15,11 @@ module Bidi2pdfRails
       private
 
       def with_overridden_asset_host
-        original_asset_host = ActionController::Base.asset_host
-
-        if @options[:asset_host]
-          ActionController::Base.asset_host = @options[:asset_host]
-        elsif !Rails.application.config.action_controller.asset_host
-          ActionController::Base.asset_host = @controller.request.base_url
-        end
+        AssetHostManager.set_current_asset_host @options[:asset_host], @controller.request.base_url
 
         yield
       ensure
-        ActionController::Base.asset_host = original_asset_host
+        Thread.current.bidi2pdf_rails_current_asset_host = nil
       end
     end
   end

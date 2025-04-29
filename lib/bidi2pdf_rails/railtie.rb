@@ -7,6 +7,7 @@ require_relative "services/pdf_renderer"
 require_relative "services/pdf_browser_session"
 require_relative "services/pdf_injection"
 require_relative "services/callbacks"
+require_relative "services/asset_host_manager"
 require_relative "services/url_to_pdf_converter"
 require_relative "services/html_to_pdf_converter"
 
@@ -30,6 +31,8 @@ module Bidi2pdfRails
       at_exit do
         ChromedriverManagerSingleton.shutdown
       end
+
+      Bidi2pdfRails::Services::AssetHostManager.override_asset_host!(Rails.application.config)
     end
 
     initializer "bidi2pdf_rails.add_pdf_renderer" do
