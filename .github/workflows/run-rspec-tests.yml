@@ -5,7 +5,10 @@ on:
       test_tag:
         required: true
         type: string
-      artifact_name:
+      coverage_artifact_name:
+        required: true
+        type: string
+      log_artifact_name:
         required: true
         type: string
       upload_pdf:
@@ -28,10 +31,17 @@ jobs:
         uses: ./.github/actions/setup-ruby
       - name: Run Tests with tag ${{ inputs.test_tag }}
         run: COVERAGE=true bundle exec rake spec SPEC_OPTS="--tag ${{ inputs.test_tag }}"
-      - name: Upload ${{ inputs.artifact_name }} coverage
+      - name: Upload ${{ inputs.log_artifact_name }}
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.artifact_name }}
+          name: ${{ inputs.log_artifact_name }}
+          include-hidden-files: true
+          path: spec/dummy/log
+      - name: Upload ${{ inputs.coverage_artifact_name }} coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.coverage_artifact_name }}
           include-hidden-files: true
           path: coverage/
       - name: Upload generated pdf files (if any)

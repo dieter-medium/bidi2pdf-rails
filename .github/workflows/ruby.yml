@@ -56,21 +56,24 @@ jobs:
     uses: ./.github/workflows/run-rspec-tests.yml
     with:
       test_tag: unit
-      artifact_name: unit-coverage
+      coverage_artifact_name: unit-coverage
+      log_artifact_name: unit-log
 
   integration-test:
     needs: lint
     uses: ./.github/workflows/run-rspec-tests.yml
     with:
       test_tag: integration
-      artifact_name: integration-coverage
+      coverage_artifact_name: integration-coverage
+      log_artifact_name: integration-log
 
   acceptance-test:
     needs: lint
     uses: ./.github/workflows/run-rspec-tests.yml
     with:
       test_tag: acceptance
-      artifact_name: acceptance-coverage
+      coverage_artifact_name: acceptance-coverage
+      log_artifact_name: acceptance-log
       upload_pdf: true
   
   coverage-report:
