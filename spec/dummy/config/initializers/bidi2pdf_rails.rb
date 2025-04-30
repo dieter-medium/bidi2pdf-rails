@@ -10,7 +10,7 @@ Bidi2pdfRails.configure do |config|
   # config.general_options.logger = Rails.logger # The logger
 
   # Allowed values: "none", "low", "medium", "high"
-  config.general_options.verbosity = "medium" # How verbose to be
+  config.general_options.verbosity = "high" # How verbose to be
   # config.general_options.headless = !Rails.env.development? # Run Chrome in headless mode
   # config.general_options.wait_for_network_idle = true # Wait for network idle
   config.general_options.wait_for_page_loaded = true # Wait for page loaded

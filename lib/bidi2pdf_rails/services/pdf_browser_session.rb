@@ -21,6 +21,7 @@ module Bidi2pdfRails
               tab&.close
               window&.close
               context&.close
+              ChromedriverManagerSingleton.session_close
             end
           end
         end

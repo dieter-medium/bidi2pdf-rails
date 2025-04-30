@@ -30,6 +30,7 @@ module Bidi2pdfRails
         bidi2pdf_config.notification_service = config.general_options.notification_service_value
 
         bidi2pdf_config.logger = config.general_options.logger_value&.tagged("bidi2pdf")
+        bidi2pdf_config.logger.verbosity = config.general_options.verbosity_value
         bidi2pdf_config.default_timeout = config.general_options.default_timeout_value
 
         bidi2pdf_config.network_events_logger = Logger.new(nil)
