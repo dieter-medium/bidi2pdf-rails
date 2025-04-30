@@ -75,28 +75,10 @@ module Bidi2pdfRails
       template "bidi2pdf_rails.rb.tt", @config_path
     end
 
-    def inject_environment_config
-      env_file = "config/environments/development.rb"
-      env_path = File.join(destination_root, env_file)
-
-      if File.exist?(env_path)
-        if File.read(env_path).include?("config.x.bidi2pdf_rails")
-          say_status :skipped, "Bidi2PDF settings already present in #{env_file}", :yellow
-        else
-          content = <<~RUBY.gsub(/^(?=[\w#])/, "  ")
-            # Custom Bidi2PDF settings, check config/initializers/bidi2pdf_rails.rb for hints
-            # config.x.bidi2pdf_rails.headless = false
-            # config.x.bidi2pdf_rails.verbosity = :high
-            # config.x.bidi2pdf_rails.log_browser_console = true
-            # config.x.bidi2pdf_rails.default_timeout = 60
-          RUBY
-
-          inject_into_file env_file, content, before: /^end\s*$/
-
-          say_status :modified, env_file, :green
-        end
-      else
-        say_status :error, "Could not find #{env_file}", :red
+    def inject_environment_configs
+      ["development.rb", "test.rb", "production.rb"].each do |env|
+        env_file = "config/environments/#{env}"
+        patch_environment_config(env_file)
       end
     end
 
@@ -131,6 +113,33 @@ module Bidi2pdfRails
     end
 
     private
+
+    def patch_environment_config(env_file)
+      env_path = File.join(destination_root, env_file)
+
+      if File.exist?(env_path)
+        if File.read(env_path).include?("config.x.bidi2pdf_rails")
+          say_status :skipped, "Bidi2PDF settings already present in #{env_file}", :yellow
+        else
+          content = <<~RUBY.gsub(/^(?=[\w#])/, "  ")
+            # Custom Bidi2PDF settings, check config/initializers/bidi2pdf_rails.rb for hints
+            # config.x.bidi2pdf_rails.headless = false
+            # config.x.bidi2pdf_rails.verbosity = :high
+            # config.x.bidi2pdf_rails.log_browser_console = true
+            # config.x.bidi2pdf_rails.default_timeout = 60
+
+            # takes care of asset host settings when rendering views directly
+            Bidi2pdfRails::Services::AssetHostManager.override_asset_host!(config)
+          RUBY
+
+          inject_into_file env_file, content, before: /^end\s*$/
+
+          say_status :modified, env_file, :green
+        end
+      else
+        say_status :error, "Could not find #{env_file}", :red
+      end
+    end
 
     def changed_by_user?(full_top_level_name, option_name)
       top_level_name = normalize_group full_top_level_name

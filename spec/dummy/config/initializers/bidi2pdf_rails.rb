@@ -61,12 +61,12 @@ Bidi2pdfRails.configure do |config|
   # config.pdf_settings.shrink_to_fit = false # Shrink to fit?
   # config.pdf_settings.custom_js = nil # Raw JavaScript code to inject before PDF generation (without <script> tags)
   # config.pdf_settings.custom_css = nil # Raw CSS styles to inject before PDF generation (without <style> tags)
-  # config.pdf_settings.custom_js_url = nil # URL to JavaScript file to load before PDF generation (takes precedence over custom_js)
-  # config.pdf_settings.custom_css_url = nil # URL to CSS file to load before PDF generation (takes precedence over custom_css)
+  # config.pdf_settings.custom_js_url = nil # URL to JavaScript file to load before PDF generation
+  # config.pdf_settings.custom_css_url = nil # URL to CSS file to load before PDF generation
+  # config.pdf_settings.asset_host = nil # Asset hosts (e.g. http://rails-app:3001)
 
   #
   # Remote URL Settings
-  #
 
   # config.render_remote_settings.browser_url = nil # Remote browser URL (e.g. http://localhost:3001/sesion)
   # config.render_remote_settings.basic_auth_user = nil # Basic auth user
@@ -79,9 +79,14 @@ Bidi2pdfRails.configure do |config|
   #
 
   # config.lifecycle_settings.before_navigate = ->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Navigating to #{url_or_content}" } # Hook to be called before navigating to a URL
-  config.lifecycle_settings.after_navigate = ->(url_or_content, _browser_tab, _filename, _controller) { Rails.logger.info "Navigated to #{url_or_content}" } # Hook to be called after navigating to a URL
+  config.lifecycle_settings.after_navigate = ->(url_or_content, browser_tab, filename, controller) { Rails.logger.tagged("bidi2pdf-rails").info "Navigated to #{url_or_content}" } # Hook to be called after navigating to a URL
   # config.lifecycle_settings.after_wait_for_tab = ->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Waited for #{url_or_content}" } # Hook to be called after waiting for a tab  (when waiting is enabled)
   # config.lifecycle_settings.after_print = ->(url_or_content, browser_tab, binary_pdf_content, filename, controller) { Rails.logger.info "Printed #{url_or_content}"; binary_pdf_content } # Hook to be called after printing, needs to return the pdf-binary-content. Here you can store the content into a file, sign it, or add meta data.
+
+  # Values can be used from the environment or from the config file.
+  # with the following pattern:
+  # overrides = Rails.application.config.x.bidi2pdf_rails
+  # config.general_options.verbosity = overrides.verbosity if overrides.verbosity
 end
 
 Rails.application.config.after_initialize do

@@ -9,10 +9,13 @@ module Bidi2pdfRails
       class << self
         attr_accessor :original_asset_host
 
+        # this method has to be called within the initializer block or environment files
+        # to ensure that the asset host is overridden before any assets gems are loaded and
+        # copy the asset host from the config e.g. propshaft-rails, importmap-rails ...
         def override_asset_host!(config)
           self.original_asset_host = config.action_controller.asset_host
 
-          Rails.logger.warn "Overriding asset host #{original_asset_host}" if original_asset_host
+          Bidi2pdfRails.logger.warn "Overriding asset host #{original_asset_host}" if original_asset_host
 
           config.action_controller.asset_host = lambda do |source, request|
             thread_host = Thread.current.bidi2pdf_rails_current_asset_host

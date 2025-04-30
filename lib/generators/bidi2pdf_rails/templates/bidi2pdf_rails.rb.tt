@@ -27,7 +27,7 @@ Bidi2pdfRails.configure do |config|
   # config.general_options.verbosity = overrides.verbosity if overrides.verbosity
 end
 
-Rails.application.config.after_initialize do
+Rails.application.config.after_initialize do |_app|
   Bidi2pdfRails::MainLogSubscriber.attach_to "bidi2pdf", inherit_all: true # needed for imported methods
   Bidi2pdfRails::MainLogSubscriber.attach_to "bidi2pdf_rails", inherit_all: true # needed for imported methods
 

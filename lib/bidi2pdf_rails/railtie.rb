@@ -26,13 +26,11 @@ module Bidi2pdfRails
       end
     end
 
-    config.after_initialize do
-      # Set up shutdown hook for when the application stops
+    config.after_initialize do |_app|
+      # Set up the shutdown hook for when the application stops
       at_exit do
         ChromedriverManagerSingleton.shutdown
       end
-
-      Bidi2pdfRails::Services::AssetHostManager.override_asset_host!(Rails.application.config)
     end
 
     initializer "bidi2pdf_rails.add_pdf_renderer" do

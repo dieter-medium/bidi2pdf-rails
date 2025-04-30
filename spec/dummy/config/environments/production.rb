@@ -42,8 +42,8 @@ Rails.application.configure do
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
-    .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
-    .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+                                       .tap { |logger| logger.formatter = ::Logger::Formatter.new }
+                                       .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
@@ -70,4 +70,12 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  # Custom Bidi2PDF settings, check config/initializers/bidi2pdf_rails.rb for hints
+  # config.x.bidi2pdf_rails.headless = false
+  # config.x.bidi2pdf_rails.verbosity = :high
+  # config.x.bidi2pdf_rails.log_browser_console = true
+  # config.x.bidi2pdf_rails.default_timeout = 60
+
+  # takes care of asset host settings when rendering views directly
+  Bidi2pdfRails::Services::AssetHostManager.override_asset_host!(config)
 end

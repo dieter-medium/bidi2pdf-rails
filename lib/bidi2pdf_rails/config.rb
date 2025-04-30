@@ -91,10 +91,10 @@ module Bidi2pdfRails
         name: "Lifecycle Settings",
         ask: false,
         options: [
-          { name: :before_navigate, desc: "Hook to be called before navigating to a URL", default: nil, default_as_str: '->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Navigating to #{url_or_content}" }', ask: false },
-          { name: :after_navigate, desc: "Hook to be called after navigating to a URL", default: nil, default_as_str: '->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Navigated to #{url_or_content}" }', ask: false },
-          { name: :after_wait_for_tab, desc: "Hook to be called after waiting for a tab  (when waiting is enabled)", default: nil, default_as_str: '->(url_or_content, browser_tab, filename, controller) { Rails.logger.info "Waited for #{url_or_content}" }', ask: false },
-          { name: :after_print, desc: "Hook to be called after printing, needs to return the pdf-binary-content. Here you can store the content into a file, sign it, or add meta data.", default: nil, default_as_str: '->(url_or_content, browser_tab, binary_pdf_content, filename, controller) { Rails.logger.info "Printed #{url_or_content}"; binary_pdf_content }', ask: false }
+          { name: :before_navigate, desc: "Hook to be called before navigating to a URL", default: nil, default_as_str: '->(url_or_content, browser_tab, filename, controller) { Rails.logger.tagged("bidi2pdf-rails").info "Navigating to #{url_or_content}" }', ask: false },
+          { name: :after_navigate, desc: "Hook to be called after navigating to a URL", default: nil, default_as_str: '->(url_or_content, browser_tab, filename, controller) { Rails.logger.tagged("bidi2pdf-rails").info "Navigated to #{url_or_content}" }', ask: false },
+          { name: :after_wait_for_tab, desc: "Hook to be called after waiting for a tab  (when waiting is enabled)", default: nil, default_as_str: '->(url_or_content, browser_tab, filename, controller) { Rails.logger.tagged("bidi2pdf-rails").info "Waited for #{url_or_content}" }', ask: false },
+          { name: :after_print, desc: "Hook to be called after printing, needs to return the pdf-binary-content. Here you can store the content into a file, sign it, or add meta data.", default: nil, default_as_str: '->(url_or_content, browser_tab, binary_pdf_content, filename, controller) { Rails.logger.tagged("bidi2pdf-rails").info "Printed #{url_or_content}"; binary_pdf_content }', ask: false }
         ]
       }
 
