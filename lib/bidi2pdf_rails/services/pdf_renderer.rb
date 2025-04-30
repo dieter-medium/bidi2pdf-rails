@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "importmap_tags_helper_override"
+
 module Bidi2pdfRails
   module Services
     # PdfRenderer is responsible for rendering a Rails view into a PDF using headless Chrome.

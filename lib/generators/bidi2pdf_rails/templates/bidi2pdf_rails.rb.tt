@@ -37,3 +37,7 @@ Rails.application.config.after_initialize do |_app|
 
   Bidi2pdfRails::NetworkLogSubscriber.attach_to "bidi2pdf"
 end
+
+# If you are using importmaps and you want to render views directly as PDFs, you need to
+# patch the importmap tags helper to use the correct caching key
+# Importmap::ImportmapTagsHelper.prepend Bidi2pdfRails::Services::ImportmapTagsHelperOverride
