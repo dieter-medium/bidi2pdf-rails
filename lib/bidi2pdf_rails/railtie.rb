@@ -31,6 +31,9 @@ module Bidi2pdfRails
       at_exit do
         ChromedriverManagerSingleton.shutdown
       end
+
+      Bidi2pdfRails.logger.warn "Bidi2pdfRails is not tested with an environment #{ActiveSupport::IsolatedExecutionState.isolation_level}" if ActiveSupport::IsolatedExecutionState.isolation_level != :thread
+      Bidi2pdfRails.logger.info "Bidi2pdfRails initialized"
     end
 
     initializer "bidi2pdf_rails.add_pdf_renderer" do

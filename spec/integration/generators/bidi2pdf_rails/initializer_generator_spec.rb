@@ -16,15 +16,18 @@ RSpec.describe Bidi2pdfRails::InitializerGenerator, type: :generator do
     let(:dev_env_file) { file('config/environments/development.rb') }
 
     before do
-      FileUtils.mkdir_p dev_env_file.dirname
+      ["development.rb", "test.rb", "production.rb"].each do |env|
+        env_file = file("config/environments/#{env}")
+        FileUtils.mkdir_p env_file.dirname
 
-      # write minimal development.rb file
-      File.write(dev_env_file, <<~RUBY)
-        Rails.application.configure do
+        # write minimal file
+        File.write(env_file, <<~RUBY)
+          Rails.application.configure do
 
-        end
+          end
 
-      RUBY
+        RUBY
+      end
 
       run_generator %w[
       --general-verbosity medium

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# encoding: utf-8
+
 module Bidi2pdfRails
   class InitializerGenerator < Rails::Generators::Base
     source_root File.expand_path("templates", __dir__)
@@ -114,31 +117,30 @@ module Bidi2pdfRails
 
     private
 
+    START_MARKER = "# --- BEGIN Bidi2PDF Settings ---"
+    END_MARKER = "# --- END Bidi2PDF Settings ---"
+
     def patch_environment_config(env_file)
-      env_path = File.join(destination_root, env_file)
+      content = <<~RUBY.gsub(/^(?=[\w#])/, "  ")
 
-      if File.exist?(env_path)
-        if File.read(env_path).include?("config.x.bidi2pdf_rails")
-          say_status :skipped, "Bidi2PDF settings already present in #{env_file}", :yellow
-        else
-          content = <<~RUBY.gsub(/^(?=[\w#])/, "  ")
-            # Custom Bidi2PDF settings, check config/initializers/bidi2pdf_rails.rb for hints
-            # config.x.bidi2pdf_rails.headless = false
-            # config.x.bidi2pdf_rails.verbosity = :high
-            # config.x.bidi2pdf_rails.log_browser_console = true
-            # config.x.bidi2pdf_rails.default_timeout = 60
+        #{START_MARKER}
+        # Custom Bidi2PDF settings, check config/initializers/bidi2pdf_rails.rb for hints
+        # config.x.bidi2pdf_rails.headless = false
+        # config.x.bidi2pdf_rails.verbosity = :high
+        # config.x.bidi2pdf_rails.log_browser_console = true
+        # config.x.bidi2pdf_rails.default_timeout = 60
 
-            # takes care of asset host settings when rendering views directly
-            Bidi2pdfRails::Services::AssetHostManager.override_asset_host!(config)
-          RUBY
+        # takes care of asset host settings when rendering views directly
+        Bidi2pdfRails::Services::AssetHostManager.override_asset_host!(config)
+        #{END_MARKER}
 
-          inject_into_file env_file, content, before: /^end\s*$/
+      RUBY
 
-          say_status :modified, env_file, :green
-        end
-      else
-        say_status :error, "Could not find #{env_file}", :red
-      end
+      say "Injecting Bidi2PDF settings into #{env_file}", :green
+
+      gsub_file(env_file, /#{Regexp.escape(START_MARKER)}.*#{Regexp.escape(END_MARKER)}/m, "")
+
+      inject_into_file env_file, content, before: /^end\s*$/
     end
 
     def changed_by_user?(full_top_level_name, option_name)

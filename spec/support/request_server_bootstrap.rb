@@ -34,7 +34,7 @@ RSpec.configure do |config|
     next if capybara_manages_server?
     @port = find_available_port
     @server_thread = Thread.new do
-      Rack::Handler::Puma.run Rails.application, Port: @port, Silent: true
+      Rack::Handler::Puma.run Rails.application, Port: @port, Silent: false
     end
 
     wait_until_server_is_ready(@port)
