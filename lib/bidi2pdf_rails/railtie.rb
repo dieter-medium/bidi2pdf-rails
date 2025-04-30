@@ -31,8 +31,6 @@ module Bidi2pdfRails
       at_exit do
         ChromedriverManagerSingleton.shutdown
       end
-
-      Bidi2pdfRails::Services::AssetHostManager.override_asset_host!(Rails.application.config)
     end
 
     initializer "bidi2pdf_rails.add_pdf_renderer" do

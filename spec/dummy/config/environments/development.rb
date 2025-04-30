@@ -54,4 +54,6 @@ Rails.application.configure do
   config.x.bidi2pdf_rails.verbosity = :high
   # config.x.bidi2pdf_rails.log_browser_console = true
   # config.x.bidi2pdf_rails.default_timeout = 60
+
+  Bidi2pdfRails::Services::AssetHostManager.override_asset_host!(config)
 end
