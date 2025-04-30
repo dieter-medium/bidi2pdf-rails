@@ -4,7 +4,7 @@
 module Bidi2pdfRails
   module Services
     module AssetHostManager
-      Thread.attr_accessor :bidi2pdf_rails_current_asset_host, :bidi2pdf_rails_current_importmap
+      Thread.attr_accessor :bidi2pdf_rails_current_asset_host
 
       class << self
         attr_accessor :original_asset_host
@@ -39,23 +39,10 @@ module Bidi2pdfRails
                                                              end
 
           Bidi2pdfRails.logger.info "Setting asset host to #{host_from_options || fallback_host_from_request} chosen #{Thread.current.bidi2pdf_rails_current_asset_host}"
-
-          if defined?(Importmap::Map)
-            Thread.current.bidi2pdf_rails_current_importmap = Importmap::Map.new
-
-            Rails.application.config.importmap.each_pin do |pin|
-              Thread.current.bidi2pdf_rails_current_importmap.pin(pin.name, to: pin.to, preload: pin.preload)
-            end
-          end
         end
 
         def reset_asset_host
           Thread.current.bidi2pdf_rails_current_asset_host = nil
-          Thread.current.bidi2pdf_rails_current_importmap = nil
-        end
-
-        def pdf_aware_import_map
-          Thread.current.bidi2pdf_rails_current_importmap || Rails.application.config.importmap
         end
       end
     end
