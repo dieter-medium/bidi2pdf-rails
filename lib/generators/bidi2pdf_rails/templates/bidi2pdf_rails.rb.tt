@@ -40,4 +40,5 @@ end
 
 # If you are using importmaps and you want to render views directly as PDFs, you need to
 # patch the importmap tags helper to use the correct caching key
+# require "importmap/map"
 # Importmap::ImportmapTagsHelper.prepend Bidi2pdfRails::Services::ImportmapTagsHelperOverride
