@@ -43,7 +43,7 @@ module Bidi2pdfRails
         pdf_content = Services::PdfRenderer.new(filename, options, self).render_pdf
 
         # don't leak assets links to the client
-        response.headers.delete('Link')
+        response.headers.delete("Link")
 
         send_data pdf_content,
                   type: Mime[:pdf],
