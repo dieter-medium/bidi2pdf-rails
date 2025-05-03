@@ -33,7 +33,7 @@ module Bidi2pdfRails
       def prepare_tab(tab)
         before_navigate(@html, tab)
 
-        tab.render_html_content(@html)
+        with_interlock_warning { tab.render_html_content(@html) }
 
         after_navigate(@html, tab)
 

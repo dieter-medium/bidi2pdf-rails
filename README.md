@@ -123,6 +123,26 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
 end
 ```
 
+## 🐛 Development Mode Considerations
+
+> **Deadlock Warning**  
+> In Rails development mode, loopback asset or page requests (e.g., when ChromeDriver or Grover fetches your own app’s
+> URL) can deadlock under Rails’ autoload interlock. See Puma’s docs: https://puma.io/puma/file.rails_dev_mode.html
+
+**Workarounds:**
+
+1. **Precompile & serve assets statically** (in `config/environments/development.rb`):
+   ```ruby
+   config.public_file_server.enabled = true
+   ```
+2. **Run Puma with single-threaded workers:**
+   ```ruby
+   workers ENV.fetch("WEB_CONCURRENCY") { 2 }
+   threads 1, 1
+   ```
+
+Implementing these steps helps avoid interlock-induced deadlocks when generating PDFs in development.
+
 ---
 
 ## 🧪 Acceptance Examples

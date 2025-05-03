@@ -40,7 +40,7 @@ module Bidi2pdfRails
 
         before_navigate(@url, tab)
 
-        tab.navigate_to(@url)
+        with_interlock_warning { tab.navigate_to(@url) }
 
         after_navigate(@url, tab)
 
