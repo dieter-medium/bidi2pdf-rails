@@ -97,14 +97,14 @@ module Bidi2pdfRails
 
       def callbacks
         {
-          before_navigate: wraped_callback(:before_navigate),
-          after_navigate: wraped_callback(:after_navigate),
-          after_wait_for_tab: wraped_callback(:after_wait_for_tab),
-          after_print: wraped_callback(:after_print)
+          before_navigate: wrapped_callback(:before_navigate),
+          after_navigate: wrapped_callback(:after_navigate),
+          after_wait_for_tab: wrapped_callback(:after_wait_for_tab),
+          after_print: wrapped_callback(:after_print)
         }
       end
 
-      def wraped_callback(name)
+      def wrapped_callback(name)
         callbacks = @pdf_options.fetch(:callbacks, {})
         callback = callbacks.fetch(name, Bidi2pdfRails.config.lifecycle_settings.send(name))
 
