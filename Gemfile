@@ -10,3 +10,4 @@ gem "bidi2pdf", github: "dieter-medium/bidi2pdf", branch: "main"
 gem "ammeter", "~> 1.1.5", require: false
 gem "propshaft"
 gem "rack-cors"
+gem "sqlite3", ">= 2.1"

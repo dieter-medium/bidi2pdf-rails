@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   get 'header-auth', to: 'secure#api_endpoint', as: :api_endpoint
   get 'cookie-auth', to: 'secure#cookie_endpoint', as: :cookie_endpoint
 
+  get 'gen-async-report', to: 'async_reports#create', as: :gen_async_report
+  get 'async-report-status/:id', to: 'async_reports#status', as: :gen_async_report_status
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

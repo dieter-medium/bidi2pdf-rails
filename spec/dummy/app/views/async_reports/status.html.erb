@@ -1,0 +1,17 @@
+<div id="report-status">Processing…</div>
+<script>
+    function poll() {
+        fetch("<%= gen_async_report_status_path(id: @report_id, format: :json) %>")
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'ready') {
+                    document.getElementById('report-status').innerHTML =
+                        `<p>URL: ${data.url}</p><iframe src="${data.url}" width="100%" height="600px"></iframe>`;
+                } else {
+                    setTimeout(poll, 2000);
+                }
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', poll);
+</script>

@@ -155,6 +155,7 @@ This repo includes **real integration tests** that serve as usage documentation:
 - [Inject custom JS into a Webpage before printing](spec/acceptance/user_can_inject_js_before_pdf_printing_spec.rb)
 - [Using callbacks to modify the PDF before sending](spec/acceptance/user_can_hook_into_the_pdf_printing_lifecycle_spec.rb)
 - [Using a remote chromedriver](spec/acceptance/user_can_connect_to_an_external_webdriver_spec.rb)
+- [Using ActiveStorage and ActiveJob to generate PDFs in the background](spec/user_can_generate_async_pdf_reports_spec.rb)
 
 ---
 

@@ -43,11 +43,23 @@ module Bidi2pdfRails
       Mime::Type.register "application/pdf", :pdf unless Mime::Type.lookup_by_extension(:pdf)
     end
 
+    initializer "bidi2pdf_rails.add_active_job_serializer" do
+      if defined?(ActiveJob::Base)
+        require_relative "services/render_options_handler_serializer"
+        Rails.application.config.active_job.custom_serializers << Bidi2pdfRails::Services::RenderOptionsHandlerSerializer
+      end
+    end
+
     initializer "bidi2pdf_rails.initialize_chromedriver_manager", after: :load_config_initializers do
       Bidi2pdfRails.apply_bidi2pdf_config
 
       # defer the initialization of the ChromedriverManager to the ActionController::Base class load event
       ActiveSupport.on_load(:action_controller_base) do
+        ChromedriverManagerSingleton.initialize_manager
+      end
+
+      # just in case the jobs run in a different instance
+      ActiveSupport.on_load(:active_job) do
         ChromedriverManagerSingleton.initialize_manager
       end
     end

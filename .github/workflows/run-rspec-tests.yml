@@ -25,10 +25,15 @@ jobs:
     env:
       SHOW_CONTAINER_LOGS: true
       DISABLE_CHROME_SANDBOX: true
+      RAILS_ENV: test
     steps:
       - uses: actions/checkout@v3
       - name: Setup Ruby Environment
         uses: ./.github/actions/setup-ruby
+      - name: Prepare DB
+        run: |
+          cd spec/dummy          
+          bin/rails db:test:prepare
       - name: Run Tests with tag ${{ inputs.test_tag }}
         run: COVERAGE=true bundle exec rake spec SPEC_OPTS="--tag ${{ inputs.test_tag }}"
       - name: Upload ${{ inputs.log_artifact_name }}
