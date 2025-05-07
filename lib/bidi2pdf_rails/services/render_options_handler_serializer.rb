@@ -13,7 +13,7 @@ module Bidi2pdfRails
       end
 
       def deserialize(hash)
-        ::Bidi2pdfRails::Services::RenderOptionsHandler.new(hash["filename"], hash["options"], nil)
+        ::Bidi2pdfRails::Services::RenderOptionsHandler.new(hash["filename"], hash["options"].with_indifferent_access, nil)
       end
 
       private
