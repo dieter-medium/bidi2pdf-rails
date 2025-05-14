@@ -227,6 +227,8 @@ RSpec.describe "Invoice PDF", type: :request, pdf: true do
     expect(response['Content-Type']).to eq("application/pdf")
   end
 end
+```
+
 ---
 
 ## 🙌 Contributing
