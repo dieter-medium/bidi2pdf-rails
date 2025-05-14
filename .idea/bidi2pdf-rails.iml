@@ -111,7 +111,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rspec-core (v3.13.3, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-expectations (v3.13.3, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-mocks (v3.13.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="rspec-rails (v7.1.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rspec-rails (v8.0.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-support (v3.13.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop (v1.75.4, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-ast (v1.44.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />

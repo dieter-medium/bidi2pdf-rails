@@ -129,8 +129,4 @@ RSpec.configure do |config|
   config.add_setting :spec_dir, default: File.expand_path(__dir__)
 end
 
-require_relative "support/default_dirs_helper" # just to ensure that the folder definitions are loaded first
-
 Dir[File.expand_path("support/**/*.rb", __dir__)].each { |f| require f }
-
-require "bidi2pdf/test_helpers"

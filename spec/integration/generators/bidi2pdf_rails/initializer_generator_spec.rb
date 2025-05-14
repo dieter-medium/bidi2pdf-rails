@@ -5,7 +5,7 @@ require "rails/generators"
 require "ammeter/init"
 require "generators/bidi2pdf_rails/initializer_generator"
 
-RSpec.describe Bidi2pdfRails::InitializerGenerator, type: :generator do
+RSpec.describe Bidi2pdfRails::InitializerGenerator, :pdf, type: :generator do
   destination tmp_file("generators")
 
   before { prepare_destination }
