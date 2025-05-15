@@ -3,7 +3,12 @@ module Bidi2pdfRails
     require "net/http"
     module RequestHelper
       def get_pdf_response(path)
-        uri = URI(path.starts_with?("http") ? path : "#{server_url}/#{path}")
+        uri = if path =~ %r{\Ahttps?://}
+                URI(path)
+              else
+                URI.join(server_url, path)
+              end
+
         Net::HTTP.get_response(uri)
       end
 
