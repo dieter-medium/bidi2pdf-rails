@@ -17,8 +17,16 @@ module Bidi2pdfRails
         Bidi2pdfRails::TestHelpers.configuration.server&.host
       end
 
+      def request_host
+        Bidi2pdfRails::TestHelpers.configuration.request_host
+      end
+
+      def first_private_ip
+        Socket.ip_address_list.detect(&:ipv4_private?).ip_address
+      end
+
       def server_url
-        "http://#{server_host}:#{server_port}"
+        "http://#{request_host}:#{server_port}"
       end
     end
 

@@ -23,6 +23,10 @@ module Bidi2pdfRails
       #   @return [String] the host address for the server
       attr_accessor :server_host
 
+      # @!attribute [w] request_host
+      #  @return [String] the host address for requests
+      attr_writer :request_host
+
       # @!attribute [rw] server_port
       #   @return [Integer, nil] the port for the server (nil if not set => random port)
       attr_accessor :server_port
@@ -41,8 +45,13 @@ module Bidi2pdfRails
         @prefix = "tmp_"
         @run_server = true
         @server_host = "localhost"
+        @request_host = "localhost"
         @server_port = nil
         @server_boot_timeout = 15
+      end
+
+      def request_host
+        @request_host.respond_to?(:call) ? @request_host.call : @request_host
       end
     end
 
