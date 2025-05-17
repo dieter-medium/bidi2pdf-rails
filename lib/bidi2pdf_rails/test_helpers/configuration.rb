@@ -2,19 +2,7 @@
 
 module Bidi2pdfRails
   module TestHelpers
-    class Configuration
-      # @!attribute [rw] spec_dir
-      #   @return [Pathname] the directory where specs are located
-      attr_accessor :spec_dir
-
-      # @!attribute [rw] tmp_dir
-      #   @return [String] the directory for temporary files
-      attr_accessor :tmp_dir
-
-      # @!attribute [rw] prefix
-      #   @return [String] the prefix for temporary files
-      attr_accessor :prefix
-
+    class Configuration < Bidi2pdf::TestHelpers::Configuration
       # @!attribute [rw] run_server
       #   @return [Boolean] whether to run the server during tests
       attr_accessor :run_server
@@ -40,9 +28,7 @@ module Bidi2pdfRails
       attr_accessor :server
 
       def initialize
-        @spec_dir = ::Rails.root.join("spec").expand_path
-        @tmp_dir = File.join(@spec_dir, "..", "tmp")
-        @prefix = "tmp_"
+        super
         @run_server = true
         @server_host = "localhost"
         @request_host = "localhost"
@@ -70,12 +56,11 @@ module Bidi2pdfRails
     end
   end
 
+  Bidi2pdf::TestHelpers.configuration = TestHelpers.configuration
+
   # Configures RSpec to include and extend SpecPathsHelper for examples with the `:pdf` metadata.
   RSpec.configure do |config|
     # Adds a custom RSpec setting for TestHelpers configuration.
     config.add_setting :bidi2pdf_rails_test_helpers_config, default: TestHelpers.configuration
-
-    # required by Bidi2pdf test helpers
-    config.add_setting :docker_dir, default: ::Rails.root.join("docker").expand_path
   end
 end
