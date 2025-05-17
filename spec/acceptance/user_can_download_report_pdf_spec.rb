@@ -5,7 +5,7 @@ require "net/http"
 require "rack/handler/puma"
 require "socket"
 
-RSpec.feature "As a devoloper, I want to generate PDF's with bidi2pdf-rails", :pdf, type: :request do
+RSpec.feature "As a developer, I want to generate PDF's with bidi2pdf-rails", :pdf, type: :request do
   # This feature demonstrates how to use bidi2pdf-rails to generate PDFs
   # from Rails views, remote URLs, and inline HTML. These specs double as
   # living documentation for gem users.
@@ -52,6 +52,10 @@ RSpec.feature "As a devoloper, I want to generate PDF's with bidi2pdf-rails", :p
 
       and_ "the PDF contains the expected content" do
         expect(@response.body).to contains_pdf_text("Section Two").at_page(2)
+      end
+
+      and_ "the PDF contains the expected image" do
+        expect(@response.body).to contains_pdf_image(File.join(spec_dir, "dummy", "app", "assets", "images", "img.jpg")).at_page(3)
       end
     end
   end

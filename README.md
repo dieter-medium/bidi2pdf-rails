@@ -178,18 +178,6 @@ Or explore [Bidi2pdfRails::Config::CONFIG_OPTIONS](lib/bidi2pdf_rails/config.rb)
 On top of Bidi2pdf test helpers, Bidi2pdfRails provides a suite of RSpec helpers (activated with `pdf: true`) to
 simplify PDF-related testing:
 
-### SpecPathsHelper
-
-– `spec_dir` → returns your spec directory  
-– `tmp_dir` → returns your tmp directory  
-– `tmp_file(*parts)` → builds a tmp file path  
-– `random_tmp_dir(*dirs, prefix:)` → builds a random tmp directory
-
-### PdfFileHelper
-
-– `with_pdf_debug(pdf_data) { |data| … }` → on failure, writes PDF to disk  
-– `store_pdf_file(pdf_data, filename_prefix = "test")` → saves PDF and returns path
-
 ### EnvironmentHelper
 
 – `inside_container?` → true if running in Docker  
@@ -208,7 +196,7 @@ simplify PDF-related testing:
 ### ServerHelper
 
 – `server_running?`, `server_port`, `server_host`, `server_url`  
-– boots a Puma test server before all `type: :request, pdf: true` specs  
+– boots a Puma test server before suite `type: :request, pdf: true` specs  
 – shuts it down afterward
 
 ### RequestHelper

@@ -51,4 +51,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pdf-reader", "~> 2.14"
   spec.add_development_dependency "unicode_utils", "~> 1.4"
   spec.add_development_dependency "testcontainers", "~> 0.2"
+  spec.add_development_dependency "dhash-vips", "~> 0.2"
 end

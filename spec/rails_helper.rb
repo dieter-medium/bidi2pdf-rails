@@ -10,6 +10,7 @@ require 'rspec/rails'
 
 require "bidi2pdf_rails"
 require "bidi2pdf_rails/test_helpers"
+require "bidi2pdf/test_helpers/images"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -68,5 +69,6 @@ RSpec.configure do |config|
 
   Bidi2pdfRails::TestHelpers.configure do |config|
     config.server_host = "0.0.0.0"
+    config.spec_dir = File.expand_path("./", __dir__)
   end
 end
