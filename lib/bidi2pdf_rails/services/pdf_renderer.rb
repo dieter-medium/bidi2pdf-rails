@@ -27,6 +27,7 @@ module Bidi2pdfRails
         wait_for_page_loaded
         wait_for_page_check_script
         html
+        callbacks
       ].freeze
 
       PRINT_URL_OPTIONS = %i[
