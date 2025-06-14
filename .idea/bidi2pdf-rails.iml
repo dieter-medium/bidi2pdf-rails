@@ -28,80 +28,6 @@
     </content>
     <orderEntry type="jdk" jdkName="RVM: ruby-3.3.4 [bidi2pdf-rails]" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="bidi2pdf (v0.1.9) [path][gem]" type="rubylib">
-        <properties>
-          <option name="additionalInfo">
-            <AdditionalInfo>
-              <option name="authors" value="N/A" />
-              <option name="email" value="N/A" />
-              <option name="homepage" value="N/A" />
-              <option name="summary" value="N/A" />
-            </AdditionalInfo>
-          </option>
-          <option name="fromPath" value="true" />
-          <option name="git" value="true" />
-          <option name="name" value="bidi2pdf" />
-          <option name="requirePaths">
-            <list>
-              <option value="lib" />
-            </list>
-          </option>
-          <option name="url" value="file://$MODULE_DIR$/../bidi2pdf" />
-          <option name="version" value="0.1.9" />
-        </properties>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../bidi2pdf/bin" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/exe" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/lib" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/pkg" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/sig" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tmp" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.git" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/spec" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.idea" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tasks" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/docker" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/output" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.bundle" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.github" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/coverage" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../bidi2pdf/bin" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/exe" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/lib" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/pkg" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/sig" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tmp" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.git" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/spec" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.idea" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tasks" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/docker" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/output" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.bundle" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.github" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/coverage" />
-        </SOURCES>
-        <excluded>
-          <root url="file://$MODULE_DIR$/../bidi2pdf/bin" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/exe" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/pkg" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tmp" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.git" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/spec" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.idea" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/tasks" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/docker" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/output" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.bundle" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/.github" />
-          <root url="file://$MODULE_DIR$/../bidi2pdf/coverage" />
-        </excluded>
-      </library>
-    </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Ascii85 (v2.0.1, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actioncable (v8.0.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actionmailbox (v8.0.2, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
@@ -119,6 +45,7 @@
     <orderEntry type="library" scope="PROVIDED" name="ast (v2.4.3, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="base64 (v0.2.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="benchmark (v0.4.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bidi2pdf (v0.1.9@abc8eb, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bigdecimal (v3.1.9, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="builder (v3.3.0, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bundler (v2.6.8, RVM: ruby-3.3.4 [bidi2pdf-rails]) [gem]" level="application" />
