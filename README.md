@@ -49,6 +49,77 @@ bin/rails generate bidi2pdf_rails:initializer
 
 ---
 
+## 🌐 Architecture
+
+```mermaid
+%%{  init: {
+      "theme": "base",
+      "themeVariables": {
+        "primaryColor":  "#E0E7FF",
+        "secondaryColor":"#FEF9C3",
+        "tertiaryColor": "#DCFCE7",
+        "edgeLabelBackground":"#FFFFFF",
+        "fontSize":"14px",
+        "nodeBorderRadius":"6"
+      }
+    }
+}%%
+flowchart LR
+%% ───────────────────────────────────
+%% Rails world
+   subgraph R["fa:fa-rails Rails World"]
+      direction TB
+      R1["fa:fa-gem Your&nbsp;Rails&nbsp;App"]
+      R2["fa:fa-plug bidi2pdf-rails&nbsp;Engine"]
+      R3["fa:fa-cog&nbsp;ActionController::Renderers<br/><code>render pdf:</code>"]
+      R4["fa:fa-file-code Rails&nbsp;View&nbsp;(ERB/Haml)"]
+   end
+
+%% bidi2pdf core
+   subgraph B["fa:fa-gem bidi2pdf Core"]
+      direction TB
+      B1["fa:fa-gem bidi2pdf"]
+   end
+
+%% Chrome env
+   subgraph C["fa:fa-chrome Chrome Environment"]
+      direction LR
+      C1["fa:fa-chrome Local&nbsp;Chrome<br/>(sub-process)"]
+      C2["fa:fa-docker Docker&nbsp;Chrome<br/>(remote)"]
+   end
+
+%% Artifact
+   P[[PDF&nbsp;File]]
+
+%% ─── Flows ─────────────────────────
+R1 -- " Controller&nbsp;invokes<br/><code>render pdf:</code> " --> R3
+R3 -- " HTML&nbsp;+&nbsp;Assets<br/>(via&nbsp;<code>render_to_string</code>) " --> R2
+R2 -- " HTML&nbsp;/&nbsp;URL&nbsp;+&nbsp;CSS/JS " --> B1
+B1 -- " WebDriver&nbsp;BiDi " --> C1
+B1 -- " WebDriver&nbsp;BiDi " --> C2
+C1 -- " PDF&nbsp;bytes " --> B1
+C2 -- " PDF&nbsp;bytes " --> B1
+B1 -- " PDF&nbsp;stream " --> R2
+R2 -- " send_data " --> R1
+R1 -- " Download/inline " --> P
+
+%% ─── Styling classes ───────────────
+classDef rails fill: #E0E7FF, stroke: #6366F1, color: #1E1B4B
+classDef engine fill: #c7d2fe, stroke: #4338CA, color: #1E1B4B
+classDef bidi fill: #E0E7FF, stroke: #4f46e5, color: #1E1B4B
+classDef chrome fill: #FEF9C3, stroke: #F59E0B, color: #78350F
+classDef artifact fill: #DCFCE7, stroke: #16A34A, color: #065F46
+
+class R1 rails
+class R2 engine
+class R3,R4 rails
+class B1 bidi
+class C1, C2 chrome
+class P artifact
+```
+
+---
+
 ## 📦 Usage Examples
 
 ### 📄 Rendering a Rails View as PDF
