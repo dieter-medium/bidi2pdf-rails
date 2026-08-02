@@ -4,12 +4,33 @@ require "rails_helper"
 require "bidi2pdf/test_helpers/testcontainers"
 
 RSpec.feature "As a developer, I want to generate PDF's with bidi2pdf-rails, using an external chromedriver", :chromedriver, :pdf, type: :request do
+  def reachable?(url, timeout: 2)
+    uri = URI(url)
+
+    Net::HTTP.start(
+      uri.host,
+      uri.port,
+      open_timeout: timeout,
+      read_timeout: timeout
+    ) do |http|
+      response = http.get(uri.request_uri)
+      response.is_a?(Net::HTTPSuccess)
+    end
+  rescue SocketError,
+    Errno::ECONNREFUSED,
+    Errno::EHOSTUNREACH,
+    Net::OpenTimeout,
+    Net::ReadTimeout
+    false
+  end
+
   before do
     url = session_url
     host = chromedriver_container.host
     port = chromedriver_container.mapped_port(chromedriver_container.port)
 
     url = "http://remote-chrome:#{port}/session" unless host
+    url = "http://127.0.0.1:#{port}/session" unless reachable?(url)
 
     with_render_setting :browser_url, url
     Bidi2pdfRails::ChromedriverManagerSingleton.initialize_manager force: true

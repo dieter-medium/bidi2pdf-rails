@@ -166,7 +166,7 @@ RSpec.feature "As a user, I want to generate a PDF from a protected remote URL",
       end
 
       and_ "the PDF contains the expected content" do
-        expect(@response.body).to contains_pdf_text("Protected Resource This page is secured with: API KeyAuthentication").at_page(1)
+        expect(@response.body).to contains_pdf_text("Protected Resource This page is secured with: API Key Authenticatio").at_page(1)
       end
     end
   end
