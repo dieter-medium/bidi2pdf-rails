@@ -1,10 +1,9 @@
 name: Setup Ruby
-description: Checks out code, sets up Ruby, and installs dependencies
+description: Sets up Ruby and installs dependencies (caller must check out code first)
 
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
     - name: Install libvips
       shell: bash
       run: |

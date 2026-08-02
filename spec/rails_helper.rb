@@ -71,4 +71,15 @@ RSpec.configure do |config|
     config.server_host = "0.0.0.0"
     config.spec_dir = File.expand_path("./", __dir__)
   end
+
+  chrome_args = Bidi2pdf::Bidi::Session::DEFAULT_CHROME_ARGS.dup
+
+  if ENV["DISABLE_CHROME_SANDBOX"]
+    chrome_args << "--no-sandbox"
+  end
+
+  chrome_args << "--disable-features=BlockInsecurePrivateNetworkRequests"
+  chrome_args << "--disable-web-security"
+
+  Bidi2pdfRails.config.general_options.chrome_session_args = chrome_args
 end

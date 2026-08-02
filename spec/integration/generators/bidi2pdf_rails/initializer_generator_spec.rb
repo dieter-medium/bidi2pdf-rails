@@ -43,6 +43,7 @@ RSpec.describe Bidi2pdfRails::InitializerGenerator, :pdf, type: :generator do
       it { is_expected.to be_readable }
       it { is_expected.to have_correct_syntax }
 
+      # rubocop:disable RSpec/LeakyLocalVariable
       Bidi2pdfRails::Config::CONFIG_OPTIONS.each_pair do |group_key, top_level_option|
         name = top_level_option[:name]
         it { is_expected.to contain(name) }
@@ -57,6 +58,7 @@ RSpec.describe Bidi2pdfRails::InitializerGenerator, :pdf, type: :generator do
         end
       end
     end
+    # rubocop:enable RSpec/LeakyLocalVariable
 
     describe 'the development environment file' do
       subject(:dev_env_file) { file('config/environments/development.rb') }

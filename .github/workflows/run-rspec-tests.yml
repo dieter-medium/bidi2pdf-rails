@@ -27,7 +27,7 @@ jobs:
       DISABLE_CHROME_SANDBOX: true
       RAILS_ENV: test
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Setup Ruby Environment
         uses: ./.github/actions/setup-ruby
       - name: Prepare DB
@@ -38,20 +38,20 @@ jobs:
         run: COVERAGE=true bundle exec rake spec SPEC_OPTS="--tag ${{ inputs.test_tag }}"
       - name: Upload ${{ inputs.log_artifact_name }}
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.log_artifact_name }}
           include-hidden-files: true
           path: spec/dummy/log
       - name: Upload ${{ inputs.coverage_artifact_name }} coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.coverage_artifact_name }}
           include-hidden-files: true
           path: coverage/
       - name: Upload generated pdf files (if any)
         if: ${{ inputs.upload_pdf }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pdf-files
           path: tmp/pdf-files/
