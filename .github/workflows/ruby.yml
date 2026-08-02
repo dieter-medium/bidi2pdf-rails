@@ -26,7 +26,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Setup Ruby Environment
         uses: ./.github/actions/setup-ruby
       - name: Lint with RuboCop
@@ -39,14 +39,14 @@ jobs:
       - lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Setup Ruby Environment
         uses: ./.github/actions/setup-ruby
       - name: Build gem
         run: |
           bundle exec rake build
       - name: Upload gem
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: bidi2pdf-gem
           path: pkg/
@@ -75,39 +75,4 @@ jobs:
       coverage_artifact_name: acceptance-coverage
       log_artifact_name: acceptance-log
       upload_pdf: true
-  
-  coverage-report:
-    if: false  # This disables the job
-    needs:
-      - unit-test
-      - integration-test
-      - acceptance-test
-    runs-on: ubuntu-latest
-    env:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Ruby Environment
-        uses: ./.github/actions/setup-ruby
-      - name: Download all coverage artifacts
-        uses: actions/download-artifact@v4
-        with:
-          # only path means download all artifacts to this dir
-          path: coverage-artifacts
-      - name: Combine coverage reports
-        run: |
-          mkdir -p coverage
-          ls  -ltraR coverage-artifacts          
-          cp coverage-artifacts/unit-coverage/.resultset.json coverage/unit-resultset.json
-          cp coverage-artifacts/integration-coverage/.resultset.json coverage/integration-resultset.json
-          cp coverage-artifacts/acceptance-coverage/.resultset.json coverage/acceptance-resultset.json
-          bundle exec rake coverage:merge_reports
-      - name: Upload coverage to Code Climate
-        if: ${{ github.event_name != 'pull_request' }}
-        uses: paambaati/codeclimate-action@v3.2.0
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage/
 
