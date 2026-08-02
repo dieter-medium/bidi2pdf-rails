@@ -18,11 +18,15 @@ Bidi2pdfRails.configure do |config|
   # config.general_options.notification_service = -> { ActiveSupport::Notifications } # Notification service
   # config.general_options.default_timeout = 10 # Default timeout for various Bidi commands
 
+  chrome_args = Bidi2pdf::Bidi::Session::DEFAULT_CHROME_ARGS.dup
+
   if ENV["DISABLE_CHROME_SANDBOX"]
-    chrome_args = Bidi2pdf::Bidi::Session::DEFAULT_CHROME_ARGS.dup
     chrome_args << "--no-sandbox"
-    config.general_options.chrome_session_args = chrome_args # Chrome session arguments
   end
+
+  chrome_args << "--disable-features=BlockInsecurePrivateNetworkRequests"
+  chrome_args << "--disable-web-security"
+  config.general_options.chrome_session_args = chrome_args # Chrome session arguments
 
   #
   # Chromedriver Settings (when chromedriver run within your app)

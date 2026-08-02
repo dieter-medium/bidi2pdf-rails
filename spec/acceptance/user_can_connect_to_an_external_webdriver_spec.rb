@@ -20,7 +20,7 @@ RSpec.feature "As a developer, I want to generate PDF's with bidi2pdf-rails, usi
     Errno::ECONNREFUSED,
     Errno::EHOSTUNREACH,
     Net::OpenTimeout,
-    Net::ReadTimeout
+    Net::ReadTimeout => error
     false
   end
 
@@ -104,7 +104,7 @@ RSpec.feature "As a developer, I want to generate PDF's with bidi2pdf-rails, usi
       end
 
       and_ "the PDF contains the expected content" do
-        expect(@response.body).to contains_pdf_text("Example Domain This domain is for use in illustrative examples in documents").at_page(1)
+        expect(@response.body).to contains_pdf_text("This domain is for use in documentation examples without needing permission. Avoid use in operations.").at_page(1)
       end
     end
   end
