@@ -5,7 +5,13 @@ require "bidi2pdf/test_helpers/testcontainers"
 
 RSpec.feature "As a developer, I want to generate PDF's with bidi2pdf-rails, using an external chromedriver", :chromedriver, :pdf, type: :request do
   before do
-    with_render_setting :browser_url, session_url
+    url = session_url
+    host = chromedriver_container.host
+    port = chromedriver_container.mapped_port(chromedriver_container.port)
+
+    url = "http://remote-chrome:#{port}/session" unless host
+
+    with_render_setting :browser_url, url
     Bidi2pdfRails::ChromedriverManagerSingleton.initialize_manager force: true
   end
 
