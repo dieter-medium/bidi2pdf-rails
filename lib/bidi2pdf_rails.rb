@@ -32,6 +32,8 @@ module Bidi2pdfRails
         bidi2pdf_config.logger = config.general_options.logger_value&.tagged("bidi2pdf")
         bidi2pdf_config.logger.verbosity = config.general_options.verbosity_value
         bidi2pdf_config.default_timeout = config.general_options.default_timeout_value
+        bidi2pdf_config.log_truncate_limit = config.general_options.log_truncate_limit_value
+        bidi2pdf_config.chromedriver_log_level = config.chromedriver_settings.log_level_value
 
         bidi2pdf_config.network_events_logger = Logger.new(nil)
         bidi2pdf_config.browser_console_logger = Logger.new(nil)
