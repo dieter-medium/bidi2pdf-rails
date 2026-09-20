@@ -19,6 +19,7 @@ module Bidi2pdfRails
           { name: :wait_for_page_check_script, desc: "Wait for page check script", default: nil, ask: false },
           { name: :notification_service, desc: "Notification service", default: -> { ActiveSupport::Notifications }, default_as_str: "-> { ActiveSupport::Notifications }", ask: false },
           { name: :default_timeout, desc: "Default timeout for various Bidi commands", default: 10, ask: true, color: :yellow },
+          { name: :log_truncate_limit, desc: "Max bytes of a single logged value (e.g. a data: URL) before it is truncated", default: 200, ask: false, color: :yellow },
           { name: :chrome_session_args, desc: "Chrome session arguments", default: Bidi2pdf::Bidi::Session::DEFAULT_CHROME_ARGS, ask: false }
         ]
       },
@@ -28,7 +29,40 @@ module Bidi2pdfRails
         ask: "Configure chromedriver settings? (y/n)",
         options: [
           { name: :install_dir, desc: "Chromedriver install directory", default: nil, ask: false, color: :yellow },
-          { name: :port, desc: "Chromedriver port", default: 0, ask: true, color: :yellow }
+          { name: :port, desc: "Chromedriver port", default: 0, ask: true, color: :yellow },
+          {
+            name: :log_level,
+            desc: "Chromedriver's own --log-level; nil follows the logger's level (INFO dumps every BiDi command into the log)",
+            default: nil,
+            limited_to: %w[ALL DEBUG INFO WARNING SEVERE OFF],
+            ask: true,
+            color: :yellow
+          }
+        ]
+      },
+
+      session_warmer_settings: {
+        name: "Session Warmer Settings",
+        ask: "Keep pre-warmed, single-use Chrome sessions ready in the background? (y/n)",
+        options: [
+          {
+            name: :enabled,
+            desc: "Use Bidi2pdf::SessionWarmer instead of ChromedriverManagerSingleton, so a render " \
+              "can skip Chrome startup latency. Off by default - flip on only after benchmarking " \
+              "(see bidi2pdf's docs/plans/faster-pdf-generation.md)",
+            default: false,
+            ask: true,
+            color: :green
+          },
+          { name: :size, desc: "Number of Chrome sessions to keep pre-warmed", default: 1, ask: true, color: :yellow },
+          {
+            name: :max_idle_age,
+            desc: "Seconds a pre-warmed session may sit unused before it is retired and replaced " \
+              "(bounds how long its unauthenticated automation port stays open); nil disables the limit",
+            default: 300,
+            ask: true,
+            color: :yellow
+          }
         ]
       },
 

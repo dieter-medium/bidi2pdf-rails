@@ -242,6 +242,16 @@ bin/rails generate bidi2pdf_rails:initializer
 
 Or explore [Bidi2pdfRails::Config::CONFIG_OPTIONS](lib/bidi2pdf_rails/config.rb) in the source.
 
+Requires **bidi2pdf >= 0.1.15**. Settings that came with it:
+
+| Setting                                | Default | Description                                                                                                                                                                         |
+|----------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `chromedriver_settings.log_level`      | `nil`   | ChromeDriver's own `--log-level` (`ALL`/`DEBUG`/`INFO`/`WARNING`/`SEVERE`/`OFF`). `nil` follows the logger's level; at `INFO` ChromeDriver writes every BiDi command into your log. |
+| `general_options.log_truncate_limit`   | `200`   | Max bytes of a single logged value (e.g. a `data:` URL) before it is truncated.                                                                                                     |
+| `session_warmer_settings.enabled`      | `false` | Take tabs from `Bidi2pdf::SessionWarmer` (pre-warmed, single-use Chrome sessions) instead of starting Chrome per render.                                                            |
+| `session_warmer_settings.size`         | `1`     | Number of sessions kept warm.                                                                                                                                                       |
+| `session_warmer_settings.max_idle_age` | `300`   | Seconds a warm session may sit unused before it is retired and replaced - an idle warm session is an open, unauthenticated automation port. `nil` disables the limit.               |
+
 ---
 
 ## 🧪 Test Helpers

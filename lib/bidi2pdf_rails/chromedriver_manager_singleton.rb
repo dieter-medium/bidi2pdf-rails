@@ -12,7 +12,15 @@ module Bidi2pdfRails
 
         @mutex ||= Mutex.new
         @mutex.synchronize do
-          return if @manager && @session
+          if session_warmer_enabled?
+            next if @session_warmer_configured
+
+            configure_session_warmer
+            @session_warmer_configured = true
+            next
+          end
+
+          next if @manager && @session
 
           msg = Bidi2pdfRails.use_remote_browser? ? "Remote session" : "ChromeDriver manager"
 
@@ -27,6 +35,13 @@ module Bidi2pdfRails
             @manager.start
           end
         end
+      end
+
+      # Whether PdfBrowserSession should take a tab from Bidi2pdf::SessionWarmer instead of this
+      # singleton's own ChromedriverManager/thread-local Session - default-off, see
+      # bidi2pdf's docs/plans/faster-pdf-generation.md for why.
+      def session_warmer_enabled?
+        Bidi2pdfRails.config.session_warmer_settings.enabled_value
       end
 
       def session
@@ -57,6 +72,13 @@ module Bidi2pdfRails
 
         @mutex ||= Mutex.new
         @mutex.synchronize do
+          if session_warmer_enabled?
+            Bidi2pdfRails.logger.info "Shutting down Bidi2pdf::SessionWarmer"
+            Bidi2pdf::SessionWarmer.shutdown
+            @session_warmer_configured = false
+            next
+          end
+
           msg = Bidi2pdfRails.use_remote_browser? ? "Remote session" : "ChromeDriver manager"
           Bidi2pdfRails.logger.info "Shutting down Bidi2pdf #{msg}"
           session_close
@@ -77,6 +99,20 @@ module Bidi2pdfRails
 
         server_commands.any? { |s| cmdline.include?(s) } ||
           Rails.const_defined?("Server")
+      end
+
+      private
+
+      def configure_session_warmer
+        Bidi2pdfRails.logger.info "Configuring Bidi2pdf::SessionWarmer"
+
+        Bidi2pdf::SessionWarmer.configure do |c|
+          c.size = Bidi2pdfRails.config.session_warmer_settings.size_value
+          c.max_idle_age = Bidi2pdfRails.config.session_warmer_settings.max_idle_age_value
+          c.headless = Bidi2pdfRails.config.general_options.headless_value
+          c.chrome_args = Bidi2pdfRails.config.general_options.chrome_session_args_value
+          c.remote_browser_url = Bidi2pdfRails.config.render_remote_settings.browser_url_value if Bidi2pdfRails.use_remote_browser?
+        end
       end
     end
   end

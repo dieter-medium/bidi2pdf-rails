@@ -40,7 +40,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "rails", ">= 7.2.2.1", "< 8.1.4"
-  spec.add_dependency "bidi2pdf", ">= 0.1.10"
+  spec.add_dependency "bidi2pdf", ">= 0.1.15"
 
   spec.add_development_dependency "rubocop-rake", "~> 0.7"
   spec.add_development_dependency "rubocop-rspec", "~> 3.5"

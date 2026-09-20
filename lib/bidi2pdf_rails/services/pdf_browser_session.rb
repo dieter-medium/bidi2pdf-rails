@@ -6,22 +6,10 @@ module Bidi2pdfRails
       def run_browser_session
         future = Concurrent::Promises.future do
           Rails.application.executor.wrap do
-            browser = ChromedriverManagerSingleton.session.browser
-            context = browser.create_user_context
-            window = context.create_browser_window
-            tab = window.create_browser_tab
-
-            begin
-              prepare_tab(tab)
-              base64_data = tab.print(print_options: @print_options)
-              binary_pdf_content = Base64.decode64(base64_data)
-
-              notify_after_print(tab, binary_pdf_content)
-            ensure
-              tab&.close
-              window&.close
-              context&.close
-              ChromedriverManagerSingleton.session_close
+            if ChromedriverManagerSingleton.session_warmer_enabled?
+              run_with_session_warmer
+            else
+              run_with_chromedriver_manager_singleton
             end
           end
         end
@@ -30,6 +18,36 @@ module Bidi2pdfRails
       end
 
       private
+
+      # Bidi2pdf::SessionWarmer#with_tab already checks out, closes the tab/window/user_context, and
+      # retires the underlying Chrome session on its own - nothing left for this method to clean up.
+      def run_with_session_warmer
+        Bidi2pdf::SessionWarmer.with_tab { |tab| print_and_notify(tab) }
+      end
+
+      def run_with_chromedriver_manager_singleton
+        browser = ChromedriverManagerSingleton.session.browser
+        context = browser.create_user_context
+        window = context.create_browser_window
+        tab = window.create_browser_tab
+
+        begin
+          print_and_notify(tab)
+        ensure
+          tab&.close
+          window&.close
+          context&.close
+          ChromedriverManagerSingleton.session_close
+        end
+      end
+
+      def print_and_notify(tab)
+        prepare_tab(tab)
+        base64_data = tab.print(print_options: @print_options)
+        binary_pdf_content = Base64.decode64(base64_data)
+
+        notify_after_print(tab, binary_pdf_content)
+      end
 
       def wait_for_tab(tab)
         tab.wait_until_network_idle if @wait_for_network_idle
