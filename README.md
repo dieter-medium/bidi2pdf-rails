@@ -252,6 +252,19 @@ Requires **bidi2pdf >= 0.1.15**. Settings that came with it:
 | `session_warmer_settings.size`         | `1`     | Number of sessions kept warm.                                                                                                                                                       |
 | `session_warmer_settings.max_idle_age` | `300`   | Seconds a warm session may sit unused before it is retired and replaced - an idle warm session is an open, unauthenticated automation port. `nil` disables the limit.               |
 
+**`chromedriver_settings.port` is incompatible with the session warmer.** The warmer keeps a
+replacement chromedriver warming in the background while a checked-out slot's own chromedriver is
+still running, so at least two chromedrivers are alive at once even at `size = 1` - they cannot share
+one fixed port. Enabling `session_warmer_settings.enabled` with a non-zero `chromedriver_settings.port`
+raises an `ArgumentError` at configure time; leave `chromedriver_settings.port` at its default (`0`)
+when the warmer is on.
+
+**Session warmer settings are boot-time immutable.** `Bidi2pdf::SessionWarmer` is configured once, on
+the first `ChromedriverManagerSingleton.initialize_manager` call. A later change to
+`session_warmer_settings`, `general_options.headless`/`chrome_session_args`, or
+`render_remote_settings.browser_url` is logged as a warning and otherwise ignored until you call
+`ChromedriverManagerSingleton.shutdown` followed by `.initialize_manager` again to re-apply it.
+
 ---
 
 ## 🧪 Test Helpers

@@ -91,7 +91,11 @@ RSpec.feature "As a user, I want to generate a PDF from a protected remote URL",
         secret = request.key_generator.generate_key(request.signed_cookie_salt)
         # Sign the value
         verifier = ActiveSupport::MessageVerifier.new(secret)
-        verifier.generate(value)
+        signed = verifier.generate(value)
+        # TEMPORARY DIAGNOSTIC (PR #22 cookie-auth 401) - remove before merge.
+        Rails.logger.warn "[cookie-diag] sign: host=#{request.host_with_port} pid=#{Process.pid} value=#{signed.inspect} " \
+                            "secret digest=#{Digest::SHA256.hexdigest(Rails.application.secret_key_base)[0, 12]} salt=#{request.signed_cookie_salt.inspect}"
+        signed
       end
 
       before do

@@ -48,6 +48,15 @@ module Bidi2pdfRails
         Bidi2pdfRails.config.proxy_settings.public_send("#{key}=", value)
       end
 
+      # Temporarily overrides a session warmer setting with a new value.
+      # The original value is stored for later restoration.
+      # @param [Symbol] key the setting key to override
+      # @param [Object] value the new value to set
+      def with_session_warmer_settings(key, value)
+        overridden_session_warmer_settings[key] = Bidi2pdfRails.config.session_warmer_settings.public_send(key)
+        Bidi2pdfRails.config.session_warmer_settings.public_send("#{key}=", value)
+      end
+
       # Retrieves the hash of overridden render settings.
       # @return [Hash] a hash of overridden render settings
       def overridden_render_settings
@@ -76,6 +85,12 @@ module Bidi2pdfRails
       # @return [Hash] a hash of overridden proxy settings
       def overridden_proxy_settings
         @__overridden_proxy_settings ||= {}
+      end
+
+      # Retrieves the hash of overridden session warmer settings.
+      # @return [Hash] a hash of overridden session warmer settings
+      def overridden_session_warmer_settings
+        @__overridden_session_warmer_settings ||= {}
       end
 
       # Resets all overridden render settings to their original values.
@@ -127,6 +142,16 @@ module Bidi2pdfRails
 
         @__overridden_proxy_settings = {}
       end
+
+      # Resets all overridden session warmer settings to their original values.
+      # Clears the overridden session warmer settings hash.
+      def reset_session_warmer_settings
+        overridden_session_warmer_settings.each do |key, original_value|
+          Bidi2pdfRails.config.session_warmer_settings.public_send("#{key}=", original_value)
+        end
+
+        @__overridden_session_warmer_settings = {}
+      end
     end
 
     RSpec.configure do |config|
@@ -140,6 +165,7 @@ module Bidi2pdfRails
         reset_lifecycle_settings if respond_to?(:reset_lifecycle_settings)
         reset_chromedriver_settings if respond_to?(:reset_chromedriver_settings)
         reset_proxy_settings if respond_to?(:reset_proxy_settings)
+        reset_session_warmer_settings if respond_to?(:reset_session_warmer_settings)
       end
     end
   end
