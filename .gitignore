@@ -8,3 +8,15 @@
 /test/dummy/tmp/
 /pagesjs/
 /coverage/
+
+# Local Claude devbox - docker-claude/Makefile wraps lint, the rspec tiers and the release shell
+/docker-claude/
+/.claude/
+/.claude-state/
+
+# Local noise
+.DS_Store
+/.rspec_status
+/.env.cloud
+/spec/dummy/log/
+/spec/dummy/storage/
