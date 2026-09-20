@@ -30,7 +30,10 @@ RSpec.feature "As a developer, I want to generate PDF's with bidi2pdf-rails, usi
     port = chromedriver_container.mapped_port(chromedriver_container.port)
 
     url = "http://remote-chrome:#{port}/session" unless host
-    url = "http://127.0.0.1:#{port}/session" unless reachable?(url)
+    # Probe /status, not the session URL itself: /session only answers POST, so a GET there is never
+    # a success and the 127.0.0.1 fallback would always win - wrong whenever this process runs in a
+    # container of its own and the chromedriver container is only reachable through its host address.
+    url = "http://127.0.0.1:#{port}/session" unless reachable?(url.sub(%r{/session\z}, "/status"))
 
     with_render_setting :browser_url, url
     Bidi2pdfRails::ChromedriverManagerSingleton.initialize_manager force: true
