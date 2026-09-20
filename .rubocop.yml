@@ -15,7 +15,7 @@ inherit_mode:
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.3
+  TargetRubyVersion: 3.4
   Exclude:
     # Local Claude devbox (gitignored). Its Dockerfile.ruby ends in ".ruby", which RuboCop takes for
     # a Ruby source file and then fails to parse.
