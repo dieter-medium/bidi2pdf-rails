@@ -7,9 +7,19 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 # Layout/SpaceInsideArrayLiteralBrackets:
 #   Enabled: false
 
+# Keep the inherited and RuboCop-default excludes (vendor/**, tmp/**, ...) when adding to
+# AllCops/Exclude below - without this, a project-level Exclude replaces them.
+inherit_mode:
+  merge:
+    - Exclude
+
 AllCops:
   NewCops: enable
   TargetRubyVersion: 3.3
+  Exclude:
+    # Local Claude devbox (gitignored). Its Dockerfile.ruby ends in ".ruby", which RuboCop takes for
+    # a Ruby source file and then fails to parse.
+    - 'docker-claude/**/*'
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
