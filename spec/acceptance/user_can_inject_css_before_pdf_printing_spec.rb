@@ -13,7 +13,7 @@ RSpec.feature "As a user, I want to inject css into a website before printing a 
   end
 
   after(:all) do
-    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown
+    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown force: true
   end
 
   scenario "Using raw CSS" do

@@ -264,6 +264,14 @@ the first `ChromedriverManagerSingleton.initialize_manager` call. A later change
 `session_warmer_settings`, `general_options.headless`/`chrome_session_args`, or
 `render_remote_settings.browser_url` is logged as a warning and otherwise ignored until you call
 `ChromedriverManagerSingleton.shutdown` followed by `.initialize_manager` again to re-apply it.
+Outside a server process (specs, a console) both calls return early unless you pass `force: true`;
+`initialize_manager force: true` on its own also works - it stops whatever is running first.
+
+**Rails 8.1.3.1 and `json` 3.** `json` 3 accepts options as keywords only, while Rails 8.1.3.1 still
+passes `JSON.parse` a positional options hash. With both in one bundle, Active Storage attachments
+and signed cookies fail with `ArgumentError: wrong number of arguments (given 2, expected 1)` - this
+is independent of bidi2pdf-rails, but bidi2pdf allows `json < 4`, so a fresh bundle can resolve it.
+Pin `gem "json", "< 3"` in your app until your Rails version handles it.
 
 ---
 

@@ -10,18 +10,22 @@ require "socket"
 # concurrency/cleanup internals - Bidi2pdf::SessionWarmer's own spec/unit/bidi2pdf/session_warmer_spec.rb
 # (57 examples) owns that; this spec only proves the two are wired together correctly.
 RSpec.feature "As a developer, I want to render PDFs from a pool of pre-warmed Chrome sessions", :pdf, type: :request do
+  # before(:all), so not the per-example with_session_warmer_settings helper - its reset hook would
+  # switch the warmer setting off again after the first example.
   before(:all) do
-    Bidi2pdfRails.config.session_warmer_settings.enabled = true
-    Bidi2pdfRails.config.session_warmer_settings.size = 1
+    settings = Bidi2pdfRails.config.session_warmer_settings
+    @original_warmer_settings = { enabled: settings.enabled, size: settings.size }
+    settings.enabled = true
+    settings.size = 1
 
     Bidi2pdfRails::ChromedriverManagerSingleton.initialize_manager force: true
   end
 
   after(:all) do
-    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown
+    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown force: true
 
-    Bidi2pdfRails.config.session_warmer_settings.enabled = false
-    Bidi2pdfRails.config.session_warmer_settings.size = 1
+    Bidi2pdfRails.config.session_warmer_settings.enabled = @original_warmer_settings[:enabled]
+    Bidi2pdfRails.config.session_warmer_settings.size = @original_warmer_settings[:size]
   end
 
   scenario "Rendering a controller view to PDF with the session warmer enabled" do

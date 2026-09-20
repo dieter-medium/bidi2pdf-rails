@@ -6,7 +6,7 @@ module Bidi2pdfRails
       def run_browser_session
         future = Concurrent::Promises.future do
           Rails.application.executor.wrap do
-            if ChromedriverManagerSingleton.session_warmer_enabled?
+            if ChromedriverManagerSingleton.session_warmer_active?
               run_with_session_warmer
             else
               run_with_chromedriver_manager_singleton

@@ -11,7 +11,7 @@ RSpec.feature "As a user, I want to generate PDF reports asynchronously", :pdf, 
   end
 
   after do
-    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown
+    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown force: true
   end
 
   # Asynchronous PDF Generation with Bidi2pdfRails

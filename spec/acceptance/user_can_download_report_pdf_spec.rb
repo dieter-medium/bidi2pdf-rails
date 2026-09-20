@@ -16,7 +16,7 @@ RSpec.feature "As a developer, I want to generate PDF's with bidi2pdf-rails", :p
   end
 
   after(:all) do
-    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown
+    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown force: true
   end
 
   scenario "Rendering a controller view to PDF using layout: 'pdf'" do

@@ -37,7 +37,7 @@ RSpec.feature "As a developer, I want to generate PDF's with bidi2pdf-rails, usi
   end
 
   after do
-    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown
+    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown force: true
   end
 
   # Using Remote Chromedriver with Bidi2pdfRails

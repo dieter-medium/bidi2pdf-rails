@@ -10,6 +10,9 @@ RSpec.describe Bidi2pdfRails::ChromedriverManagerSingleton, :pdf do
   let(:fake_logger) { instance_double(Logger, info: nil, warn: nil) }
 
   before do
+    # Before the stubs on purpose: whatever an earlier spec file left running gets a real teardown.
+    described_class.shutdown(force: true)
+
     allow(Bidi2pdf::SessionWarmer).to receive(:configure).and_yield(warmer_config)
     allow(Bidi2pdf::SessionWarmer).to receive(:shutdown)
     allow(Bidi2pdfRails).to receive(:logger).and_return(fake_logger)
@@ -17,8 +20,10 @@ RSpec.describe Bidi2pdfRails::ChromedriverManagerSingleton, :pdf do
     with_session_warmer_settings(:enabled, true)
   end
 
+  # force: true - outside a server process a plain #shutdown returns early, and the state this
+  # module keeps would leak into the next example.
   after do
-    described_class.shutdown
+    described_class.shutdown(force: true)
   end
 
   describe "#initialize_manager" do
@@ -47,7 +52,7 @@ RSpec.describe Bidi2pdfRails::ChromedriverManagerSingleton, :pdf do
       begin
         described_class.initialize_manager(force: true)
 
-        expect(warmer_config.headless).to eq(false)
+        expect(warmer_config.headless).to be(false)
       ensure
         Bidi2pdfRails.config.general_options.headless = original_headless
       end
@@ -73,28 +78,66 @@ RSpec.describe Bidi2pdfRails::ChromedriverManagerSingleton, :pdf do
       expect(warmer_config.remote_browser_url).to eq("http://remote-chrome:3000/session")
     end
 
-    it "configures the warmer only once across repeated calls" do
-      described_class.initialize_manager(force: true)
-      described_class.initialize_manager(force: true)
+    # The railtie calls #initialize_manager from two on_load hooks, without force.
+    context "when a server process calls it a second time" do
+      before do
+        allow(described_class).to receive(:running_as_server?).and_return(true)
+        described_class.initialize_manager
+      end
 
-      expect(Bidi2pdf::SessionWarmer).to have_received(:configure).once
+      it "configures the warmer only once" do
+        described_class.initialize_manager
+
+        expect(Bidi2pdf::SessionWarmer).to have_received(:configure).once
+      end
+
+      it "warns instead of silently ignoring a settings change made after boot" do
+        with_session_warmer_settings(:size, 99)
+
+        described_class.initialize_manager
+
+        expect(fake_logger).to have_received(:warn).with(/boot-time immutable/)
+      end
+
+      it "does not warn when the settings are unchanged" do
+        described_class.initialize_manager
+
+        expect(fake_logger).not_to have_received(:warn)
+      end
     end
 
-    it "warns instead of silently ignoring a settings change made after boot" do
-      described_class.initialize_manager(force: true)
-      with_session_warmer_settings(:size, 99)
+    context "when it is forced a second time" do
+      before { described_class.initialize_manager(force: true) }
 
-      described_class.initialize_manager(force: true)
+      it "shuts the running warmer down before configuring a new one" do
+        described_class.initialize_manager(force: true)
 
-      expect(fake_logger).to have_received(:warn).with(/boot-time immutable/)
+        expect(Bidi2pdf::SessionWarmer).to have_received(:shutdown).once
+      end
+
+      it "applies the settings of the second call" do
+        with_session_warmer_settings(:size, 5)
+
+        described_class.initialize_manager(force: true)
+
+        expect(warmer_config.size).to eq(5)
+      end
     end
 
-    it "does not warn when settings are unchanged across repeated calls" do
-      described_class.initialize_manager(force: true)
+    context "with the session warmer disabled" do
+      let(:manager) { instance_double(Bidi2pdf::ChromedriverManager, start: nil, stop: nil) }
 
-      described_class.initialize_manager(force: true)
+      before do
+        with_session_warmer_settings(:enabled, false)
+        allow(Bidi2pdf::ChromedriverManager).to receive(:new).and_return(manager)
+        allow(described_class).to receive(:running_as_server?).and_return(true)
+      end
 
-      expect(fake_logger).not_to have_received(:warn)
+      it "starts only one chromedriver when both on_load hooks call it" do
+        2.times { described_class.initialize_manager }
+
+        expect(Bidi2pdf::ChromedriverManager).to have_received(:new).once
+      end
     end
 
     it "raises when chromedriver_settings.port is non-zero" do
@@ -117,9 +160,44 @@ RSpec.describe Bidi2pdfRails::ChromedriverManagerSingleton, :pdf do
       described_class.initialize_manager(force: true)
       with_session_warmer_settings(:enabled, false)
 
-      described_class.shutdown
+      described_class.shutdown(force: true)
 
       expect(Bidi2pdf::SessionWarmer).to have_received(:shutdown)
+    end
+
+    it "does nothing outside a server process unless forced" do
+      described_class.initialize_manager(force: true)
+
+      described_class.shutdown
+
+      expect(Bidi2pdf::SessionWarmer).not_to have_received(:shutdown)
+    end
+  end
+
+  # What the render path branches on - the setting alone is not enough.
+  describe "#session_warmer_active?" do
+    it "is false while the warmer is only enabled, not initialized" do
+      expect(described_class).not_to be_session_warmer_active
+    end
+
+    it "is true once the warmer was initialized" do
+      described_class.initialize_manager(force: true)
+
+      expect(described_class).to be_session_warmer_active
+    end
+
+    it "stays true when the setting is flipped off after boot" do
+      described_class.initialize_manager(force: true)
+      with_session_warmer_settings(:enabled, false)
+
+      expect(described_class).to be_session_warmer_active
+    end
+
+    it "is false again after shutdown" do
+      described_class.initialize_manager(force: true)
+      described_class.shutdown(force: true)
+
+      expect(described_class).not_to be_session_warmer_active
     end
   end
 end
