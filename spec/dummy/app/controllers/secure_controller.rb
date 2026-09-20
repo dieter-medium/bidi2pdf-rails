@@ -42,12 +42,6 @@ class SecureController < ApplicationController
   end
 
   def authenticate_with_cookie
-    # TEMPORARY DIAGNOSTIC (PR #22 cookie-auth 401) - remove before merge.
-    Rails.logger.warn "[cookie-diag] verify: host=#{request.host_with_port} pid=#{Process.pid} raw Cookie header=#{request.headers['Cookie'].inspect}"
-    Rails.logger.warn "[cookie-diag] verify: cookies[:auth_token]=#{cookies[:auth_token].inspect}"
-    Rails.logger.warn "[cookie-diag] verify: cookies.signed[:auth_token]=#{cookies.signed[:auth_token].inspect}"
-    Rails.logger.warn "[cookie-diag] verify: secret digest=#{Digest::SHA256.hexdigest(Rails.application.secret_key_base)[0, 12]} salt=#{request.signed_cookie_salt.inspect}"
-
     auth_token = cookies.signed[:auth_token]
     valid_token = "valid-authentication-token"
 
