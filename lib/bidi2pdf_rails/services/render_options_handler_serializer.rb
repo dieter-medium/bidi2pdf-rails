@@ -16,8 +16,7 @@ module Bidi2pdfRails
         ::Bidi2pdfRails::Services::RenderOptionsHandler.new(hash["filename"], hash["options"].with_indifferent_access, nil)
       end
 
-      private
-
+      # Public on purpose: ActiveJob calls it from outside, and Rails 8.2 raises if it is private.
       def klass
         ::Bidi2pdfRails::Services::RenderOptionsHandler
       end
