@@ -13,7 +13,7 @@ RSpec.feature "As a user, I want to generate a PDF from a protected remote URL",
   end
 
   after(:all) do
-    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown
+    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown force: true
   end
 
   scenario "Using basic auth for remote PDF rendering" do

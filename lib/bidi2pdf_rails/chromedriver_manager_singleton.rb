@@ -12,18 +12,24 @@ module Bidi2pdfRails
 
         @mutex ||= Mutex.new
         @mutex.synchronize do
-          if session_warmer_enabled?
-            if @active_mode == :warmer
-              warn_if_session_warmer_settings_changed
+          # Initialized once per process: both on_load hooks in the railtie call this, and a second
+          # pass must never start a second chromedriver (or a warmer next to a running manager).
+          # force: true asks for a clean re-initialization instead - what is running is torn down
+          # first, never orphaned.
+          if @active_mode
+            unless force
+              warn_if_session_warmer_settings_changed if @active_mode == :warmer
               next
             end
 
+            teardown
+          end
+
+          if session_warmer_enabled?
             configure_session_warmer
             @active_mode = :warmer
             next
           end
-
-          next if @manager && @session
 
           msg = Bidi2pdfRails.use_remote_browser? ? "Remote session" : "ChromeDriver manager"
 
@@ -49,6 +55,14 @@ module Bidi2pdfRails
         Bidi2pdfRails.config.session_warmer_settings.enabled_value
       end
 
+      # Whether the warmer is what this process actually initialized - the render path asks this, not
+      # the setting: with the setting flipped after boot (or never initialized at all),
+      # Bidi2pdf::SessionWarmer would lazily build itself from its own defaults and ignore headless,
+      # chrome args and the remote browser URL configured here.
+      def session_warmer_active?
+        @active_mode == :warmer
+      end
+
       def session
         Thread.current.bidi2pdf_rails_session ||= begin
                                                     if Bidi2pdfRails.use_remote_browser?
@@ -72,28 +86,13 @@ module Bidi2pdfRails
         Thread.current.bidi2pdf_rails_session = nil
       end
 
-      def shutdown
-        return unless running_as_server?
+      # force: true mirrors #initialize_manager - outside a server process (a spec run, a console)
+      # nothing else would ever stop what a forced initialize started.
+      def shutdown(force: false)
+        return unless running_as_server? || force
 
         @mutex ||= Mutex.new
-        @mutex.synchronize do
-          # Branches on the mode actually initialized (@active_mode), never on the current value of
-          # session_warmer_enabled? - a config flip between initialize_manager and shutdown must not
-          # leave the mode that's actually running un-torn-down.
-          case @active_mode
-          when :warmer
-            Bidi2pdfRails.logger.info "Shutting down Bidi2pdf::SessionWarmer"
-            Bidi2pdf::SessionWarmer.shutdown
-          when :manager
-            msg = Bidi2pdfRails.use_remote_browser? ? "Remote session" : "ChromeDriver manager"
-            Bidi2pdfRails.logger.info "Shutting down Bidi2pdf #{msg}"
-            session_close
-            @manager&.stop
-            @manager = nil
-          end
-
-          @active_mode = nil
-        end
+        @mutex.synchronize { teardown }
       end
 
       def running_as_server?
@@ -111,6 +110,25 @@ module Bidi2pdfRails
       end
 
       private
+
+      # Tears down the mode actually initialized (@active_mode), never whatever
+      # session_warmer_enabled? says right now - a setting flipped in between must not leave the
+      # thing that is really running alive. Callers hold @mutex.
+      def teardown
+        case @active_mode
+        when :warmer
+          Bidi2pdfRails.logger.info "Shutting down Bidi2pdf::SessionWarmer"
+          Bidi2pdf::SessionWarmer.shutdown
+        when :manager
+          msg = Bidi2pdfRails.use_remote_browser? ? "Remote session" : "ChromeDriver manager"
+          Bidi2pdfRails.logger.info "Shutting down Bidi2pdf #{msg}"
+          session_close
+          @manager&.stop
+          @manager = nil
+        end
+
+        @active_mode = nil
+      end
 
       def configure_session_warmer
         # A warmer slot's chromedriver stays alive while its replacement warms in the background
@@ -141,7 +159,7 @@ module Bidi2pdfRails
       end
 
       def nonzero_chromedriver_port?
-        !Bidi2pdfRails.config.chromedriver_settings.port_value.zero?
+        !Bidi2pdfRails.config.chromedriver_settings.port_value.to_i.zero?
       end
 
       # Bidi2pdf::SessionWarmer is configured once, at the first initialize_manager call - later

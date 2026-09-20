@@ -13,7 +13,7 @@ RSpec.feature "As a user, I want to hook into the PDF printing lifecycle", :pdf,
   end
 
   after(:all) do
-    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown
+    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown force: true
   end
 
   scenario "Using the before navigate callback" do

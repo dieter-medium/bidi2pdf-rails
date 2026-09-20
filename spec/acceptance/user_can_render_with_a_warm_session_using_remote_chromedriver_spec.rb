@@ -45,7 +45,7 @@ RSpec.feature "As a developer, I want Bidi2pdf::SessionWarmer to work against an
   end
 
   after do
-    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown
+    Bidi2pdfRails::ChromedriverManagerSingleton.shutdown force: true
   end
 
   scenario "Rendering a PDF through Bidi2pdf::SessionWarmer against a remote Chromedriver" do

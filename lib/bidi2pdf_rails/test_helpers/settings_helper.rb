@@ -53,7 +53,9 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_session_warmer_settings(key, value)
-        overridden_session_warmer_settings[key] = Bidi2pdfRails.config.session_warmer_settings.public_send(key)
+        # Only the first override of a key records the original - a second call in the same example
+        # (enabled on, then off) must not store the first override as "the original".
+        overridden_session_warmer_settings[key] = Bidi2pdfRails.config.session_warmer_settings.public_send(key) unless overridden_session_warmer_settings.key?(key)
         Bidi2pdfRails.config.session_warmer_settings.public_send("#{key}=", value)
       end
 
