@@ -216,6 +216,56 @@ Implementing these steps helps avoid interlock-induced deadlocks when generating
 
 ---
 
+## 🕳️ Blank PDFs: Chrome's Local Network Access Check
+
+**Symptom.** `render pdf:` of a Rails view returns a PDF with no styling and, with a JS-driven layout
+(Paged.js, Stimulus, ...), no content at all. Nothing raises. In the log every asset request ends in
+`state="error"`, the wait for the page runs into its timeout, and - the telltale part - **your app
+never logs a single `GET /assets/...` for that render**.
+
+**Cause.** A rendered view is handed to Chrome as a `data:` URL. Chrome treats that document as a
+*public* origin, while its stylesheets and scripts point back at your app - which in development, CI
+and most Docker setups is a *private* address (`localhost`, `host.docker.internal`, a Compose service
+name). Recent Chrome versions (confirmed with Chrome 153) block a public document from requesting
+private-network resources, before the request ever leaves the browser. That is why CORS settings
+make no difference here: there is no request for your app to answer.
+
+**Fix.** Opt out of that one check where your asset host is private:
+
+```ruby
+# config/initializers/bidi2pdf_rails.rb
+chrome_args = Bidi2pdf::Bidi::Session::DEFAULT_CHROME_ARGS.dup
+
+unless Rails.env.production?
+  chrome_args.map! do |arg|
+    arg.start_with?("--disable-features=") ? "#{arg},LocalNetworkAccessChecks" : arg
+  end
+end
+
+config.general_options.chrome_session_args = chrome_args
+```
+
+- **Merge, don't append.** `DEFAULT_CHROME_ARGS` already carries a `--disable-features=` list, and
+  Chrome only honors the *last* occurrence of that switch - a second one silently drops bidi2pdf's
+  own defaults.
+- `BlockInsecurePrivateNetworkRequests` alone does **not** help; `LocalNetworkAccessChecks` is the
+  feature that matters.
+- **Leave the check on in production** when your assets come from a public `https://` asset host -
+  nothing is blocked there, and it is a real browser protection.
+- Rendering a remote `url:` that is served from the same private host as its assets is not
+  affected - document and assets then share one address space.
+- With the session warmer enabled, restart the app after changing Chrome arguments - warm sessions
+  were started with the old ones.
+
+The second half of the same problem is the name itself: the asset host has to be one the *browser*
+can resolve back to your app (`pdf_settings.asset_host`, or your own `config.asset_host`), which for
+a remote or containerized Chrome is rarely the URL you typed into your own browser.
+
+> This repo's own dummy app never runs into the check because it starts Chrome with
+> `--disable-web-security` - fine for a test fixture, not something to copy into an application.
+
+---
+
 ## 🧪 Acceptance Examples
 
 This repo includes **real integration tests** that serve as usage documentation:
