@@ -15,4 +15,4 @@ gem "sqlite3", ">= 2.1"
 # hash when it reads a JSON-coded column (ActiveStorage::Blob#metadata), which raises
 # "wrong number of arguments (given 2, expected 1)". No Gemfile.lock is committed, so CI would
 # otherwise resolve json 3. Drop this once the allowed Rails range handles json 3.
-gem "json", "< 3"
+gem "json", "< 4"
