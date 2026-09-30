@@ -295,7 +295,7 @@ bin/rails generate bidi2pdf_rails:initializer
 
 Or explore [Bidi2pdfRails::Config::CONFIG_OPTIONS](lib/bidi2pdf_rails/config.rb) in the source.
 
-Requires **bidi2pdf >= 0.1.19**. Settings that came with it:
+Requires **bidi2pdf >= 0.1.20**. Settings that came with it:
 
 | Setting                                | Default | Description                                                                                                                                                                         |
 |----------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
