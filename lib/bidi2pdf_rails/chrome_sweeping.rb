@@ -11,8 +11,9 @@ module Bidi2pdfRails
   # render that failed for lack of resources.
   module ChromeSweeping
     # sweeper_settings keys passed to Bidi2pdf::ChromeSweeper as they are.
-    # lease_ttl is deliberately not passed: every lease carries the TTL its owner's heartbeat
-    # promises; the setting only covers entries written by bidi2pdf 0.1.18.
+    # Bidi2pdf::ChromeSweeper's lease_ttl option is deliberately not passed: every lease carries the
+    # TTL its owner's heartbeat promises, and that option only covers entries written by bidi2pdf
+    # 0.1.18.
     PASSED_THROUGH = %i[orphan_age min_age unresponsive_checks pids_limit registry_dir].freeze
 
     # With the warmer, a refused session was already swept for and retried by the warmer itself -
