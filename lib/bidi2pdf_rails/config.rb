@@ -102,7 +102,6 @@ module Bidi2pdfRails
           },
           { name: :pids_limit, desc: "The chromedriver container's pids limit, for max_sessions = \"auto\"", default: nil, ask: true, color: :yellow },
           { name: :interval, desc: "Seconds between background sweeps in every process; nil sweeps only when a render fails or on demand", default: nil, ask: true, color: :yellow },
-          { name: :lease_ttl, desc: "A session renewed within this many seconds belongs to a running process and is never closed", default: 60, ask: false, color: :yellow },
           {
             name: :registry_dir,
             desc: "Directory of the session registry; every process that renders against the same chromedriver " \

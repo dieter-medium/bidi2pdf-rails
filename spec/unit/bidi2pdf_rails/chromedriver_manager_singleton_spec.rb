@@ -98,6 +98,37 @@ RSpec.describe Bidi2pdfRails::ChromedriverManagerSingleton, :pdf do
       end
     end
 
+    context "with a remote browser, sweeping on and retry_on_failure off" do
+      before do
+        with_render_setting(:browser_url, "http://remote-chrome:3000/session")
+        with_sweeper_settings(:enabled, true)
+        with_sweeper_settings(:retry_on_failure, false)
+      end
+
+      it "gives the warmer no sweeper, so it does not retry a refused session either" do
+        described_class.initialize_manager(force: true)
+
+        expect(warmer_config.sweeper).to be_nil
+      end
+
+      it "keeps the warmer leasing its sessions when max_idle_age leaves it no orphan age" do
+        with_session_warmer_settings(:max_idle_age, nil)
+
+        described_class.initialize_manager(force: true)
+
+        expect(warmer_config.effective_orphan_age).to eq(600)
+      end
+
+      it "warns when nothing is left to make the warmer lease its sessions" do
+        with_session_warmer_settings(:max_idle_age, nil)
+        with_sweeper_settings(:orphan_age, nil)
+
+        described_class.initialize_manager(force: true)
+
+        expect(fake_logger).to have_received(:warn).with(/does not lease its sessions/)
+      end
+    end
+
     it "gives the warmer no sweeper while sweeping is off" do
       with_render_setting(:browser_url, "http://remote-chrome:3000/session")
 

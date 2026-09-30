@@ -11,7 +11,9 @@ module Bidi2pdfRails
   # render that failed for lack of resources.
   module ChromeSweeping
     # sweeper_settings keys passed to Bidi2pdf::ChromeSweeper as they are.
-    PASSED_THROUGH = %i[orphan_age min_age unresponsive_checks pids_limit lease_ttl registry_dir].freeze
+    # lease_ttl is deliberately not configurable: leases are renewed on bidi2pdf's fixed heartbeat
+    # (every 20 s), and a shorter TTL would make live sessions look abandoned.
+    PASSED_THROUGH = %i[orphan_age min_age unresponsive_checks pids_limit registry_dir].freeze
 
     # With the warmer, a refused session was already swept for and retried by the warmer itself -
     # retrying the whole render on top would stack a second pair of attempts.
@@ -33,6 +35,12 @@ module Bidi2pdfRails
       def options
         PASSED_THROUGH.to_h { |key| [key, settings.public_send("#{key}_value")] }
                       .merge(scope: settings.scope_value.to_s.to_sym, max_sessions: max_sessions)
+      end
+
+      # The sweeper settings for Bidi2pdf::SessionWarmer - nil unless it should retry a refused
+      # session, which is all its own sweeper does (background sweeps belong to #sweeper).
+      def warmer_sweeper_options
+        options if enabled? && settings.retry_on_failure_value
       end
 
       # This process's sweeper, nil when sweeping is off. Built on first use, never before - that is

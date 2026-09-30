@@ -162,10 +162,26 @@ module Bidi2pdfRails
 
           c.remote_browser_url = @session_warmer_settings_snapshot[:remote_browser_url]
           c.registry_dir = @session_warmer_settings_snapshot[:registry_dir]
-          # Makes the warmer lease its sessions (whatever orphan_age says) and sweep under pressure
-          # when a new session is refused; background sweeps belong to ChromeSweeping#sweeper.
+          # With sweeper_settings.retry_on_failure: the warmer sweeps under pressure and retries when
+          # a new session is refused. Background sweeps belong to ChromeSweeping#sweeper.
           c.sweeper = @session_warmer_settings_snapshot[:sweeper]
+          keep_warmer_sessions_leased(c) if ChromeSweeping.enabled?
         end
+      end
+
+      # bidi2pdf 0.1.18's warmer leases its sessions only with a sweeper or an effective orphan_age.
+      # Without the sweeper (retry_on_failure off) and with max_idle_age nil (so orphan_age :auto
+      # means nil), it would lease nothing - and every other process's sweeper could take its warm
+      # spares and renders. sweeper_settings.orphan_age keeps it leasing.
+      def keep_warmer_sessions_leased(config)
+        return if config.sweeper || config.effective_orphan_age
+
+        config.orphan_age = Bidi2pdfRails.config.sweeper_settings.orphan_age_value
+        return if config.effective_orphan_age
+
+        Bidi2pdfRails.logger.warn "Bidi2pdf::SessionWarmer does not lease its sessions: sweeper_settings.retry_on_failure is " \
+                                  "off and neither session_warmer_settings.max_idle_age nor sweeper_settings.orphan_age is set - " \
+                                  "sweepers in other processes can close its sessions"
       end
 
       def nonzero_chromedriver_port?
@@ -183,7 +199,7 @@ module Bidi2pdfRails
           chrome_args: Bidi2pdfRails.config.general_options.chrome_session_args_value,
           remote_browser_url: Bidi2pdfRails.use_remote_browser? ? Bidi2pdfRails.config.render_remote_settings.browser_url_value : nil,
           registry_dir: Bidi2pdfRails.config.sweeper_settings.registry_dir_value,
-          sweeper: ChromeSweeping.enabled? ? ChromeSweeping.options : nil
+          sweeper: ChromeSweeping.warmer_sweeper_options
         }
       end
 

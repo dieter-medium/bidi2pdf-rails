@@ -358,9 +358,8 @@ config.sweeper_settings.registry_dir = "/shared/bidi2pdf" # web and job containe
 | `sweeper_settings.max_sessions`         | `nil`        | Close the oldest sessions nobody holds while more exist; `"auto"` derives it from `pids_limit`.                                              |
 | `sweeper_settings.pids_limit`           | `nil`        | The chromedriver container's pids limit, for `max_sessions = "auto"`.                                                                        |
 | `sweeper_settings.interval`             | `nil`        | Seconds between background sweeps in every process; `nil` sweeps only when a render fails or on demand.                                      |
-| `sweeper_settings.lease_ttl`            | `60`         | A session renewed within this many seconds belongs to a running process.                                                                      |
 | `sweeper_settings.registry_dir`         | `Dir.tmpdir` | Where the registry lives. Processes only see each other's leases when they share it.                                                          |
-| `sweeper_settings.retry_on_failure`     | `true`       | Retry a render once after a last-resort sweep.                                                                                                |
+| `sweeper_settings.retry_on_failure`     | `true`       | Retry a render once after a last-resort sweep; with the warmer, also a session it was refused. Off: no retry anywhere.                        |
 
 On demand, e.g. when the application suspects a leak, or from a shell during an incident:
 
