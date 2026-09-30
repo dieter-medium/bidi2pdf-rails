@@ -280,6 +280,7 @@ This repo includes **real integration tests** that serve as usage documentation:
 - [Rendering with a pre-warmed session pool (
   `Bidi2pdf::SessionWarmer`)](spec/acceptance/user_can_render_with_a_warm_session_spec.rb)
 - [Using the session warmer against a remote chromedriver](spec/acceptance/user_can_render_with_a_warm_session_using_remote_chromedriver_spec.rb)
+- [Closing Chrome sessions left behind on a remote chromedriver](spec/acceptance/user_can_have_leaked_chrome_sessions_swept_spec.rb)
 
 ---
 
