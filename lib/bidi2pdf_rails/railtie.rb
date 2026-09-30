@@ -39,6 +39,10 @@ module Bidi2pdfRails
   #
   #
   class Railtie < ::Rails::Railtie
+    rake_tasks do
+      load File.expand_path("tasks/sessions.rake", __dir__)
+    end
+
     initializer "bidi2pdf_rails.add_mime_type" do
       Mime::Type.register "application/pdf", :pdf unless Mime::Type.lookup_by_extension(:pdf)
     end

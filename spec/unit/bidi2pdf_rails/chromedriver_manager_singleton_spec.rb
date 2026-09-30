@@ -78,6 +78,34 @@ RSpec.describe Bidi2pdfRails::ChromedriverManagerSingleton, :pdf do
       expect(warmer_config.remote_browser_url).to eq("http://remote-chrome:3000/session")
     end
 
+    context "with a remote browser and sweeping on" do
+      before do
+        with_render_setting(:browser_url, "http://remote-chrome:3000/session")
+        with_sweeper_settings(:enabled, true)
+        with_sweeper_settings(:registry_dir, "/tmp/bidi2pdf-shared")
+      end
+
+      it "hands the sweeper rules to the warmer, so it leases its sessions and sweeps when one is refused" do
+        described_class.initialize_manager(force: true)
+
+        expect(warmer_config.sweeper).to eq(Bidi2pdfRails::ChromeSweeping.options)
+      end
+
+      it "hands the shared registry directory to the warmer" do
+        described_class.initialize_manager(force: true)
+
+        expect(warmer_config.registry_dir).to eq("/tmp/bidi2pdf-shared")
+      end
+    end
+
+    it "gives the warmer no sweeper while sweeping is off" do
+      with_render_setting(:browser_url, "http://remote-chrome:3000/session")
+
+      described_class.initialize_manager(force: true)
+
+      expect(warmer_config.sweeper).to be_nil
+    end
+
     # The railtie calls #initialize_manager from two on_load hooks, without force.
     context "when a server process calls it a second time" do
       before do
@@ -152,6 +180,25 @@ RSpec.describe Bidi2pdfRails::ChromedriverManagerSingleton, :pdf do
       described_class.initialize_manager(force: true)
     rescue ArgumentError
       expect(Bidi2pdf::SessionWarmer).not_to have_received(:configure)
+    end
+  end
+
+  describe "#session with a remote browser" do
+    let(:remote_session) { instance_double(Bidi2pdf::Bidi::Session, start: nil, close: nil, client: instance_double(Bidi2pdf::Bidi::Client, on_close: nil)) }
+
+    before do
+      with_session_warmer_settings(:enabled, false)
+      with_render_setting(:browser_url, "http://remote-chrome:3000/session")
+      allow(Bidi2pdf::Bidi::Session).to receive(:new).and_return(remote_session)
+    end
+
+    after { described_class.session_close }
+
+    # A session nobody leases is fair game for another process's sweeper - even mid-render.
+    it "leases the session in the registry while it is open" do
+      described_class.session
+
+      expect(Bidi2pdf::Bidi::Session).to have_received(:new).with(hash_including(registry: an_instance_of(Bidi2pdf::SessionRegistry)))
     end
   end
 

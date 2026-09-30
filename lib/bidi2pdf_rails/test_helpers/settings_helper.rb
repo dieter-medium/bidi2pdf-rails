@@ -89,6 +89,29 @@ module Bidi2pdfRails
         @__overridden_proxy_settings ||= {}
       end
 
+      # Temporarily overrides a sweeper setting with a new value; the first override of a key keeps
+      # the original for #reset_sweeper_settings.
+      # @param [Symbol] key the setting key to override
+      # @param [Object] value the new value to set
+      def with_sweeper_settings(key, value)
+        overridden_sweeper_settings[key] = Bidi2pdfRails.config.sweeper_settings.public_send(key) unless overridden_sweeper_settings.key?(key)
+        Bidi2pdfRails.config.sweeper_settings.public_send("#{key}=", value)
+      end
+
+      # @return [Hash] the overridden sweeper settings with their original values
+      def overridden_sweeper_settings
+        @__overridden_sweeper_settings ||= {}
+      end
+
+      # Resets every overridden sweeper setting to its original value.
+      def reset_sweeper_settings
+        overridden_sweeper_settings.each do |key, original_value|
+          Bidi2pdfRails.config.sweeper_settings.public_send("#{key}=", original_value)
+        end
+
+        @__overridden_sweeper_settings = {}
+      end
+
       # Retrieves the hash of overridden session warmer settings.
       # @return [Hash] a hash of overridden session warmer settings
       def overridden_session_warmer_settings
@@ -168,6 +191,7 @@ module Bidi2pdfRails
         reset_chromedriver_settings if respond_to?(:reset_chromedriver_settings)
         reset_proxy_settings if respond_to?(:reset_proxy_settings)
         reset_session_warmer_settings if respond_to?(:reset_session_warmer_settings)
+        reset_sweeper_settings if respond_to?(:reset_sweeper_settings)
       end
     end
   end

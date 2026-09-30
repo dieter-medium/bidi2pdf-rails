@@ -66,10 +66,12 @@ module Bidi2pdfRails
       def session
         Thread.current.bidi2pdf_rails_session ||= begin
                                                     if Bidi2pdfRails.use_remote_browser?
+                                                      # Leased while open, so no other process's sweeper takes it.
                                                       session = Bidi2pdf::Bidi::Session.new(
                                                         session_url: Bidi2pdfRails.config.render_remote_settings.browser_url_value,
                                                         headless: Bidi2pdfRails.config.general_options.headless_value,
-                                                        chrome_args: Bidi2pdfRails.config.general_options.chrome_session_args_value
+                                                        chrome_args: Bidi2pdfRails.config.general_options.chrome_session_args_value,
+                                                        registry: ChromeSweeping.registry
                                                       )
                                                     else
                                                       session = @manager.session
@@ -115,6 +117,8 @@ module Bidi2pdfRails
       # session_warmer_enabled? says right now - a setting flipped in between must not leave the
       # thing that is really running alive. Callers hold @mutex.
       def teardown
+        ChromeSweeping.stop
+
         case @active_mode
         when :warmer
           Bidi2pdfRails.logger.info "Shutting down Bidi2pdf::SessionWarmer"
@@ -154,7 +158,13 @@ module Bidi2pdfRails
           c.max_idle_age = @session_warmer_settings_snapshot[:max_idle_age]
           c.headless = @session_warmer_settings_snapshot[:headless]
           c.chrome_args = @session_warmer_settings_snapshot[:chrome_args]
-          c.remote_browser_url = @session_warmer_settings_snapshot[:remote_browser_url] if Bidi2pdfRails.use_remote_browser?
+          next unless Bidi2pdfRails.use_remote_browser?
+
+          c.remote_browser_url = @session_warmer_settings_snapshot[:remote_browser_url]
+          c.registry_dir = @session_warmer_settings_snapshot[:registry_dir]
+          # Makes the warmer lease its sessions (whatever orphan_age says) and sweep under pressure
+          # when a new session is refused; background sweeps belong to ChromeSweeping#sweeper.
+          c.sweeper = @session_warmer_settings_snapshot[:sweeper]
         end
       end
 
@@ -171,7 +181,9 @@ module Bidi2pdfRails
           max_idle_age: Bidi2pdfRails.config.session_warmer_settings.max_idle_age_value,
           headless: Bidi2pdfRails.config.general_options.headless_value,
           chrome_args: Bidi2pdfRails.config.general_options.chrome_session_args_value,
-          remote_browser_url: Bidi2pdfRails.use_remote_browser? ? Bidi2pdfRails.config.render_remote_settings.browser_url_value : nil
+          remote_browser_url: Bidi2pdfRails.use_remote_browser? ? Bidi2pdfRails.config.render_remote_settings.browser_url_value : nil,
+          registry_dir: Bidi2pdfRails.config.sweeper_settings.registry_dir_value,
+          sweeper: ChromeSweeping.enabled? ? ChromeSweeping.options : nil
         }
       end
 
@@ -181,7 +193,7 @@ module Bidi2pdfRails
 
         Bidi2pdfRails.logger.warn(
           "Bidi2pdf::SessionWarmer is already configured; session_warmer_settings/general_options/" \
-            "render_remote_settings changes are boot-time immutable and were ignored. Call " \
+            "render_remote_settings/sweeper_settings changes are boot-time immutable and were ignored. Call " \
             "ChromedriverManagerSingleton.shutdown then .initialize_manager to apply them."
         )
       end

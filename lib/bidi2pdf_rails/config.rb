@@ -66,6 +66,55 @@ module Bidi2pdfRails
         ]
       },
 
+      sweeper_settings: {
+        name: "Chrome Sweeper Settings (remote browser only)",
+        ask: "Close Chrome sessions left behind on the remote browser, and retry a render that failed for lack of resources? (y/n)",
+        options: [
+          {
+            name: :enabled,
+            desc: "Run a Bidi2pdf::ChromeSweeper against render_remote_settings.browser_url: sessions of dead " \
+              "processes are closed, and a render that failed for lack of resources is retried once after a " \
+              "last-resort sweep. Sessions a running process holds (every worker's renders and warm spares) " \
+              "are never touched",
+            default: false,
+            ask: true,
+            color: :green
+          },
+          {
+            name: :scope,
+            desc: "recorded: only sessions bidi2pdf recorded in the registry; all: every session on the " \
+              "chromedriver - only for a chromedriver your application owns",
+            default: "recorded",
+            limited_to: %w[recorded all],
+            ask: true,
+            color: :yellow
+          },
+          { name: :orphan_age, desc: "Close sessions nobody holds that are older than this many seconds; nil turns the rule off", default: 600, ask: true, color: :yellow },
+          { name: :min_age, desc: "Never close a session younger than this many seconds", default: 60, ask: true, color: :yellow },
+          { name: :unresponsive_checks, desc: "Close a session nobody holds after this many failed checks in a row; nil turns the rule off", default: 2, ask: false, color: :yellow },
+          {
+            name: :max_sessions,
+            desc: "Close the oldest sessions nobody holds while more than this many exist; \"auto\" derives it " \
+              "from pids_limit, nil turns the limit off",
+            default: nil,
+            ask: true,
+            color: :yellow
+          },
+          { name: :pids_limit, desc: "The chromedriver container's pids limit, for max_sessions = \"auto\"", default: nil, ask: true, color: :yellow },
+          { name: :interval, desc: "Seconds between background sweeps in every process; nil sweeps only when a render fails or on demand", default: nil, ask: true, color: :yellow },
+          { name: :lease_ttl, desc: "A session renewed within this many seconds belongs to a running process and is never closed", default: 60, ask: false, color: :yellow },
+          {
+            name: :registry_dir,
+            desc: "Directory of the session registry; every process that renders against the same chromedriver " \
+              "(web and job containers) must share it, nil means Dir.tmpdir",
+            default: nil,
+            ask: false,
+            color: :yellow
+          },
+          { name: :retry_on_failure, desc: "Retry a render once after a last-resort sweep when it failed for lack of resources", default: true, ask: true, color: :green }
+        ]
+      },
+
       proxy_settings: {
         name: "Proxy Settings",
         ask: "Use a proxy server? (y/n)",
