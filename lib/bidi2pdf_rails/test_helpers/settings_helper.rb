@@ -8,7 +8,7 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_render_setting(key, value)
-        overridden_render_settings[key] = Bidi2pdfRails.config.render_remote_settings.public_send(key)
+        overridden_render_settings[key] = Bidi2pdfRails.config.render_remote_settings.public_send(key) unless overridden_render_settings.key?(key)
         Bidi2pdfRails.config.render_remote_settings.public_send("#{key}=", value)
       end
 
@@ -17,7 +17,7 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_pdf_settings(key, value)
-        overridden_pdf_settings[key] = Bidi2pdfRails.config.pdf_settings.public_send(key)
+        overridden_pdf_settings[key] = Bidi2pdfRails.config.pdf_settings.public_send(key) unless overridden_pdf_settings.key?(key)
         Bidi2pdfRails.config.pdf_settings.public_send("#{key}=", value)
       end
 
@@ -26,7 +26,7 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_lifecycle_settings(key, value)
-        overridden_lifecycle_settings[key] = Bidi2pdfRails.config.lifecycle_settings.public_send(key)
+        overridden_lifecycle_settings[key] = Bidi2pdfRails.config.lifecycle_settings.public_send(key) unless overridden_lifecycle_settings.key?(key)
         Bidi2pdfRails.config.lifecycle_settings.public_send("#{key}=", value)
       end
 
@@ -35,7 +35,7 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_chromedriver_settings(key, value)
-        overridden_chromedriver_settings[key] = Bidi2pdfRails.config.chromedriver_settings.public_send(key)
+        overridden_chromedriver_settings[key] = Bidi2pdfRails.config.chromedriver_settings.public_send(key) unless overridden_chromedriver_settings.key?(key)
         Bidi2pdfRails.config.chromedriver_settings.public_send("#{key}=", value)
       end
 
@@ -44,7 +44,7 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_proxy_settings(key, value)
-        overridden_proxy_settings[key] = Bidi2pdfRails.config.proxy_settings.public_send(key)
+        overridden_proxy_settings[key] = Bidi2pdfRails.config.proxy_settings.public_send(key) unless overridden_proxy_settings.key?(key)
         Bidi2pdfRails.config.proxy_settings.public_send("#{key}=", value)
       end
 
