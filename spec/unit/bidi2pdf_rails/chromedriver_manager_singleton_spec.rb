@@ -85,7 +85,7 @@ RSpec.describe Bidi2pdfRails::ChromedriverManagerSingleton, :pdf do
         with_sweeper_settings(:registry_dir, "/tmp/bidi2pdf-shared")
       end
 
-      it "hands the sweeper rules to the warmer, so it leases its sessions and sweeps when one is refused" do
+      it "hands the sweeper rules to the warmer, so it sweeps and retries when a session is refused" do
         described_class.initialize_manager(force: true)
 
         expect(warmer_config.sweeper).to eq(Bidi2pdfRails::ChromeSweeping.options)
@@ -109,23 +109,6 @@ RSpec.describe Bidi2pdfRails::ChromedriverManagerSingleton, :pdf do
         described_class.initialize_manager(force: true)
 
         expect(warmer_config.sweeper).to be_nil
-      end
-
-      it "keeps the warmer leasing its sessions when max_idle_age leaves it no orphan age" do
-        with_session_warmer_settings(:max_idle_age, nil)
-
-        described_class.initialize_manager(force: true)
-
-        expect(warmer_config.effective_orphan_age).to eq(600)
-      end
-
-      it "warns when nothing is left to make the warmer lease its sessions" do
-        with_session_warmer_settings(:max_idle_age, nil)
-        with_sweeper_settings(:orphan_age, nil)
-
-        described_class.initialize_manager(force: true)
-
-        expect(fake_logger).to have_received(:warn).with(/does not lease its sessions/)
       end
     end
 

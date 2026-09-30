@@ -162,26 +162,11 @@ module Bidi2pdfRails
 
           c.remote_browser_url = @session_warmer_settings_snapshot[:remote_browser_url]
           c.registry_dir = @session_warmer_settings_snapshot[:registry_dir]
-          # With sweeper_settings.retry_on_failure: the warmer sweeps under pressure and retries when
-          # a new session is refused. Background sweeps belong to ChromeSweeping#sweeper.
+          # The warmer leases its sessions in remote mode on its own. Its sweeper exists only to sweep
+          # under pressure and retry when a new session is refused - so only with
+          # sweeper_settings.retry_on_failure; background sweeps belong to ChromeSweeping#sweeper.
           c.sweeper = @session_warmer_settings_snapshot[:sweeper]
-          keep_warmer_sessions_leased(c) if ChromeSweeping.enabled?
         end
-      end
-
-      # bidi2pdf 0.1.18's warmer leases its sessions only with a sweeper or an effective orphan_age.
-      # Without the sweeper (retry_on_failure off) and with max_idle_age nil (so orphan_age :auto
-      # means nil), it would lease nothing - and every other process's sweeper could take its warm
-      # spares and renders. sweeper_settings.orphan_age keeps it leasing.
-      def keep_warmer_sessions_leased(config)
-        return if config.sweeper || config.effective_orphan_age
-
-        config.orphan_age = Bidi2pdfRails.config.sweeper_settings.orphan_age_value
-        return if config.effective_orphan_age
-
-        Bidi2pdfRails.logger.warn "Bidi2pdf::SessionWarmer does not lease its sessions: sweeper_settings.retry_on_failure is " \
-                                  "off and neither session_warmer_settings.max_idle_age nor sweeper_settings.orphan_age is set - " \
-                                  "sweepers in other processes can close its sessions"
       end
 
       def nonzero_chromedriver_port?
