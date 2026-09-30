@@ -8,7 +8,7 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_render_setting(key, value)
-        overridden_render_settings[key] = Bidi2pdfRails.config.render_remote_settings.public_send(key)
+        overridden_render_settings[key] = Bidi2pdfRails.config.render_remote_settings.public_send(key) unless overridden_render_settings.key?(key)
         Bidi2pdfRails.config.render_remote_settings.public_send("#{key}=", value)
       end
 
@@ -17,7 +17,7 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_pdf_settings(key, value)
-        overridden_pdf_settings[key] = Bidi2pdfRails.config.pdf_settings.public_send(key)
+        overridden_pdf_settings[key] = Bidi2pdfRails.config.pdf_settings.public_send(key) unless overridden_pdf_settings.key?(key)
         Bidi2pdfRails.config.pdf_settings.public_send("#{key}=", value)
       end
 
@@ -26,7 +26,7 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_lifecycle_settings(key, value)
-        overridden_lifecycle_settings[key] = Bidi2pdfRails.config.lifecycle_settings.public_send(key)
+        overridden_lifecycle_settings[key] = Bidi2pdfRails.config.lifecycle_settings.public_send(key) unless overridden_lifecycle_settings.key?(key)
         Bidi2pdfRails.config.lifecycle_settings.public_send("#{key}=", value)
       end
 
@@ -35,7 +35,7 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_chromedriver_settings(key, value)
-        overridden_chromedriver_settings[key] = Bidi2pdfRails.config.chromedriver_settings.public_send(key)
+        overridden_chromedriver_settings[key] = Bidi2pdfRails.config.chromedriver_settings.public_send(key) unless overridden_chromedriver_settings.key?(key)
         Bidi2pdfRails.config.chromedriver_settings.public_send("#{key}=", value)
       end
 
@@ -44,7 +44,7 @@ module Bidi2pdfRails
       # @param [Symbol] key the setting key to override
       # @param [Object] value the new value to set
       def with_proxy_settings(key, value)
-        overridden_proxy_settings[key] = Bidi2pdfRails.config.proxy_settings.public_send(key)
+        overridden_proxy_settings[key] = Bidi2pdfRails.config.proxy_settings.public_send(key) unless overridden_proxy_settings.key?(key)
         Bidi2pdfRails.config.proxy_settings.public_send("#{key}=", value)
       end
 
@@ -87,6 +87,29 @@ module Bidi2pdfRails
       # @return [Hash] a hash of overridden proxy settings
       def overridden_proxy_settings
         @__overridden_proxy_settings ||= {}
+      end
+
+      # Temporarily overrides a sweeper setting with a new value; the first override of a key keeps
+      # the original for #reset_sweeper_settings.
+      # @param [Symbol] key the setting key to override
+      # @param [Object] value the new value to set
+      def with_sweeper_settings(key, value)
+        overridden_sweeper_settings[key] = Bidi2pdfRails.config.sweeper_settings.public_send(key) unless overridden_sweeper_settings.key?(key)
+        Bidi2pdfRails.config.sweeper_settings.public_send("#{key}=", value)
+      end
+
+      # @return [Hash] the overridden sweeper settings with their original values
+      def overridden_sweeper_settings
+        @__overridden_sweeper_settings ||= {}
+      end
+
+      # Resets every overridden sweeper setting to its original value.
+      def reset_sweeper_settings
+        overridden_sweeper_settings.each do |key, original_value|
+          Bidi2pdfRails.config.sweeper_settings.public_send("#{key}=", original_value)
+        end
+
+        @__overridden_sweeper_settings = {}
       end
 
       # Retrieves the hash of overridden session warmer settings.
@@ -168,6 +191,7 @@ module Bidi2pdfRails
         reset_chromedriver_settings if respond_to?(:reset_chromedriver_settings)
         reset_proxy_settings if respond_to?(:reset_proxy_settings)
         reset_session_warmer_settings if respond_to?(:reset_session_warmer_settings)
+        reset_sweeper_settings if respond_to?(:reset_sweeper_settings)
       end
     end
   end

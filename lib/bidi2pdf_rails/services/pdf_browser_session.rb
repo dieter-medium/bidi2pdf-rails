@@ -3,7 +3,16 @@
 module Bidi2pdfRails
   module Services
     module PdfBrowserSession
+      # With sweeper_settings.enabled, a render that fails for lack of resources (chromedriver
+      # refused the session, Chrome died or stopped answering) is run once more after a last-resort
+      # sweep - see ChromeSweeping.with_retry. Each run opens and cleans up its own tab and session.
       def run_browser_session
+        ChromeSweeping.with_retry { run_browser_session_once }
+      end
+
+      private
+
+      def run_browser_session_once
         future = Concurrent::Promises.future do
           Rails.application.executor.wrap do
             if ChromedriverManagerSingleton.session_warmer_active?
@@ -17,28 +26,27 @@ module Bidi2pdfRails
         future.value!
       end
 
-      private
-
       # Bidi2pdf::SessionWarmer#with_tab already checks out, closes the tab/window/user_context, and
       # retires the underlying Chrome session on its own - nothing left for this method to clean up.
       def run_with_session_warmer
         Bidi2pdf::SessionWarmer.with_tab { |tab| print_and_notify(tab) }
       end
 
+      # The session is covered by the ensure too: when its browser cannot be created, it is still
+      # closed - a half-started session left in the pooled thread's slot would be reused broken, by
+      # the retry among others.
       def run_with_chromedriver_manager_singleton
         browser = ChromedriverManagerSingleton.session.browser
         context = browser.create_user_context
         window = context.create_browser_window
         tab = window.create_browser_tab
 
-        begin
-          print_and_notify(tab)
-        ensure
-          tab&.close
-          window&.close
-          context&.close
-          ChromedriverManagerSingleton.session_close
-        end
+        print_and_notify(tab)
+      ensure
+        tab&.close
+        window&.close
+        context&.close
+        ChromedriverManagerSingleton.session_close
       end
 
       def print_and_notify(tab)

@@ -5,6 +5,7 @@ require "bidi2pdf/bidi/commands/print_parameters_validator"
 require_relative "bidi2pdf_rails/version"
 require_relative "bidi2pdf_rails/config"
 require_relative "bidi2pdf_rails/railtie"
+require_relative "bidi2pdf_rails/chrome_sweeping"
 require_relative "bidi2pdf_rails/chromedriver_manager_singleton"
 require_relative "bidi2pdf_rails/main_log_subscriber"
 require_relative "bidi2pdf_rails/browser_console_log_subscriber"
@@ -63,6 +64,19 @@ module Bidi2pdfRails
 
     def logger
       config.general_options.logger_value&.tagged("bidi2pdf-rails")
+    end
+
+    # Sweeps the remote chromedriver now, with the rules in sweeper_settings - e.g. when the
+    # application suspects leaked Chrome sessions. See ChromeSweeping.sweep! for the options.
+    #
+    # @return [Bidi2pdf::ChromeSweeper::Result]
+    def sweep_sessions!(**)
+      ChromeSweeping.sweep!(**)
+    end
+
+    # The Chrome sessions the remote chromedriver holds (ids, ages, live or not - no page content).
+    def chrome_sessions
+      ChromeSweeping.sessions
     end
   end
 

@@ -295,7 +295,7 @@ bin/rails generate bidi2pdf_rails:initializer
 
 Or explore [Bidi2pdfRails::Config::CONFIG_OPTIONS](lib/bidi2pdf_rails/config.rb) in the source.
 
-Requires **bidi2pdf >= 0.1.15**. Settings that came with it:
+Requires **bidi2pdf >= 0.1.20**. Settings that came with it:
 
 | Setting                                | Default | Description                                                                                                                                                                         |
 |----------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -314,11 +314,69 @@ when the warmer is on.
 
 **Session warmer settings are boot-time immutable.** `Bidi2pdf::SessionWarmer` is configured once, on
 the first `ChromedriverManagerSingleton.initialize_manager` call. A later change to
-`session_warmer_settings`, `general_options.headless`/`chrome_session_args`, or
+`session_warmer_settings`, `sweeper_settings`, `general_options.headless`/`chrome_session_args`, or
 `render_remote_settings.browser_url` is logged as a warning and otherwise ignored until you call
 `ChromedriverManagerSingleton.shutdown` followed by `.initialize_manager` again to re-apply it.
 Outside a server process (specs, a console) both calls return early unless you pass `force: true`;
 `initialize_manager force: true` on its own also works - it stops whatever is running first.
+
+### 🧹 Leaked Chrome sessions (remote browser)
+
+A remote chromedriver keeps every session - a whole Chrome - until someone deletes it, and a worker
+that is killed or crashes leaves its sessions open until the container runs out of room for new
+ones. With a remote browser, every session a render opens is **leased** in a small registry file:
+the rendering process renews the lease while the session is open, so no sweeper in any process
+closes it - not another Puma worker's, not a job worker's. When a process dies, its leases run out
+and its sessions become leftovers.
+
+`sweeper_settings.enabled` puts a `Bidi2pdf::ChromeSweeper` in every process:
+
+- a render that fails for lack of resources - chromedriver refusing a session, Chrome dying or not
+  answering - is **retried once after a last-resort sweep**, which closes every session nobody holds
+  that is older than `min_age` (`retry_on_failure`); a page error (navigation, script) is not retried;
+- with an `interval`, it sweeps in the background by its rules: sessions older than `orphan_age`,
+  unresponsive ones, and the oldest ones over `max_sessions`;
+- the warmer, when enabled, leases its sessions and sweeps before retrying a refused session.
+
+```ruby
+config.render_remote_settings.browser_url = "http://remote-chrome:3000/session"
+config.sweeper_settings.enabled = true
+config.sweeper_settings.scope = "all"          # the chromedriver belongs to this app
+config.sweeper_settings.max_sessions = "auto"  # floor(pids_limit * 0.8 / 110)
+config.sweeper_settings.pids_limit = 1024      # the chromedriver container's pids limit
+config.sweeper_settings.interval = 60
+config.sweeper_settings.registry_dir = "/shared/bidi2pdf" # web and job containers must share it
+```
+
+| Setting                                 | Default      | Description                                                                                                                                  |
+|-----------------------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| `sweeper_settings.enabled`              | `false`      | Run a sweeper against `render_remote_settings.browser_url`, and retry a render that failed for lack of resources.                           |
+| `sweeper_settings.scope`                | `"recorded"` | `"recorded"`: only sessions bidi2pdf recorded. `"all"`: every session on the chromedriver - only for a chromedriver your application owns.  |
+| `sweeper_settings.orphan_age`           | `600`        | Close sessions nobody holds that are older than this many seconds; `nil` turns the rule off.                                                |
+| `sweeper_settings.min_age`              | `60`         | Never close a session younger than this.                                                                                                     |
+| `sweeper_settings.unresponsive_checks`  | `2`          | Close a session nobody holds after this many failed checks in a row; `nil` turns the rule off.                                               |
+| `sweeper_settings.max_sessions`         | `nil`        | Close the oldest sessions nobody holds while more exist; `"auto"` derives it from `pids_limit`.                                              |
+| `sweeper_settings.pids_limit`           | `nil`        | The chromedriver container's pids limit, for `max_sessions = "auto"`.                                                                        |
+| `sweeper_settings.interval`             | `nil`        | Seconds between background sweeps in every process; `nil` sweeps only when a render fails or on demand.                                      |
+| `sweeper_settings.registry_dir`         | `Dir.tmpdir` | Where the registry lives. Processes only see each other's leases when they share it.                                                          |
+| `sweeper_settings.retry_on_failure`     | `true`       | Retry a render once after a last-resort sweep; with the warmer, also a session it was refused. Off: no retry anywhere.                        |
+
+On demand, e.g. when the application suspects a leak, or from a shell during an incident:
+
+```ruby
+Bidi2pdfRails.chrome_sessions                                  # ids, ages, live or not - no page content
+Bidi2pdfRails.sweep_sessions!                                  # one sweep by the configured rules
+Bidi2pdfRails.sweep_sessions!(pressure: true, dry_run: true)   # what a last-resort sweep would close
+```
+
+```bash
+bin/rails bidi2pdf_rails:sessions
+bin/rails bidi2pdf_rails:sweep                 # PRESSURE=1, DRY_RUN=1, CHECK_INTERVAL=10
+```
+
+Both work whether or not `sweeper_settings.enabled` is set. Sessions other tools opened carry no
+lease: with `scope = "all"`, only `min_age` protects them. See bidi2pdf's README ("Leaked Chrome
+sessions") for how sessions are aged and checked.
 
 **Rails 8.1.3.1 and `json` 3.** `json` 3 accepts options as keywords only, while Rails 8.1.3.1 still
 passes `JSON.parse` a positional options hash. With both in one bundle, Active Storage attachments
