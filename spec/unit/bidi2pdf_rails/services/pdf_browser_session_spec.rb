@@ -43,15 +43,36 @@ RSpec.describe Bidi2pdfRails::Services::PdfBrowserSession,
     expect(renderer.render).to eq(:printed)
   end
 
+  # Holds the only permit until the block is done - the holder says when it has it, so the render cannot get there
+  # first (a sleep could not promise that under CI load; review of PR #32).
+  def while_every_permit_is_taken
+    held = Thread::Queue.new
+    done = Thread::Queue.new
+    holder = Thread.new do
+      Bidi2pdf::SessionGate.with_permit do
+        held << true
+        done.pop
+      end
+    end
+    held.pop
+    yield
+  ensure
+    done << true
+    holder&.join
+  end
+
+  it "fails with SessionStartTimeoutError while every permit is taken" do
+    while_every_permit_is_taken do
+      expect { renderer.render }.to raise_error(Bidi2pdf::SessionStartTimeoutError)
+    end
+  end
+
   it "opens no tab while every permit is taken" do
-    holder = Thread.new { Bidi2pdf::SessionGate.with_permit { sleep 0.4 } }
-    sleep 0.05
-    begin
+    while_every_permit_is_taken do
       renderer.render
     rescue Bidi2pdf::SessionStartTimeoutError
       nil
     end
-    holder.join
 
     expect(browser).not_to have_received(:create_user_context)
   end
