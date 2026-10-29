@@ -1,3 +1,3 @@
 module Bidi2pdfRails
-  VERSION = "0.1.9.pre"
+  VERSION = "0.1.9"
 end
