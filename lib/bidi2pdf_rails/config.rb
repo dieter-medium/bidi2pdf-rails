@@ -20,6 +20,8 @@ module Bidi2pdfRails
           { name: :notification_service, desc: "Notification service", default: -> { ActiveSupport::Notifications }, default_as_str: "-> { ActiveSupport::Notifications }", ask: false },
           { name: :default_timeout, desc: "Default timeout for various Bidi commands", default: 10, ask: true, color: :yellow },
           { name: :log_truncate_limit, desc: "Max bytes of a single logged value (e.g. a data: URL) before it is truncated", default: 200, ask: false, color: :yellow },
+          { name: :session_start_concurrency, desc: "Chrome session setups at once in this process (bidi2pdf >= 0.1.26, README \"Session start limit\"); nil: no limit. Processes sharing one Chrome divide its budget of about 2", default: 2, ask: false, color: :yellow },
+          { name: :session_start_timeout, desc: "Seconds a session setup waits for its turn (bidi2pdf >= 0.1.26); nil: default_timeout", default: nil, ask: false, color: :yellow },
           { name: :chrome_session_args, desc: "Chrome session arguments", default: Bidi2pdf::Bidi::Session::DEFAULT_CHROME_ARGS, ask: false }
         ]
       },
