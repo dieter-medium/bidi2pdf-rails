@@ -306,6 +306,17 @@ Requires **bidi2pdf >= 0.1.20**. Settings that came with it:
 | `session_warmer_settings.size`         | `1`     | Number of sessions kept warm.                                                                                                                                                       |
 | `session_warmer_settings.max_idle_age` | `300`   | Seconds a warm session may sit unused before it is retired and replaced - an idle warm session is an open, unauthenticated automation port. `nil` disables the limit.               |
 
+With **bidi2pdf >= 0.1.26** (ignored by older versions):
+
+| Setting                                     | Default | Description                                                                                                                                                                                                                       |
+|---------------------------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `general_options.session_start_concurrency` | `2`     | Chrome session setups (session request to first tab) at once in this process; `nil`: no limit. Several setups at the same moment made chromedriver leave setup commands unanswered (bidi2pdf README "Session start limit"). |
+| `general_options.session_start_timeout`     | `nil`   | Seconds a setup waits for its turn before it fails with `Bidi2pdf::SessionStartTimeoutError`; `nil` uses `default_timeout`.                                                                                                     |
+
+**The limit holds per process.** Chrome counts the setups of every process that talks to it, so Puma workers and a
+job process sharing one remote chromedriver divide its budget of about two: with a web and a job process, set
+`session_start_concurrency = 1`; with more processes, give them Chromes of their own.
+
 **`chromedriver_settings.port` is incompatible with the session warmer.** The warmer keeps a
 replacement chromedriver warming in the background while a checked-out slot's own chromedriver is
 still running, so at least two chromedrivers are alive at once even at `size = 1` - they cannot share

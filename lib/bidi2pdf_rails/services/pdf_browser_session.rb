@@ -36,10 +36,13 @@ module Bidi2pdfRails
       # closed - a half-started session left in the pooled thread's slot would be reused broken, by
       # the retry among others.
       def run_with_chromedriver_manager_singleton
-        browser = ChromedriverManagerSingleton.session.browser
-        context = browser.create_user_context
-        window = context.create_browser_window
-        tab = window.create_browser_tab
+        context = window = tab = nil
+        with_session_start_permit do
+          browser = ChromedriverManagerSingleton.session.browser
+          context = browser.create_user_context
+          window = context.create_browser_window
+          tab = window.create_browser_tab
+        end
 
         print_and_notify(tab)
       ensure
@@ -47,6 +50,13 @@ module Bidi2pdfRails
         window&.close
         context&.close
         ChromedriverManagerSingleton.session_close
+      end
+
+      # From the session request to the first tab under one turn of bidi2pdf's session start limit
+      # (Bidi2pdf::SessionGate, bidi2pdf 0.1.26 and later): several sessions set up at once made
+      # chromedriver leave setup commands unanswered. The render after it is not limited.
+      def with_session_start_permit(&)
+        defined?(Bidi2pdf::SessionGate) ? Bidi2pdf::SessionGate.with_permit(&) : yield
       end
 
       def print_and_notify(tab)

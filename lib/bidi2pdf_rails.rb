@@ -36,6 +36,12 @@ module Bidi2pdfRails
         bidi2pdf_config.log_truncate_limit = config.general_options.log_truncate_limit_value
         bidi2pdf_config.chromedriver_log_level = config.chromedriver_settings.log_level_value
 
+        # bidi2pdf 0.1.26 and later only: older versions have no session start limit.
+        if bidi2pdf_config.respond_to?(:session_start_concurrency=)
+          bidi2pdf_config.session_start_concurrency = config.general_options.session_start_concurrency_value
+          bidi2pdf_config.session_start_timeout = config.general_options.session_start_timeout_value
+        end
+
         bidi2pdf_config.network_events_logger = Logger.new(nil)
         bidi2pdf_config.browser_console_logger = Logger.new(nil)
 

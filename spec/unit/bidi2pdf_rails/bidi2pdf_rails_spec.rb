@@ -46,4 +46,33 @@ RSpec.describe Bidi2pdfRails do
       expect(Bidi2pdf.log_truncate_limit).to eq(50)
     end
   end
+
+  # bidi2pdf 0.1.26: the session start limit (README "Session start limit" in bidi2pdf).
+  describe ".apply_bidi2pdf_config with the session start limit",
+           skip: (Bidi2pdf.respond_to?(:session_start_concurrency=) ? false : "this bidi2pdf has no session start limit (0.1.26 and later)") do
+    around do |example|
+      options = described_class.config.general_options
+      limit = options.session_start_concurrency
+      timeout = options.session_start_timeout
+      example.run
+    ensure
+      options.session_start_concurrency = limit
+      options.session_start_timeout = timeout
+      described_class.apply_bidi2pdf_config
+    end
+
+    it "allows two session setups at once by default, like bidi2pdf" do
+      described_class.apply_bidi2pdf_config
+
+      expect(Bidi2pdf.session_start_concurrency).to eq(2)
+    end
+
+    it "hands general_options.session_start_concurrency and session_start_timeout through to bidi2pdf" do
+      described_class.config.general_options.session_start_concurrency = 1
+      described_class.config.general_options.session_start_timeout = 5
+      described_class.apply_bidi2pdf_config
+
+      expect([Bidi2pdf.session_start_concurrency, Bidi2pdf.session_start_timeout]).to eq([1, 5])
+    end
+  end
 end
