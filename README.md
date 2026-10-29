@@ -315,7 +315,14 @@ With **bidi2pdf >= 0.1.26** (ignored by older versions):
 
 **The limit holds per process.** Chrome counts the setups of every process that talks to it, so Puma workers and a
 job process sharing one remote chromedriver divide its budget of about two: with a web and a job process, set
-`session_start_concurrency = 1`; with more processes, give them Chromes of their own.
+`session_start_concurrency = 1`. With more processes, either give them Chromes of their own, or share one budget
+across them with a gate of your own - set it in `Bidi2pdf.configure` (`config.session_gate`, any object answering
+`with_permit { ... }`, e.g. a file lock all processes can reach; bidi2pdf README "Session start limit").
+Bidi2pdfRails leaves that setting alone.
+
+**Set it at boot.** bidi2pdf reads the limit once per process, at its first session setup (and again in a forked
+Puma worker): the initializer is the place. A change after the first render is logged and takes effect after a
+restart.
 
 **`chromedriver_settings.port` is incompatible with the session warmer.** The warmer keeps a
 replacement chromedriver warming in the background while a checked-out slot's own chromedriver is
